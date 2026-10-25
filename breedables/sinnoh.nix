@@ -21,7 +21,7 @@ in
   pachirisu   = { dex = 417; ha = "Volt Absorb";       male = 50;   female = 50;   hatchCycles = 10; sprite = sprite "pachirisu"; };
   buizel      = { dex = 418; ha = "Water Veil";        male = 50;   female = 50;   hatchCycles = 20; sprite = sprite "buizel"; };
   cherubi     = { dex = 420; ha = "Chlorophyll";       male = 50;   female = 50;   hatchCycles = 20; sprite = sprite "cherubi"; };
-  shellos-east = dex = 422; ha = "Sand Force";        male = 50;   female = 50;   hatchCycles = 20; sprite = sprite "shellos-east"; };
+  shellos-east = { dex = 422; ha = "Sand Force";        male = 50;   female = 50;   hatchCycles = 20; sprite = sprite "shellos-east"; };
   shellos-west = { dex = 422; ha = "Sand Force";      male = 50;   female = 50;   hatchCycles = 20; sprite = sprite "shellos-west"; };
   drifloon    = { dex = 425; ha = "Flare Boost";       male = 50;   female = 50;   hatchCycles = 30; sprite = sprite "drifloon"; };
   buneary     = { dex = 427; ha = "Limber";            male = 50;   female = 50;   hatchCycles = 20; sprite = sprite "buneary"; };

@@ -58,3 +58,7 @@ See the `LICENSE` file in the repository for full details.<br>
 Contributions are welcomed.
 
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 208a9b1 (fix: missed '{')
