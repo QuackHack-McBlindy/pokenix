@@ -3,8 +3,10 @@
 <img src="images/logo.png" alt="Logo" width="240">
 <br>
 
-[![Sponsors](https://img.shields.io/github/sponsors/QuackHack-McBlindy?logo=githubsponsors&label=Sponsor&style=flat&labelColor=ff1493&logoColor=fff&color=rgba(234,74,170,0.5) "")](https://github.com/sponsors/QuackHack-McBlindy) [![Buy Me a Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-Sponsor?style=flat&logo=buymeacoffee&logoColor=fff&labelColor=ff1493&color=ff1493)](https://buymeacoffee.com/quackhackmcblindy)
+[![Sponsors](https://img.shields.io/github/sponsors/QuackHack-McBlindy?logo=githubsponsors&label=Sponsor&style=flat&labelColor=ff1493&logoColor=fff&color=rgba(234,74,170,0.5) "")](https://github.com/sponsors/QuackHack-McBlindy)
+[![Buy Me a Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-Sponsor?style=flat&logo=buymeacoffee&logoColor=fff&labelColor=ff1493&color=ff1493)](https://buymeacoffee.com/quackhackmcblindy)
 ![License](https://img.shields.io/badge/license-MIT-black?style=flat-square&logo=opensourceinitiative&logoColor=white)
+![Updated for](https://img.shields.io/badge/Updated%20for-Pok%C3%A9mon%20Sword%2FShield%20(Crown%20Tundra%20DLC)-blue)
 
 
 [![Built with Nix](https://img.shields.io/badge/Built%20with-Nix-5277C3?style=flat&labelColor=5277C3&color=555&logo=nixos&logoColor=fff)](https://nixos.org)
@@ -15,11 +17,15 @@
 # **PokéNix - Pokémon Collection Website Using NixOS**
 
 **You** define your mons using the NixOS options.<br>
-**PokéNix** builds your collection website.<br>
-
+**PokéNix** builds your collection website that you can use for tracking/trading.<br>
 
 <br>
 
+- [x] Breedables
+- [ ] True Shiny Living Dex *(both genders if they differ in looks)*
+- [ ] Event Pokémon
+
+<br>
 
 ## **Installation**
 
@@ -49,6 +55,15 @@
 
 </details>
 <br>
+
+
+## **Notes**
+
+
+Special thanks to <a href="https://github.com/msikma/pokesprite">msikma/pokesprite</a> for the sprites used in this project.
+
+<br>
+
 
 ## **License**
 
