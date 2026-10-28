@@ -1,6 +1,5 @@
 {
   lib,
-  config,
   ...
 } : let
   balls   = [ 
@@ -14,14 +13,12 @@
   allHA   = mkBalls { ball = true; ha = true; eggMoves = false; };
   allDone = mkBalls { ball = true; ha = true; eggMoves = true;  };
 in {
-  link."pokemon.html" = "${config.pokenix.html}/index.html";
-
 
   pokenix = {
     # 🦆 ⮞ TRAINER CARD
     trainer = {
       name       = "pungkula";
-      picture    = ./../home/profile.png;
+      picture    = ./profile-picture.png;
       about      = "★ breeding master ★ shiny hunter ★ ducklett lover ★";
       region     = "Sweden";
       timezone   = "Europe/Stockholm";
@@ -1330,6 +1327,8 @@ in {
       species = "terapagos";
       ball = "beast";
     };
+
+
 
     # 🦆 ⮞ EVENT POKÉMON
     events = {
