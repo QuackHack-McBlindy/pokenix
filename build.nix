@@ -1883,12 +1883,87 @@ let
     .stat-down { color: var(--accent-red);   font-weight: 600; }
   '';
 
+
+  siteDescription =
+    "PokéNix — ${brandName}'s collection: "
+    + "${toString totalCaptures}/${toString totalPossibleCaptures} aprimons · "
+    + "${toString shinyOwnedCount}/${toString shinyTotalCount} shiny · "
+    + "${toString eventCount} events";
+
+  ogImage =
+    let
+      fontPath = "${pkgs.dejavu_fonts}/share/fonts/truetype";
+      esc      = s: "'${builtins.replaceStrings [ "'" ] [ "'\\''" ] s}'";
+      flat     = s: builtins.replaceStrings [ "\n" ] [ " " ] s;
+
+      hasPic = cfg.trainer.picture != null;
+
+      about  = flat (if cfg.trainer.about  != null then cfg.trainer.about  else "");
+      region = flat (if cfg.trainer.region != null then cfg.trainer.region else "");
+
+      stats =
+        "${toString totalCaptures}/${toString totalPossibleCaptures} aprimons"
+        + " · ${toString shinyOwnedCount}/${toString shinyTotalCount} shiny"
+        + " · ${toString eventCount} events";
+
+      picStep = lib.optionalString hasPic ''
+        convert ${cfg.trainer.picture} \
+          -resize 480x480^ -gravity center -extent 480x480 \
+          -bordercolor '#333333' -border 4 \
+          -alpha remove -alpha off pic.png
+      '';
+
+      picLayer = if hasPic then "pic.png -geometry +60+75 -composite" else "";
+      textX    = if hasPic then "600" else "80";
+    in
+    pkgs.runCommand "pokenix-og.png" {
+      buildInputs = [ pkgs.imagemagick pkgs.dejavu_fonts ];
+    } ''
+      set -euo pipefail
+      ${picStep}
+
+      convert -size 1200x630 xc:'#121212' \
+        ${picLayer} \
+        -font ${fontPath}/DejaVuSans-Bold.ttf -pointsize 56 -fill '#e6e6e6' \
+          -annotate +${textX}+200 ${esc brandName} \
+        -font ${fontPath}/DejaVuSans.ttf -pointsize 24 -fill '#999999' \
+          -annotate +${textX}+260 ${esc about} \
+        -pointsize 22 -fill '#6cf' \
+          -annotate +${textX}+310 ${esc region} \
+        -pointsize 24 -fill '#cccccc' \
+          -annotate +${textX}+420 ${esc stats} \
+        -pointsize 20 -fill '#666666' \
+          -annotate +60+590 ${esc "PokéNix · github.com/QuackHack-McBlindy/pokenix"} \
+        og.png
+
+      cp og.png $out
+    '';
+
   pageShell = currentPage: title: body: ''
     <!DOCTYPE html>
     <html lang="en">
     <head>
     <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>${title}</title>
+
+    <meta name="description" content="${siteDescription}">
+
+    <meta property="og:type"         content="website">
+    <meta property="og:site_name"    content="PokéNix">
+    <meta property="og:title"        content="${title}">
+    <meta property="og:description"  content="${siteDescription}">
+    <meta property="og:image"        content="og.png">
+    <meta property="og:image:type"   content="image/png">
+    <meta property="og:image:width"  content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt"    content="PokéNix trainer card for ${brandName}">
+
+    <meta name="twitter:card"        content="summary_large_image">
+    <meta name="twitter:title"       content="${title}">
+    <meta name="twitter:description" content="${siteDescription}">
+    <meta name="twitter:image"       content="og.png">
+
     <style>
     ${sharedCss}
     </style>
@@ -2102,6 +2177,7 @@ let
     inherit version;
   } ''
     mkdir -p $out
+    cp ${ogImage} $out/og.png
 
     cat > $out/index.html <<'IDX'
 ${pageShell "breedables" "PokèNix · breedables" breedablesBody}
