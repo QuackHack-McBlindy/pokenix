@@ -49,7 +49,7 @@ in {
     # ★ ─────────────────────────────────────────────────────────────────────── ★
     trainer = {
       name       = "PokèNix"; # <-- CHANGE ME!
-      picture    = ./profile-profile.png;
+      picture    = ./profile-picture.png;
       about      = "★ breeding master ★ shiny hunter ★ ducklett lover ★";
       region     = "Sweden";
       timezone   = "Europe/Stockholm";
