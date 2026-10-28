@@ -1,7 +1,6 @@
-# PokèNix ⮞ https://github.com/quackhack-mcblindy/pokenix
-#  » Templates - Breedables «
 {
   lib,
+  config,
   ...
 } : let
   balls   = [ 
@@ -10,22 +9,27 @@
   ];
 
   mkBalls = flags: lib.genAttrs balls (_: flags);
-  none    = { ball = false; ha = false; eggMoves = false; };
-  allNone = mkBalls none;  
-  allHA   = mkBalls { ball = true; ha = true; eggMoves = false; };
-  allDone = mkBalls { ball = true; ha = true; eggMoves = true;  };
+  none    = { ball = false; ha = false; eggMoves = false; };  # not caught
+  ball    = { ball = true;  ha = false; eggMoves = false; };  # caught, no extras
+  HA      = { ball = true;  ha = true;  eggMoves = false; };  # caught + HA
+  HAEM    = { ball = true;  ha = true;  eggMoves = true;  };  # caught + HA + EM
+  allNone = mkBalls none;
+  allBall = mkBalls ball;
+  allHA   = mkBalls HA;
+  allDone = mkBalls HAEM;
 in {
 
   pokenix = {
+    # APRIBALLS BREEDABLES  
     breedables = {
-      # GENERATION 1 - KANTO REGION
-      bulbasaur       = allNone;
-      charmander      = allHA // { dream = none; beast = none; };
-      squirtle        = allNone;
-      caterpie        = allHA;
-      weedle          = allHA // { dream = none; };
-      pidgey          = allNone;
-      rattata         = allNone;
+      # » GENERATION 1 - KANTO REGION
+      bulbasaur       = allHA   // { moon   = HAEM; };
+      charmander      = allHA   // { friend = HAEM; heavy = HAEM; love = HAEM; dream = HAEM; beast = HAEM; };
+      squirtle        = allHA   // { friend = HAEM; heavy = HAEM; love = HAEM; moon  = HAEM; beast = HAEM; };
+      caterpie        = allHA   // { beast  = ball; };
+      weedle          = allHA   // { dream  = none; };
+      pidgey          = allBall // { beast = HAEM; safari = HA; fast = HA; sport = none; };
+      rattata         = allBall // { safari = HAEM; beast = HAEM; love = none; lure = none; moon = none; sport = none; };
       rattata-alola   = allNone;
       spearow         = allNone;
       ekans           = allNone;
@@ -106,7 +110,7 @@ in {
       dratini         = allNone;
       
   
-      # GENERATION 2 - JOHTO REGION
+      # » GENERATION 2 - JOHTO REGION
       chikorita     = allNone;
       cyndaquil     = allNone;
       totodile      = allNone;
@@ -155,7 +159,7 @@ in {
       miltank       = allNone;
       larvitar      = allNone;
   
-      # GENERATION 3 - HOENN REGION
+      # » GENERATION 3 - HOENN REGION
       treecko         = allNone;
       torchic         = allNone;
       mudkip          = allNone;
@@ -185,20 +189,20 @@ in {
       minun     = allNone;
       volbeat   = allNone;
       illumise  = allNone;
-      roselia = allNone;
-      gulpin   = allNone;
-      carvanha = allNone;
-      wailmer  = allNone;
-      numel    = allNone;
-      torkoal  = allNone;
-      spoink   = allNone;
-      spinda   = allNone;
-      trapinch = allNone;
-      cacnea   = allNone;
-      swablu   = allNone;
-      zangoose = allNone;
-      seviper  = allNone;
-      lunatone = allNone;
+      roselia   = allNone;
+      gulpin    = allNone;
+      carvanha  = allNone;
+      wailmer   = allNone;
+      numel     = allNone;
+      torkoal   = allNone;
+      spoink    = allNone;
+      spinda    = allNone;
+      trapinch  = allNone;
+      cacnea    = allNone;
+      swablu    = allNone;
+      zangoose  = allNone;
+      seviper   = allNone;
+      lunatone  = allNone;
       solrock   = allNone;
       barboach  = allNone;
       corphish  = allNone;
@@ -223,7 +227,7 @@ in {
       
       
       
-      # GENERATION 4 - SINNOH REGION
+      # » GENERATION 4 - SINNOH REGION
       turtwig = allNone;
       chimchar = allNone;
       piplup = allNone;
@@ -259,112 +263,112 @@ in {
       snover = allNone;
       rotom = allNone;
       
-      # GENERATION 5 - UNOVA REGION
-      snivy = allNone;
-      tepig = allNone;
-      oshawott = allNone;
-      patrat = allNone;
-      lillipup = allNone;
-      purrloin = allNone;
-      pansage = allNone;
-      pansear = allNone;
-      panpour = allNone;
-      munna = allNone;
-      pidove = allNone;
-      blitzle = allNone;
-      roggenrola = allNone;
-      woobat = allNone;
-      drilbur = allNone;
-      audino = allNone;
-      timburr = allNone;
-      tympole = allNone;
-      throh = allNone;
-      sawk = allNone;
-      sewaddle = allNone;
-      venipede = allNone;
-      cottonee = allNone;
-      petilil = allNone;
-      basculin-red = allNone;
-      basculin-blue = allNone;
-      sandile = allNone;
-      darumaka = allNone;
+      # » GENERATION 5 - UNOVA REGION
+      snivy          = allNone;
+      tepig          = allNone;
+      oshawott       = allNone;
+      patrat         = allNone;
+      lillipup       = allNone;
+      purrloin       = allNone;
+      pansage        = allNone;
+      pansear        = allNone;
+      panpour        = allNone;
+      munna          = allNone;
+      pidove         = allNone;
+      blitzle        = allNone;
+      roggenrola     = allNone;
+      woobat         = allNone;
+      drilbur        = allNone;
+      audino         = allNone;
+      timburr        = allNone;
+      tympole        = allNone;
+      throh          = allNone;
+      sawk           = allNone;
+      sewaddle       = allNone;
+      venipede       = allNone;
+      cottonee       = allNone;
+      petilil        = allNone;
+      basculin-red   = allNone;
+      basculin-blue  = allNone;
+      sandile        = allNone;
+      darumaka       = allNone;
       darumaka-galar = allNone;
-      maractus = allNone;
-      dwebble = allNone;
-      scraggy = allNone;
-      sigilyph = allNone;
-      yamask = allNone;
-      yamask-galar = allNone;
-      tirtouga = allNone;
-      archen = allNone;
-      trubbish = allNone;
-      zorua = allNone;
-      minccino = allNone;
-      gothita = allNone;
-      solosis = allNone;
-      ducklett = allNone;
-      vanillite = allNone;
-      deerling = allNone;
-      emolga = allNone;
-      karrablast = allNone;
-      foongus = allNone;
-      frillish = allNone;
-      alomomola = allNone;
-      joltik = allNone;
-      ferroseed = allNone;
-      klink = allNone;
-      tynamo = allNone;
-      elgyem = allNone;
-      litwick = allNone;
-      axew = allNone;
-      cubchoo = allNone;
-      cryogonal = allNone;
-      shelmet = allNone;
-      stunfisk = allNone;
+      maractus       = allNone;
+      dwebble        = allNone;
+      scraggy        = allNone;
+      sigilyph       = allNone;
+      yamask         = allNone;
+      yamask-galar   = allNone;
+      tirtouga       = allNone;
+      archen         = allNone;
+      trubbish       = allNone;
+      zorua          = allNone;
+      minccino       = allNone;
+      gothita        = allNone;
+      solosis        = allNone;
+      ducklett       = allNone;
+      vanillite      = allNone;
+      deerling       = allNone;
+      emolga         = allNone;
+      karrablast     = allNone;
+      foongus        = allNone;
+      frillish       = allNone;
+      alomomola      = allNone;
+      joltik         = allNone;
+      ferroseed      = allNone;
+      klink          = allNone;
+      tynamo         = allNone;
+      elgyem         = allNone;
+      litwick        = allNone;
+      axew           = allNone;
+      cubchoo        = allNone;
+      cryogonal      = allNone;
+      shelmet        = allNone;
+      stunfisk       = allNone;
       stunfisk-galar = allNone;
-      mienfoo = allNone;
-      druddigon = allNone;
-      golett = allNone;
-      pawniard = allNone;
-      bouffalant = allNone;
-      rufflet = allNone;
-      vullaby = allNone;
-      heatmor = allNone;
-      durant = allNone;
-      deino = allNone;
-      larvesta = allNone;
+      mienfoo        = allNone;
+      druddigon      = allNone;
+      golett         = allNone;
+      pawniard       = allNone;
+      bouffalant     = allNone;
+      rufflet        = allNone;
+      vullaby        = allNone;
+      heatmor        = allNone;
+      durant         = allNone;
+      deino          = allNone;
+      larvesta       = allNone;
       
   
   
-      # GENERATION 6 - KALOS REGION
-      chespin = allNone;
-      fennekin = allNone;
-      froakie = allNone;
-      bunnelby = allNone;
-      fletchling = allNone;
-      scatterbug = allNone;
-      litleo = allNone;
-      flabebe-blue = allNone;
-      flabebe-orange = allNone;
-      flabebe-red = allNone;
-      flabebe-white = allNone;
-      flabebe-yellow = allNone;
-      skiddo = allNone;
-      pancham = allNone;
-      furfrou = allNone;
-      espurr = allNone;
-      honedge = allNone;
-      spritzee = allNone;
-      swirlix = allNone;
-      inkay = allNone;
-      binacle = allNone;
-      skrelp = allNone;
-      clauncher = allNone;
-      helioptile = allNone;
-      tyrunt = allNone;
-      amaura = allNone;
-      hawlucha = allNone;
-      dedenne = allNone;
+      # » GENERATION 6 - KALOS REGION
+      chespin           = allNone;
+      fennekin          = allNone;
+      froakie           = allNone;
+      bunnelby          = allNone;
+      fletchling        = allNone;
+      scatterbug        = allNone;
+      litleo            = allNone;
+      flabebe-blue      = allNone;
+      flabebe-orange    = allNone;
+      flabebe-red       = allNone;
+      flabebe-white     = allNone;
+      flabebe-yellow    = allNone;
+      skiddo            = allNone;
+      pancham           = allNone;
+      furfrou           = allNone;
+      espurr            = allNone;
+      honedge           = allNone;
+      spritzee          = allNone;
+      swirlix           = allNone;
+      inkay             = allNone;
+      binacle           = allNone;
+      skrelp            = allNone;
+      clauncher         = allNone;
+      helioptile        = allNone;
+      tyrunt            = allNone;
+      amaura            = allNone;
+      hawlucha          = allNone;
+      dedenne           = allNone;
       carbink           = allNone;
       goomy             = allNone;
       klefki            = allNone;
@@ -378,7 +382,7 @@ in {
   
   
   
-      # GENERATION 7 - ALOLA REGION
+      # » GENERATION 7 - ALOLA REGION
       rowlet          = allNone;
       litten          = allNone;
       popplio         = allNone;
@@ -426,7 +430,7 @@ in {
   
   
   
-      # GENERATION 8 - GALAR REGION
+      # » GENERATION 8 - GALAR REGION
       grookey     = allNone;
       scorbunny   = allNone;
       sobble      = allNone;
@@ -460,8 +464,6 @@ in {
       cufant      = allNone;
       duraludon   = allNone;
       dreepy      = allNone;
+    };  
   
-  
-
-
   };}

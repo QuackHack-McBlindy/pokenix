@@ -13,8 +13,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - [x] **Breedable Apriballs Pokémon** - Optimized for breeding/trading. Click your mons and CTRL + C them as a list.
 - [x] **Event Pokémon** - A collection worth Cherish*ishing*.
 - [x] **True** *(♀️♂️)* **Shiny Living Dex** - Watch your shiny progress grow in %.
-- [x] **Specials** - Rare marks, awesome EV stats or simply shared memories, any Pokémon belongs! Document anything you want. 
+- [x] **Specials** - Rare marks, ribbons or simply shared memories, any Pokémon belongs! Document anything! Enter IV/EV, nature and your Pokémon stats willl be auto-generated and displayed. 
 - [x] **Search** - Quickly search and find what you are looking for.
+
 - **GitHub Pages** - If used with GitHub Pages: ❌ terminal, ❌ Nix, ❌ local download required.
 
 ### Changed

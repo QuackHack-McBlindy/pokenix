@@ -18,7 +18,7 @@
 # **PokéNix - Pokémon Collection Builder**
 
 **You** simply write your Pokémons using the options.<br>
-**PokéNix** builds and updates your collection website.<br>
+**PokéNix** generate, builds and deploy your Pokèmon collection website.<br>
 **Version controlled, and always online.**<br>
 
 <br>
@@ -26,9 +26,12 @@
 - [x] **Trainer** - Who's training these Pokémon?
 - [x] **Breedable Apriballs Pokémon** - Optimized for breeding/trading. Click your mons and CTRL + C them as a list.
 - [x] **Event Pokémon** - A collection worth Cherish*ishing*.
-- [x] **True** *(♀️♂️)* **Shiny Living Dex** - Watch your shiny progress grow in %. Toggle between caught/missing.
-- [x] **Specials** - Rare marks, awesome EV stats or simply shared memories, any Pokémon belongs! Document anything you want. 
-- [x] **Search** - Quickly search and find what you are looking for.
+- [x] **True** *(♀️♂️)* **Shiny Living Dex** - Watch your shiny progress grow in %. Easy toggle between caught/missing.
+- [x] **Specials** - Rare marks, ribbons or simply shared memories, any Pokémon belongs! Document anything! Enter IV/EV, nature and your Pokémon stats willl be auto-generated and displayed. 
+- [x] **Search** - Quickly live search and find what you are looking for.
+- **GitHub Pages** - If used with GitHub Pages: ❌ terminal, ❌ Nix, ❌ local download required. ✅ Simple!
+
+
 
 <br>
 <a href="https://quackhack-mcblindy.github.io/pokenix/">PokéNix Live Example</a>
@@ -50,13 +53,13 @@ Using GitHub Pages: No terminal, Nix or local install required.
 1. Create a GitHub account, login and click "Fork" on this repository.
 2. On the forked repo go to: Settings > Pages > Source: GitHub Actions.
 3. On your forked repo click on the pencil icon on the file `my-pokemon.nix`.
-4. Write your trainer name and your Pokémon (helpful comments in file), save the file when done.
+4. Write your trainer name **(important!)** and your Pokémon (helpful comments in file), save the file when done.
 5. Wait 3 minutes. First time may take a  few minutes longer.
 6. Visit https://<github-username>.github.io/pokenix/
 
 <br>
 
-If PokéNix's version update or new Pokémon are available click "Sync fork" on your forked repository.<br>
+If PokéNix's version update (fix bugs) or new Pokémon are available click "Sync fork" on your forked repository.<br>
 It won't affect the `my-pokemon.nix` file.<br>
 
 <br>
@@ -95,6 +98,7 @@ It won't affect the `my-pokemon.nix` file.<br>
 
 #### **3: Rebuild your system**
 
+
 **Done!**
 
 <br>
@@ -131,6 +135,7 @@ xdg-open result/index.html  # or `open` on macOS
 
 <br>
 
+
 ## **Notes**
 
 
@@ -138,6 +143,9 @@ xdg-open result/index.html  # or `open` on macOS
 
 <br>
 
+For a more detailed and advanced option documentation, click <a href="https://htmlpreview.github.io/?https://github.com/quackhack-mcblindy/pokenix/blob/main/docs/index.html">here</a> .
+
+<br>
 
 ## **Disclaimer**
 
