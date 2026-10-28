@@ -26,7 +26,7 @@
 - [x] **Trainer** - Who's training these Pokémon?
 - [x] **Breedable Apriballs Pokémon** - Optimized for breeding/trading. Click your mons and CTRL + C them as a list.
 - [x] **Event Pokémon** - A collection worth Cherish*ishing*.
-- [x] **True** *(♀️♂️)* **Shiny Living Dex** - Watch your shiny progress grow in %.
+- [x] **True** *(♀️♂️)* **Shiny Living Dex** - Watch your shiny progress grow in %. Toggle between caught/missing.
 - [x] **Specials** - Rare marks, awesome EV stats or simply shared memories, any Pokémon belongs! Document anything you want. 
 - [x] **Search** - Quickly search and find what you are looking for.
 
@@ -95,10 +95,7 @@ It won't affect the `my-pokemon.nix` file.<br>
 
 #### **3: Rebuild your system**
 
-
-```bash
-$ nixos rebuild switch
-```
+**Done!**
 
 <br>
 
