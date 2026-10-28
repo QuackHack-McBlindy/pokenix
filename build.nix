@@ -14,15 +14,115 @@ let
 
   rawBreedables = import ./breedables { };
 
+  movesRaw =
+    let p = ./moves.json;
+    in if builtins.pathExists p then builtins.fromJSON (builtins.readFile p) else { };
+
+  pokemonRaw =
+    let
+      paths = [ ./pokemon.json ./data/pokemon-fetch.json ];
+      hits  = builtins.filter (p: builtins.pathExists p) paths;
+    in if hits == [] then { } else builtins.fromJSON (builtins.readFile (builtins.head hits));
+
+  moveInfoRaw =
+    let
+      paths = [ ./data/move-info.json ./move-info.json ];
+      hits  = builtins.filter (p: builtins.pathExists p) paths;
+    in if hits == [] then { } else builtins.fromJSON (builtins.readFile (builtins.head hits));
+
+  pokemonEntryFor = name:
+    let
+      parts = lib.splitString "-" name;
+      go = n:
+        let candidate = lib.concatStringsSep "-" (lib.take n parts);
+        in if builtins.hasAttr candidate pokemonRaw
+           then pokemonRaw.${candidate}
+           else if n <= 1 then { }
+           else go (n - 1);
+    in go (builtins.length parts);
+
+  movesEntryFor = name:
+    let
+      parts = lib.splitString "-" name;
+      go = n:
+        let candidate = lib.concatStringsSep "-" (lib.take n parts);
+        in if builtins.hasAttr candidate movesRaw
+           then movesRaw.${candidate}
+           else if n <= 1 then { }
+           else go (n - 1);
+    in go (builtins.length parts);
+
   breedMeta = name:
     let raw = rawBreedables.${name} or { };
+        m   = movesEntryFor name;
+        p   = pokemonEntryFor name;
     in {
-      genderless  = raw.genderless or false;
-      male        = raw.male or null;
-      female      = raw.female or null;
-      hatchCycles = raw.hatchCycles or null;
-      ha          = raw.ha or "";
+      genderless     = raw.genderless     or false;
+      male           = raw.male           or null;
+      female         = raw.female         or null;
+      hatchCycles    = raw.hatchCycles    or null;
+      ha             = raw.ha             or "";
+      eggMoves       = raw.eggMoves       or (m.egg   or [ ]);
+      levelMoves     = raw.levelMoves     or (m.level or [ ]);
+      types          = raw.types          or (p.types          or [ ]);
+      cries          = raw.cries          or (p.cries          or null);
+      eggGroups      = raw.eggGroups      or (p.eggGroups      or [ ]);
+      isLegendary    = raw.isLegendary    or (p.isLegendary    or false);
+      isMythical     = raw.isMythical     or (p.isMythical     or false);
+      isBaby         = raw.isBaby         or (p.isBaby         or false);
+      flavorText     = raw.flavorText     or (p.flavorText     or null);
+      height         = raw.height         or (p.height         or null);
+      weight         = raw.weight         or (p.weight         or null);
+      growthRate     = raw.growthRate     or (p.growthRate     or null);
+      captureRate    = raw.captureRate    or (p.captureRate    or null);
+      baseHappiness  = raw.baseHappiness  or (p.baseHappiness  or null);
+      evolutionSteps = raw.evolutionSteps or (p.evolutionSteps or [ ]);
     };
+
+  shinyStatsSp = k: entry:
+    let e = cfg.shiny.${k};
+    in {
+      dex    = entry.dex;
+      level  = e.level  or null;
+      nature = e.nature or null;
+      evs    = e.evs    or { };
+      ivs    = e.ivs    or { };
+    };
+
+  breedSpFor = s: {
+    dex    = s.dex;
+    level  = 100;
+    nature = "hardy";
+    evs    = { };
+    ivs    = { hp = 31; atk = 31; def = 31; spa = 31; spd = 31; spe = 31; };
+  };
+
+  globalIndex = {
+    breedables = builtins.map (n: {
+      name = cfg.breedables.${n}.name;
+      dex  = cfg.breedables.${n}.dex;
+      key  = n;
+      page = "index.html";
+    }) sortedNames;
+    shiny = builtins.map (k: {
+      name = shinyData.${k}.name;
+      dex  = shinyData.${k}.dex;
+      key  = k;
+      page = "shiny.html";
+    }) (builtins.attrNames shinyData);
+    events = builtins.map (k: {
+      name = evtName cfg.events.${k};
+      dex  = evtDex  cfg.events.${k};
+      key  = k;
+      page = "events.html";
+    }) (builtins.attrNames cfg.events);
+    specials = builtins.map (k: {
+      name = evtName cfg.specials.${k};
+      dex  = evtDex  cfg.specials.${k};
+      key  = k;
+      page = "specials.html";
+    }) (builtins.attrNames cfg.specials);
+  };
 
   loadShiny = path:
     let v = import path;
@@ -181,7 +281,6 @@ let
     else
       let lu = lookupSpecies e.species;
       in if lu != null then lu.dex else 0;
-      
 
   evtName = e:
     if e.name != null then e.name
@@ -199,7 +298,6 @@ let
       if !shiny && lu != null && lu.sprite != null
       then lu.sprite
       else autoSprite (evtDex e) spriteKey shiny;
-
 
   evtSpriteExists = k: e: shiny:
     let sp = evtSpriteFor k e shiny; in
@@ -563,6 +661,63 @@ let
     if m.hatchCycles == null then ''<span class="cycles">—</span>''
     else ''<span class="cycles">${toString m.hatchCycles}</span>'';
 
+  titleCaseSlug = slug:
+    let cap = w:
+      if w == "" then ""
+      else lib.toUpper (builtins.substring 0 1 w)
+           + builtins.substring 1 (builtins.stringLength w - 1) w;
+    in concatStringsSep " " (map cap (lib.splitString "-" slug));
+
+  moveInfo = slug: moveInfoRaw.${slug} or { };
+
+  renderMovePill = slug:
+    let
+      info = moveInfo slug;
+      name = info.name or (titleCaseSlug slug);
+      typ  = info.type or "normal";
+      cls  = info.damageClass or "status";
+      pw   = info.power;
+      acc  = info.accuracy;
+      pp   = info.pp;
+      eff  = info.effect or "";
+      tip  = "${name} · ${typ}"
+           + (if cls == "physical" then " · physical"
+              else if cls == "special" then " · special"
+              else " · status")
+           + (if pw  != null then " · Power ${toString pw}" else "")
+           + (if acc != null then " · Acc ${toString acc}%" else "")
+           + (if pp  != null then " · PP ${toString pp}"    else "")
+           + (if eff != ""   then "\n\n${eff}"              else "");
+    in ''
+      <span class="move-pill type-${typ} cls-${cls}" title="${tip}">
+        <span class="move-name">${name}</span>
+        ${lib.optionalString (pw != null) ''<span class="move-power">${toString pw}</span>''}
+      </span>
+    '';
+
+  renderMoveList = label: slugs:
+    if slugs == [] then ""
+    else ''
+      <div class="detail detail-wide">
+        <span class="detail-label">${label} <span class="move-count">${toString (builtins.length slugs)}</span></span>
+        <div class="move-grid">${concatStringsSep "" (map renderMovePill slugs)}</div>
+      </div>
+    '';
+
+  renderTypeBadge = t:
+    if t == null || t == "" then ""
+    else ''
+      <span class="type-badge type-${lib.toLower t}" title="${t}">${t}</span>
+    '';
+
+  renderTypeBadges = types:
+    if types == [] then "" else concatStringsSep "" (map renderTypeBadge types);
+
+  renderSpecialBadges = m:
+    lib.optionalString m.isLegendary ''<span class="special-badge legendary" title="Legendary">L</span>''
+    + lib.optionalString m.isMythical ''<span class="special-badge mythical" title="Mythical">M</span>''
+    + lib.optionalString m.isBaby ''<span class="special-badge baby" title="Baby">B</span>'';
+
   renderBall = pname: bname: bc:
     if !bc.possible
     then ''<span class="ball unavailable" title="${bname} — not available"><span class="ball-x">✕</span></span>''
@@ -710,7 +865,7 @@ let
       o   = if e.ot     != null then e.ot     else "";
       r   = if e.region != null then e.region else "";
     in ''
-      <details class="event" data-dex="${pad}" data-name="${n}" data-year="${y}" data-ot="${o}" data-region="${r}">
+      <details class="event" id="pk-${k}" data-dex="${pad}" data-name="${n}" data-year="${y}" data-ot="${o}" data-region="${r}">
         <summary class="event-row">
           <span class="event-dex">#${pad}</span>
           ${renderEvtSprite k shiny e}
@@ -759,38 +914,72 @@ let
 
   renderShinyRow = k: entry:
     let
-      e = cfg.shiny.${k};
-      sprite = autoShinySprite entry;
-      hasSprite = sprite != null && builtins.pathExists (./. + "/${sprite}");
-      pad = padNum entry.dex;
-      owned = e.ball != null;
-      eggable = entry.eggable or true;
-      shinyIcon = if e.style == "square" then "▣" else "★";
-      ballCell =
+      e          = cfg.shiny.${k};
+      sprite     = autoShinySprite entry;
+      hasSprite  = sprite != null && builtins.pathExists (./. + "/${sprite}");
+      pad        = padNum entry.dex;
+      owned      = e.ball != null;
+      eggable    = entry.eggable or true;
+      shinyIcon  = if e.style == "square" then "▣" else "★";
+      ballCell   =
         if !owned then ''<span class="event-ball-slot empty"></span>''
         else if !(ballExists e.ball) then ''<span class="event-ball-slot missing" title="${e.ball} (sprite missing)"></span>''
         else ''<span class="event-ball-slot" title="${e.ball}"><img src="data:image/png;base64,@BALL_${e.ball}@" alt="${e.ball}"></span>'';
-      otCell = if e.ot then ''<span class="check yes" title="OT">✓</span>'' else ''<span class="check no"></span>'';
+      otVal      = e.ot or null;
+      otCell     = if otVal == true then ''<span class="check yes" title="OT">✓</span>'' else ''<span class="check no"></span>'';
+      otDisplay  =
+        if otVal == true then "self obtained"
+        else if otVal == false then null
+        else if otVal != null then toString otVal
+        else null;
+      eggFlag    = e.egg or false;
       eggCell =
         if !eggable then ''<span class="check na" title="not eggable">—</span>''
-        else if e.egg && eggExists
+        else if eggFlag && eggExists
           then ''<span class="egg-slot" title="egg obtained"><img class="egg-sprite" src="data:image/png;base64,@EGG_SPRITE@" alt="egg"></span>''
-        else if e.egg
+        else if eggFlag
           then ''<span class="check yes" title="egg obtained">✓</span>''
         else ''<span class="check no" title="no egg"></span>'';
+      movesVal   = e.moves   or [ ];
+      marksVal   = e.marks   or [ ];
+      ribbonsVal = e.ribbons or [ ];
     in ''
-      <div class="shiny-row ${if owned then "owned" else "empty"}" data-dex="${pad}" data-name="${entry.name}">
-        <span class="shiny-dex">#${pad}</span>
-        ${if hasSprite
-          then ''<span class="cell-sprite"><img class="sprite" src="data:image/png;base64,@SHINY_${k}@" alt="${entry.name}"></span>''
-          else ''<span class="cell-sprite"><svg class="sprite placeholder" viewBox="0 0 32 32"><rect width="32" height="32" fill="#2a2a2a"/><text x="16" y="21" font-size="9" text-anchor="middle" fill="#666">#${pad}</text></svg></span>''}
-        ${ballCell}
-        <span class="shiny-name" title="${entry.name}">${nameWithGmax entry.name k}</span>
-        <span class="shiny-notes">${if e.notes != null then e.notes else ""}</span>
-        ${otCell}
-        ${eggCell}
-        <span class="shiny-style">${if owned then shinyIcon else ""}</span>
-      </div>
+      <details class="shiny-row-details ${if owned then "owned" else "empty"}"
+               id="pk-${k}" data-dex="${pad}" data-name="${entry.name}">
+        <summary class="shiny-row">
+          <span class="shiny-dex">#${pad}</span>
+          ${if hasSprite
+            then ''<span class="cell-sprite"><img class="sprite" src="data:image/png;base64,@SHINY_${k}@" alt="${entry.name}"></span>''
+            else ''<span class="cell-sprite"><svg class="sprite placeholder" viewBox="0 0 32 32"><rect width="32" height="32" fill="#2a2a2a"/><text x="16" y="21" font-size="9" text-anchor="middle" fill="#666">#${pad}</text></svg></span>''}
+          ${ballCell}
+          <span class="shiny-name" title="${entry.name}">${nameWithGmax entry.name k}</span>
+          <span class="shiny-notes">${if e.notes or null != null then e.notes else ""}</span>
+          ${otCell}
+          ${eggCell}
+          <span class="shiny-style">${if owned then shinyIcon else ""}</span>
+        </summary>
+        <div class="entry-details">
+          ${renderDetail "Original Trainer" otDisplay}
+          ${renderDetail "Self Obtained"    (if e.selfObtained or false then "✓" else null)}
+          ${renderDetail "Level"            (e.level  or null)}
+          ${renderDetail "Nature"           (e.nature or null)}
+          ${renderDetail "Ability"          (e.ability or null)}
+          ${renderItemDetail (e.heldItem or null)}
+          ${renderTypeDetail "Tera Type"    (e.teraType or null)}
+          ${renderStatLine "EVs" (e.evs or { })}
+          ${renderStatLine "IVs" (e.ivs or { })}
+          ${renderCalculatedStats (shinyStatsSp k entry)}
+          ${renderDetail "Moves" (if movesVal == [] then null else concatStringsSep " · " movesVal)}
+          ${renderPills "mark"   "Marks"   marksVal}
+          ${renderPills "ribbon" "Ribbons" ribbonsVal}
+          ${renderDetail "Obtained"        (e.obtained or null)}
+          ${renderDetail "Region"          (e.region or null)}
+          ${renderDetail "ID"              (e.id or null)}
+          ${renderDetail "Proof"           (e.proof or null)}
+          ${renderDetail "Trade History"   (e.tradeHistory or null)}
+          ${renderDetail "Notes"           (e.notes or null)}
+        </div>
+      </details>
     '';
 
   renderTrainerField = label: value:
@@ -909,7 +1098,7 @@ let
       lvl   = if sp.level  != null then toString sp.level  else "";
       nat   = if sp.nature != null then sp.nature         else "";
     in ''
-      <details class="event special"
+      <details class="event special" id="pk-${k}"
                data-dex="${pad}" data-name="${n}"
                data-level="${lvl}" data-nature="${nat}">
         <summary class="event-row special-row">
@@ -970,19 +1159,63 @@ let
     </div>
   '';
 
+  renderLevelMoves = label: entries:
+    if entries == [] then ""
+    else ''
+      <div class="detail detail-wide">
+        <span class="detail-label">${label}</span>
+        <div class="level-moves">
+          ${concatStringsSep "" (map (e: ''
+            <div class="level-row">
+              <span class="level-num">Lv ${toString e.level}</span>
+              <span class="level-moves-list">${concatStringsSep " · " e.moves}</span>
+            </div>
+          '') entries)}
+        </div>
+      </div>
+    '';
+
   speciesEntry = name: s:
     let m = breedMeta name;
     in ''
-      <div class="entry ${if anyOwned s then "" else "untouched"}" data-name="${s.name}" data-dex="${padDex s}">
-        ${renderDex name s}
-        ${renderSprite name s}
-        <span class="name" title="${s.name}">${s.name}${renderCompleteStar s}</span>
-        <span class="balls">${renderBalls s.name s}</span>
-        <span class="hidden-ability" title="${m.ha}">${m.ha}</span>
-        ${renderGender m}
-        ${renderRatio m}
-        ${renderCycles m}
-      </div>
+      <details class="breedable-row" id="pk-${name}" data-name="${s.name}" data-dex="${padDex s}">
+        <summary class="entry ${if anyOwned s then "" else "untouched"}">
+          ${renderDex name s}
+          ${renderSprite name s}
+          <span class="name" title="${s.name}">${s.name}${renderCompleteStar s}${renderSpecialBadges m}</span>
+          <span class="balls">${renderBalls s.name s}</span>
+          <span class="hidden-ability" title="${m.ha}">${m.ha}</span>
+          ${renderGender m}
+          ${renderRatio m}
+          ${renderCycles m}
+        </summary>
+        <div class="entry-details">
+          <div class="detail detail-wide">
+            <span class="detail-label">Ball status</span>
+            <div class="pills">
+              ${concatStringsSep "" (map (b:
+                let bc = s.${b};
+                in if !bc.ball then ""
+                   else ''
+                     <span class="ball-status-pill">
+                       ${if ballExists b
+                         then ''<span class="ball"><img src="data:image/png;base64,@BALL_${b}@" alt="${b}"></span>''
+                         else ''<span class="ball missing"></span>''}
+                       <span>${b}: ${if bc.eggMoves then "HA + EM" else if bc.ha then "HA" else "caught"}</span>
+                     </span>
+                   ''
+              ) balls)}
+            </div>
+          </div>
+          ${renderMoveList "Egg Moves" m.eggMoves}
+          ${renderDetail "Egg Groups" (if m.eggGroups == [] then null else concatStringsSep " · " m.eggGroups)}
+          ${if m.types == [] then "" else ''
+            <div class="detail"><span class="detail-label">Types</span>
+              <span class="detail-value">${renderTypeBadges m.types}</span></div>
+          ''}
+          ${renderCalculatedStats (breedSpFor s)}
+        </div>
+      </details>
     '';
 
   navLink = currentPage: pageId: file: label:
@@ -1002,7 +1235,11 @@ let
       ${lib.optionalString (currentPage == "shiny") ''<span class="progress">${toString shinyOwnedCount}/${toString shinyTotalCount} · ${toString shinyPct}%</span>''}
       <span class="h1-right">
         ${lib.optionalString (currentPage != "trainer") ''
-          <input type="text" id="search-input" class="tool-input" placeholder="Search Pokémon…" autocomplete="off" spellcheck="false">
+          <span class="search-wrap">
+            <input type="text" id="search-input" class="tool-input"
+                   placeholder="Search all Pokémon…" autocomplete="off" spellcheck="false">
+            <div id="search-results" class="search-results"></div>
+          </span>
         ''}
         ${lib.optionalString (currentPage == "breedables" || currentPage == "shiny") ''
           <button id="filter-toggle" class="tool-btn" type="button">Showing: all</button>
@@ -1093,7 +1330,7 @@ let
           th.style.color = 'var(--accent-blue)';
           var list = document.querySelector('.shiny-list');
           if (!list) return;
-          var items = Array.from(list.querySelectorAll('.shiny-row'));
+          var items = Array.from(list.querySelectorAll('details.shiny-row-details'));
           items.sort(function(a, b) {
             var av = a.dataset[key] || "";
             var bv = b.dataset[key] || "";
@@ -1187,12 +1424,12 @@ let
 
         var shinyList = document.querySelector('.shiny-list');
         if (shinyList) {
-          Array.from(shinyList.querySelectorAll('.shiny-row')).forEach(function(row) {
+          Array.from(shinyList.querySelectorAll('details.shiny-row-details')).forEach(function(row) {
             var name = (row.dataset.name || "").toLowerCase();
-            var dex = row.dataset.dex || "";
+            var dex  = row.dataset.dex || "";
             var isOwned = row.classList.contains('owned');
-            var matchQ = !q || name.indexOf(q) >= 0 || dex.indexOf(q) >= 0;
-            var matchF =
+            var matchQ  = !q || name.indexOf(q) >= 0 || dex.indexOf(q) >= 0;
+            var matchF  =
               filterState === 'all' ||
               (filterState === 'owned' && isOwned) ||
               (filterState === 'missing' && !isOwned);
@@ -1202,12 +1439,13 @@ let
 
         var entriesList = document.querySelector('.entries-list');
         if (entriesList) {
-          Array.from(entriesList.querySelectorAll('.entry')).forEach(function(row) {
-            var name = (row.dataset.name || "").toLowerCase();
-            var dex = row.dataset.dex || "";
-            var isOwned = !row.classList.contains('untouched');
-            var matchQ = !q || name.indexOf(q) >= 0 || dex.indexOf(q) >= 0;
-            var matchF =
+          Array.from(entriesList.querySelectorAll('details.breedable-row')).forEach(function(row) {
+            var name    = (row.dataset.name || "").toLowerCase();
+            var dex     = row.dataset.dex  || "";
+            var summary = row.querySelector('summary.entry');
+            var isOwned = summary && !summary.classList.contains('untouched');
+            var matchQ  = !q || name.indexOf(q) >= 0 || dex.indexOf(q) >= 0;
+            var matchF  =
               filterState === 'all' ||
               (filterState === 'owned' && isOwned) ||
               (filterState === 'missing' && !isOwned);
@@ -1222,7 +1460,7 @@ let
         if (eventList) {
           Array.from(eventList.querySelectorAll('details.event')).forEach(function(row) {
             var name = (row.dataset.name || "").toLowerCase();
-            var dex = row.dataset.dex || "";
+            var dex  = row.dataset.dex  || "";
             var matchQ = !q || name.indexOf(q) >= 0 || dex.indexOf(q) >= 0;
             row.style.display = matchQ ? "" : 'none';
           });
@@ -1247,9 +1485,93 @@ let
         });
       }
 
-      if (searchInput) {
-        searchInput.addEventListener('input', applyFilters);
+      var searchResults = document.getElementById('search-results');
+      var searchWrap    = document.querySelector('.search-wrap');
+
+      function hideGlobalResults() {
+        if (searchResults) { searchResults.classList.remove('open'); }
       }
+
+      function buildGlobalResults(q) {
+        if (!searchResults) return;
+        if (!q) { hideGlobalResults(); searchResults.innerHTML = ""; return; }
+        if (!window.POKENIX_INDEX) return;
+        var ql = q.toLowerCase();
+        var cats = [
+          { key: 'breedables', label: 'Breedables' },
+          { key: 'shiny',      label: 'Shiny Living' },
+          { key: 'events',     label: 'Events' },
+          { key: 'specials',   label: 'Specials' }
+        ];
+        var html = "";
+        var total = 0;
+        cats.forEach(function(cat) {
+          var items = (window.POKENIX_INDEX[cat.key] || []).filter(function(it) {
+            return (it.name || "").toLowerCase().indexOf(ql) >= 0
+                || String(it.dex || "").indexOf(ql) >= 0
+                || (it.key || "").toLowerCase().indexOf(ql) >= 0;
+          });
+          if (items.length === 0) return;
+          total += items.length;
+          html += '<div class="sr-category">' + cat.label + ' (' + items.length + ')</div>';
+          items.slice(0, 40).forEach(function(it) {
+            var pad = ('000' + it.dex).slice(-3);
+            var safe = document.createElement('span');
+            safe.textContent = it.name;
+            html += '<div class="sr-item" data-page="' + it.page + '" data-key="' + it.key + '">'
+                 +  '<span class="sr-dex">#' + pad + '</span>'
+                 +  '<span class="sr-name">' + safe.innerHTML + '</span>'
+                 +  '</div>';
+          });
+        });
+        if (total === 0) html = '<div class="sr-empty">No matches.</div>';
+        searchResults.innerHTML = html;
+        searchResults.classList.add('open');
+      }
+
+      function highlightTarget(key) {
+        var t = document.getElementById('pk-' + key);
+        if (!t) return;
+        if (t.tagName === 'DETAILS') t.open = true;
+        t.classList.add('highlight');
+        setTimeout(function() { t.scrollIntoView({ behavior: 'smooth', block: 'center' }); }, 60);
+        setTimeout(function() { t.classList.remove('highlight'); }, 1800);
+      }
+
+      if (searchResults && searchInput) {
+        searchInput.addEventListener('input', function() {
+          applyFilters();
+          buildGlobalResults(searchInput.value.trim());
+        });
+        searchResults.addEventListener('click', function(ev) {
+          var row = ev.target.closest('.sr-item');
+          if (!row) return;
+          var page = row.dataset.page;
+          var key  = row.dataset.key;
+          var currentPath = (window.location.pathname.split('/').pop() || 'index.html');
+          hideGlobalResults();
+          searchInput.value = "";
+          applyFilters();
+          if (page === currentPath) {
+            highlightTarget(key);
+          } else {
+            window.location.href = page + '#pk-' + encodeURIComponent(key);
+          }
+        });
+        document.addEventListener('click', function(ev) {
+          if (searchWrap && !searchWrap.contains(ev.target)) hideGlobalResults();
+        });
+        searchInput.addEventListener('keydown', function(ev) {
+          if (ev.key === 'Escape') hideGlobalResults();
+        });
+      }
+
+      (function() {
+        var h = window.location.hash;
+        if (!h || h.indexOf('#pk-') !== 0) return;
+        var key = decodeURIComponent(h.substring(4));
+        setTimeout(function() { highlightTarget(key); }, 120);
+      })();
     })();
   '';
 
@@ -1525,11 +1847,88 @@ let
     }
     .entry.header > *:nth-child(5) { color: var(--fg-3); }
 
-    .generation-block > .entry:nth-child(even) { background: var(--bg-1); }
-    .generation-block > .entry:hover { background: var(--bg-2); }
-    .shiny-row:hover { background: var(--bg-2); }
-    .shiny-row.empty { opacity: 0.55; }
-    .shiny-row.empty:hover { opacity: 1; }
+    .breedable-row { display: block; }
+    .breedable-row > summary.entry { list-style: none; cursor: pointer; }
+    .breedable-row > summary.entry::-webkit-details-marker { display: none; }
+    .breedable-row[open] > summary.entry { background: var(--bg-2); }
+    .breedable-row > summary.entry:hover { background: var(--bg-2); }
+
+    .generation-block > .breedable-row:nth-child(even) > summary.entry { background: var(--bg-1); }
+
+    .entry-details {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px 28px;
+      padding: 10px 16px 16px 64px;
+      background: var(--bg-1);
+      border-bottom: 1px solid var(--border-1);
+    }
+    .entry-details .detail-wide { grid-column: 1 / -1; }
+
+    .ball-status-pill {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 3px 8px;
+      background: var(--bg-3);
+      border: 1px solid var(--border-2);
+      border-radius: 4px;
+      font-size: 11px; color: var(--fg-1);
+      white-space: nowrap;
+    }
+    .ball-status-pill .ball { width: 22px; height: 22px; }
+    .ball-status-pill .ball img { width: 18px; height: 18px; }
+
+    .shiny-row-details { display: block; }
+    .shiny-row-details > summary.shiny-row { list-style: none; cursor: pointer; }
+    .shiny-row-details > summary.shiny-row::-webkit-details-marker { display: none; }
+    .shiny-row-details[open] > summary.shiny-row { background: var(--bg-2); }
+    .shiny-row-details > summary.shiny-row:hover { background: var(--bg-2); }
+    .shiny-row-details.empty > summary.shiny-row { opacity: 0.55; }
+    .shiny-row-details.empty > summary.shiny-row:hover { opacity: 1; }
+
+    @keyframes highlight-pulse {
+      0%   { background-color: color-mix(in srgb, var(--accent-gold) 35%, transparent); }
+      100% { background-color: transparent; }
+    }
+    .highlight > summary { animation: highlight-pulse 1.5s ease-out; }
+
+    .search-wrap { position: relative; display: inline-block; }
+    .search-results {
+      position: absolute;
+      top: 100%;
+      right: 0;
+      width: 380px;
+      max-height: 480px;
+      overflow-y: auto;
+      background: var(--bg-2);
+      border: 1px solid var(--border-3);
+      border-radius: 6px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+      z-index: 100;
+      display: none;
+      margin-top: 4px;
+    }
+    .search-results.open { display: block; }
+    .search-results .sr-category {
+      padding: 6px 10px;
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--fg-4);
+      border-bottom: 1px solid var(--border-1);
+      background: var(--bg-3);
+    }
+    .search-results .sr-item {
+      padding: 8px 10px;
+      display: flex; gap: 8px; align-items: center;
+      cursor: pointer;
+      font-size: 12px; color: var(--fg-1);
+      border-bottom: 1px solid var(--border-1);
+    }
+    .search-results .sr-item:hover { background: var(--bg-3); color: var(--fg); }
+    .search-results .sr-dex  { color: var(--fg-4); font-family: ui-monospace, monospace; font-size: 11px; }
+    .search-results .sr-name { font-weight: 500; }
+    .search-results .sr-empty { padding: 12px; color: var(--fg-4); font-size: 12px; text-align: center; }
+
     .event > summary.event-row:hover { background: var(--bg-2); }
     .event[open] > summary.event-row { background: var(--bg-2); }
 
@@ -1881,8 +2280,110 @@ let
     .placeholder p { margin: 6px 0; font-size: 13px; }
     .stat-up   { color: var(--accent-green); font-weight: 600; }
     .stat-down { color: var(--accent-red);   font-weight: 600; }
-  '';
 
+    .level-moves { display: flex; flex-direction: column; gap: 3px; }
+    .level-row   { display: flex; gap: 10px; font-size: 12px; }
+    .level-num   {
+      color: var(--fg-4);
+      font-family: ui-monospace, monospace;
+      min-width: 52px;
+    }
+    .level-moves-list { color: var(--fg-1); word-break: break-word; }
+
+    .move-grid { display: flex; flex-wrap: wrap; gap: 3px; margin-top: 6px; }
+    .move-count { color: var(--fg-4); font-weight: normal; margin-left: 4px; }
+
+    .move-pill {
+      display: inline-flex; align-items: center; gap: 4px;
+      padding: 2px 8px;
+      border-radius: 10px;
+      font-size: 11px; font-weight: 500;
+      color: #fff; background: #666;
+      border: 1px solid rgba(0,0,0,0.25);
+      white-space: nowrap; cursor: default;
+      transition: transform .1s;
+    }
+    .move-pill:hover { transform: translateY(-1px); }
+    .move-pill .move-power {
+      font-size: 9px; font-family: ui-monospace, monospace;
+      padding: 0 3px; border-radius: 4px;
+      background: rgba(0,0,0,0.3);
+    }
+    .move-pill.cls-physical { box-shadow: inset 0 -2px 0 rgba(230, 80, 80, 0.9); }
+    .move-pill.cls-special  { box-shadow: inset 0 -2px 0 rgba(110, 150, 240, 0.9); }
+    .move-pill.cls-status   { box-shadow: inset 0 -2px 0 rgba(200, 200, 200, 0.6); }
+
+    .move-pill.type-normal   { background: #9a9a80; }
+    .move-pill.type-fire     { background: #d8543a; }
+    .move-pill.type-water    { background: #3f7fd4; }
+    .move-pill.type-electric { background: #c9a900; color: #111; }
+    .move-pill.type-grass    { background: #3f9d45; }
+    .move-pill.type-ice      { background: #6ec5c5; color: #111; }
+    .move-pill.type-fighting { background: #a63939; }
+    .move-pill.type-poison   { background: #924592; }
+    .move-pill.type-ground   { background: #b38a37; }
+    .move-pill.type-flying   { background: #7a6ed4; }
+    .move-pill.type-psychic  { background: #c84875; }
+    .move-pill.type-bug      { background: #7a9a22; }
+    .move-pill.type-rock     { background: #a39550; }
+    .move-pill.type-ghost    { background: #5c4e89; }
+    .move-pill.type-dragon   { background: #5e2b9b; }
+    .move-pill.type-dark     { background: #4a3a3a; }
+    .move-pill.type-steel    { background: #8a8aa0; }
+    .move-pill.type-fairy    { background: #d56fa7; }
+
+    .type-badge {
+      display: inline-block; padding: 2px 7px;
+      border-radius: 4px; font-size: 10px;
+      text-transform: uppercase; letter-spacing: .5px;
+      color: #fff; background: #666;
+      margin-right: 4px;
+    }
+    .type-badge.type-normal   { background: #9a9a80; }
+    .type-badge.type-fire     { background: #d8543a; }
+    .type-badge.type-water    { background: #3f7fd4; }
+    .type-badge.type-electric { background: #c9a900; color: #111; }
+    .type-badge.type-grass    { background: #3f9d45; }
+    .type-badge.type-ice      { background: #6ec5c5; color: #111; }
+    .type-badge.type-fighting { background: #a63939; }
+    .type-badge.type-poison   { background: #924592; }
+    .type-badge.type-ground   { background: #b38a37; }
+    .type-badge.type-flying   { background: #7a6ed4; }
+    .type-badge.type-psychic  { background: #c84875; }
+    .type-badge.type-bug      { background: #7a9a22; }
+    .type-badge.type-rock     { background: #a39550; }
+    .type-badge.type-ghost    { background: #5c4e89; }
+    .type-badge.type-dragon   { background: #5e2b9b; }
+    .type-badge.type-dark     { background: #4a3a3a; }
+    .type-badge.type-steel    { background: #8a8aa0; }
+    .type-badge.type-fairy    { background: #d56fa7; }
+
+    .special-badge {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 14px; height: 14px; margin-left: 4px;
+      border-radius: 3px; font-size: 9px; font-weight: 700;
+      color: #111; vertical-align: middle;
+    }
+    .special-badge.legendary { background: var(--accent-gold); }
+    .special-badge.mythical  { background: var(--accent-pink); }
+    .special-badge.baby      { background: var(--accent-cyan); }
+
+    .cry-wrap { position: relative; }
+    .cry-btn {
+      position: absolute; bottom: 0; right: 0;
+      width: 16px; height: 16px; padding: 0;
+      background: var(--bg-3); border: 1px solid var(--border-3);
+      border-radius: 50%; color: var(--fg-2);
+      font-size: 10px; cursor: pointer; line-height: 1;
+    }
+    .cry-btn:hover { color: var(--accent-blue); border-color: var(--accent-blue); }
+
+    .matchup-row { display: flex; gap: 4px; align-items: center; margin: 2px 0; }
+    .matchup-label {
+      min-width: 32px; font-family: ui-monospace, monospace;
+      font-size: 10px; color: var(--fg-4);
+    }
+  '';
 
   siteDescription =
     "PokéNix — ${brandName}'s collection: "
@@ -1968,9 +2469,10 @@ let
     ${sharedCss}
     </style>
     </head>
-    <body>
+    <body data-page="${currentPage}">
     ${navBar currentPage}
     ${body}
+    <script>window.POKENIX_INDEX = ${builtins.toJSON globalIndex};</script>
     <script>${sharedJs}</script>
     </body>
     </html>
@@ -2081,13 +2583,15 @@ let
     (k: evtSpriteExists k cfg.specials.${k} cfg.specials.${k}.shiny)
     (builtins.attrNames cfg.specials);
 
-  allUsedRibbons = lib.unique (builtins.concatMap
-    (k: cfg.specials.${k}.ribbons)
-    (builtins.attrNames cfg.specials));
+  allUsedRibbons = lib.unique (
+    (builtins.concatMap (k: cfg.specials.${k}.ribbons) (builtins.attrNames cfg.specials))
+    ++ (builtins.concatMap (k: cfg.shiny.${k}.ribbons or [ ]) (builtins.attrNames cfg.shiny))
+  );
 
-  allUsedMarks = lib.unique (builtins.concatMap
-    (k: cfg.specials.${k}.marks)
-    (builtins.attrNames cfg.specials));
+  allUsedMarks = lib.unique (
+    (builtins.concatMap (k: cfg.specials.${k}.marks) (builtins.attrNames cfg.specials))
+    ++ (builtins.concatMap (k: cfg.shiny.${k}.marks   or [ ]) (builtins.attrNames cfg.shiny))
+  );
 
   ribbonsWithSprite = builtins.filter
     (n: firstExisting (ribbonFileCandidates n) != null)
@@ -2097,19 +2601,19 @@ let
     (n: firstExisting [ (markFile n) ] != null)
     allUsedMarks;
 
-  allUsedItems = lib.unique (builtins.filter
-    (x: x != null && x != "")
-    (map (k: cfg.specials.${k}.heldItem)
-      (builtins.attrNames cfg.specials)));
+  allUsedItems = lib.unique (builtins.filter (x: x != null && x != "") (
+    (map (k: cfg.specials.${k}.heldItem)         (builtins.attrNames cfg.specials))
+    ++ (map (k: cfg.shiny.${k}.heldItem or null) (builtins.attrNames cfg.shiny))
+  ));
 
   itemsWithSprite = builtins.filter
     (n: firstExisting (itemCandidates n) != null)
     allUsedItems;
 
-  allUsedTypes = lib.unique (builtins.filter
-    (x: x != null && x != "")
-    (map (k: cfg.specials.${k}.teraType)
-      (builtins.attrNames cfg.specials)));
+  allUsedTypes = lib.unique (builtins.filter (x: x != null && x != "") (
+    (map (k: cfg.specials.${k}.teraType)         (builtins.attrNames cfg.specials))
+    ++ (map (k: cfg.shiny.${k}.teraType or null) (builtins.attrNames cfg.shiny))
+  ));
 
   typesWithSprite = builtins.filter typeIconExists allUsedTypes;
 
@@ -2265,7 +2769,9 @@ SPC
       base64 -w0 ${./. + "/${firstExisting (itemCandidates n)}"} >> $out/items.sed
       printf '|g\n' >> $out/items.sed
     '') itemsWithSprite)}
-    sed -i -f $out/items.sed $out/specials.html
+    for f in $out/specials.html $out/shiny.html; do
+      sed -i -f $out/items.sed "$f"
+    done
     rm -f $out/items.sed
 
     ${lib.optionalString (typesWithSprite != []) ''
@@ -2275,7 +2781,9 @@ SPC
         base64 -w0 ${./. + "/${typeIconPath t}"} >> $out/types.sed
         printf '|g\n' >> $out/types.sed
       '') typesWithSprite)}
-      sed -i -f $out/types.sed $out/specials.html
+      for f in $out/specials.html $out/shiny.html; do
+        sed -i -f $out/types.sed "$f"
+      done
       rm -f $out/types.sed
     ''}
 

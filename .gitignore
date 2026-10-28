@@ -66,3 +66,5 @@ result/            # Nix build output
 **/*.typed
 played_news.txt
 speedtest_speeds.txt
+.pokeapi-cache/
+.pokeapi-cache/

@@ -476,9 +476,11 @@ in {
   options.pokenix.shiny = mkOption {
     description = ''
       Shiny living dex progress. One entry per locked target — dex number, name,
-      and sprite are fixed by `shiny/*.nix` data files. You only fill in **ball**,
-      **notes**, **ot**, **egg**, and **style**. Progress counter (N/M · P%) appears
-      in the sticky header on the **shiny living** page.
+      and sprite are fixed by `shiny/*.nix` data files. You fill in **ball**,
+      **notes**, **ot**, **egg**, **style** — plus any of the optional stat /
+      move / ribbon / proof fields, which are shown when the row is expanded.
+      Progress counter (N/M · P%) appears in the sticky header on the
+      **shiny living** page.
     '';
     type = types.submodule {
       options = genAttrs (builtins.attrNames shinyData) (n: mkOption {
@@ -497,15 +499,15 @@ in {
               example     = "Self-bred, MM 42 eggs";
             };
             ot = mkOption {
-              type        = types.bool;
+              type        = types.nullOr (types.either types.bool types.str);
               default     = false;
-              description = "True if you are the Original Trainer. Drives the ✓ in the OT column.";
+              description = "Original Trainer info. `true` = self-obtained (renders ✓), `false` = unknown/not OT, or a string for the OT name (shown in the expansion).";
               example     = true;
             };
             egg = mkOption {
               type        = types.bool;
               default     = false;
-              description = "True if obtained as an egg. Drives the ✓ in the Egg column. Renders `—` for non-eggable mons (legendaries).";
+              description = "True if obtained as an egg. Drives the ✓ in the Egg column. Renders `—` for non-eggable mons.";
               example     = true;
             };
             style = mkOption {
@@ -514,6 +516,104 @@ in {
               description = "Sparkle glyph — `★` (star, default) or `▣` (square, BDSP-style).";
               example     = "square";
             };
+
+            # ── optional expansion fields (shown only when the row is open) ──
+            selfObtained = mkOption {
+              type        = types.bool;
+              default     = false;
+              description = "True if obtained yourself; false for trades. Shown in the expansion.";
+              example     = true;
+            };
+            level = mkOption {
+              type        = types.nullOr types.int;
+              default     = null;
+              description = "Current level (1–100). Shown in the expansion.";
+              example     = 100;
+            };
+            nature = mkOption {
+              type        = types.nullOr types.str;
+              default     = null;
+              description = "Nature — `Timid`, `Adamant`, `Jolly`, `Modest`, etc.";
+              example     = "Timid";
+            };
+            ability = mkOption {
+              type        = types.nullOr types.str;
+              default     = null;
+              description = "Ability name. Include `(Hidden)` suffix if the Hidden Ability.";
+              example     = "Pressure";
+            };
+            heldItem = mkOption {
+              type        = types.nullOr types.str;
+              default     = null;
+              description = "Item currently held.";
+              example     = "Life Orb";
+            };
+            teraType = mkOption {
+              type        = types.nullOr types.str;
+              default     = null;
+              description = "Tera Type (Gen 9 only).";
+              example     = "Psychic";
+            };
+            evs = mkOption {
+              type        = types.submodule statModule;
+              default     = {};
+              description = "EV spread. Each stat 0–252. Leave unset for untrained.";
+              example     = { hp = 4; spa = 252; spe = 252; };
+            };
+            ivs = mkOption {
+              type        = types.submodule statModule;
+              default     = {};
+              description = "IV spread. Each stat 0–31. Leave unset for not-recorded.";
+              example     = { hp = 31; atk = 0; def = 31; spa = 31; spd = 31; spe = 31; };
+            };
+            moves = mkOption {
+              type        = types.listOf types.str;
+              default     = [];
+              description = "Current moveset (up to 4 moves). Rendered joined with ` · `.";
+              example     = [ "Psystrike" "Aura Sphere" "Ice Beam" "Calm Mind" ];
+            };
+            marks = mkOption {
+              type        = types.listOf types.str;
+              default     = [];
+              description = "Marks earned (Gen 8+) — `The Unrivaled`, `The Recluse`, `Itemfinder`, etc.";
+              example     = [ "The Unrivaled" ];
+            };
+            ribbons = mkOption {
+              type        = types.listOf types.str;
+              default     = [];
+              description = "Ribbons earned — `Effort Ribbon`, `Master Rank Ribbon`, etc.";
+              example     = [ "Effort Ribbon" "Master Rank Ribbon" ];
+            };
+            obtained = mkOption {
+              type        = types.nullOr types.str;
+              default     = null;
+              description = "Date obtained. `YYYY/MM/DD` recommended.";
+              example     = "2023/08/15";
+            };
+            region = mkOption {
+              type        = types.nullOr types.str;
+              default     = null;
+              description = "Region/language code — `ENG`, `JPN`, `GER`, `KOR`, `SPA`, `ITA`, etc.";
+              example     = "ENG";
+            };
+            id = mkOption {
+              type        = types.nullOr types.str;
+              default     = null;
+              description = "Trainer ID (5–6 digit string).";
+              example     = "082409";
+            };
+            proof = mkOption {
+              type        = types.nullOr types.str;
+              default     = null;
+              description = "Proof of legitimacy — WC photo, video, screenshot, etc.";
+              example     = "Video in /proofs/…";
+            };
+            tradeHistory = mkOption {
+              type        = types.nullOr types.str;
+              default     = null;
+              description = "Chain of trades that led to you owning this Pokémon.";
+              example     = "Alto#0457 > pungkula";
+            };
           };
         };
         default = {};
@@ -521,11 +621,13 @@ in {
     };
     default = {};
     example = {
-      bulbasaur = { ball = "moon"; style = "star";   ot = true; egg = true; };
-      mewtwo    = { ball = "beast"; style = "square"; ot = true; };
+      bulbasaur = { ball = "moon"; style = "star"; ot = true; egg = true; };
+      mewtwo    = { ball = "beast"; style = "square"; ot = true;
+                    level = 100; nature = "Timid"; ability = "Pressure";
+                    evs = { hp = 4; spa = 252; spe = 252; };
+                    moves = [ "Psystrike" "Aura Sphere" "Ice Beam" "Calm Mind" ]; };
     };
   };
-
   options.pokenix.specials = mkOption {
     description = ''
       Hand-curated special Pokémon — anything you want to document with full stats
