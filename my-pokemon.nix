@@ -1487,7 +1487,6 @@ in {
     #      allDone;                                      ->  ALL APRIBALLS + HIDDEN ABILITY + EGG MOVES
     #      allHA // { dream = none; };                   ->  ALL APRIBALLS + HIDDEN ABILITY - DREAM BALL
     #      allDone // { safari = none; beast = none; };  ->  ALL APRIBALLS + HA + EM - SAFARI BALL - BEAST BALL
-    #      allBall // { sport = HAEM; dream = HA; };
 
     #  PER-BALL OVERRIDE VALUES (RIGHT-SIDE of //):
     #      none  ->  REMOVE THAT BALL

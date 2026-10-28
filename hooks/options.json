@@ -1,7 +1,7 @@
 {
   "pokenix.events": {
     "declarations": [
-      "/nix/store/0r6azzmx2jx3xqcgv1sn0djjk05gjl4r-source/options.nix"
+      "/nix/store/330cfv4gzxd24rq6ihsi4hlf9fcc26l0-source/options.nix"
     ],
     "default": {
       "_type": "literalExpression",
@@ -21,7 +21,7 @@
   },
   "pokenix.events.<name>.ball": {
     "declarations": [
-      "/nix/store/0r6azzmx2jx3xqcgv1sn0djjk05gjl4r-source/options.nix"
+      "/nix/store/330cfv4gzxd24rq6ihsi4hlf9fcc26l0-source/options.nix"
     ],
     "default": {
       "_type": "literalExpression",
@@ -43,7 +43,7 @@
   },
   "pokenix.events.<name>.dex": {
     "declarations": [
-      "/nix/store/0r6azzmx2jx3xqcgv1sn0djjk05gjl4r-source/options.nix"
+      "/nix/store/330cfv4gzxd24rq6ihsi4hlf9fcc26l0-source/options.nix"
     ],
     "default": {
       "_type": "literalExpression",
@@ -65,7 +65,7 @@
   },
   "pokenix.events.<name>.id": {
     "declarations": [
-      "/nix/store/0r6azzmx2jx3xqcgv1sn0djjk05gjl4r-source/options.nix"
+      "/nix/store/330cfv4gzxd24rq6ihsi4hlf9fcc26l0-source/options.nix"
     ],
     "default": {
       "_type": "literalExpression",
@@ -87,7 +87,7 @@
   },
   "pokenix.events.<name>.moves": {
     "declarations": [
-      "/nix/store/0r6azzmx2jx3xqcgv1sn0djjk05gjl4r-source/options.nix"
+      "/nix/store/330cfv4gzxd24rq6ihsi4hlf9fcc26l0-source/options.nix"
     ],
     "default": {
       "_type": "literalExpression",
@@ -109,7 +109,7 @@
   },
   "pokenix.events.<name>.name": {
     "declarations": [
-      "/nix/store/0r6azzmx2jx3xqcgv1sn0djjk05gjl4r-source/options.nix"
+      "/nix/store/330cfv4gzxd24rq6ihsi4hlf9fcc26l0-source/options.nix"
     ],
     "default": {
       "_type": "literalExpression",
@@ -131,7 +131,7 @@
   },
   "pokenix.events.<name>.notes": {
     "declarations": [
-      "/nix/store/0r6azzmx2jx3xqcgv1sn0djjk05gjl4r-source/options.nix"
+      "/nix/store/330cfv4gzxd24rq6ihsi4hlf9fcc26l0-source/options.nix"
     ],
     "default": {
       "_type": "literalExpression",
@@ -153,7 +153,7 @@
   },
   "pokenix.events.<name>.obtained": {
     "declarations": [
-      "/nix/store/0r6azzmx2jx3xqcgv1sn0djjk05gjl4r-source/options.nix"
+      "/nix/store/330cfv4gzxd24rq6ihsi4hlf9fcc26l0-source/options.nix"
     ],
     "default": {
       "_type": "literalExpression",
@@ -175,7 +175,7 @@
   },
   "pokenix.events.<name>.ot": {
     "declarations": [
-      "/nix/store/0r6azzmx2jx3xqcgv1sn0djjk05gjl4r-source/options.nix"
+      "/nix/store/330cfv4gzxd24rq6ihsi4hlf9fcc26l0-source/options.nix"
     ],
     "default": {
       "_type": "literalExpression",
@@ -197,7 +197,7 @@
   },
   "pokenix.events.<name>.proof": {
     "declarations": [
-      "/nix/store/0r6azzmx2jx3xqcgv1sn0djjk05gjl4r-source/options.nix"
+      "/nix/store/330cfv4gzxd24rq6ihsi4hlf9fcc26l0-source/options.nix"
     ],
     "default": {
       "_type": "literalExpression",
@@ -219,7 +219,7 @@
   },
   "pokenix.events.<name>.region": {
     "declarations": [
-      "/nix/store/0r6azzmx2jx3xqcgv1sn0djjk05gjl4r-source/options.nix"
+      "/nix/store/330cfv4gzxd24rq6ihsi4hlf9fcc26l0-source/options.nix"
     ],
     "default": {
       "_type": "literalExpression",
@@ -241,7 +241,7 @@
   },
   "pokenix.events.<name>.selfObtained": {
     "declarations": [
-      "/nix/store/0r6azzmx2jx3xqcgv1sn0djjk05gjl4r-source/options.nix"
+      "/nix/store/330cfv4gzxd24rq6ihsi4hlf9fcc26l0-source/options.nix"
     ],
     "default": {
       "_type": "literalExpression",
@@ -263,7 +263,7 @@
   },
   "pokenix.events.<name>.shiny": {
     "declarations": [
-      "/nix/store/0r6azzmx2jx3xqcgv1sn0djjk05gjl4r-source/options.nix"
+      "/nix/store/330cfv4gzxd24rq6ihsi4hlf9fcc26l0-source/options.nix"
     ],
     "default": {
       "_type": "literalExpression",
@@ -285,7 +285,7 @@
   },
   "pokenix.events.<name>.species": {
     "declarations": [
-      "/nix/store/0r6azzmx2jx3xqcgv1sn0djjk05gjl4r-source/options.nix"
+      "/nix/store/330cfv4gzxd24rq6ihsi4hlf9fcc26l0-source/options.nix"
     ],
     "description": "Species identifier — a breedable key (`jirachi`) or free-form id for event-only Pokémon (`walking-wake`). Used to auto-resolve dex, sprite, and display name.",
     "example": {
@@ -303,7 +303,7 @@
   },
   "pokenix.events.<name>.sprite": {
     "declarations": [
-      "/nix/store/0r6azzmx2jx3xqcgv1sn0djjk05gjl4r-source/options.nix"
+      "/nix/store/330cfv4gzxd24rq6ihsi4hlf9fcc26l0-source/options.nix"
     ],
     "default": {
       "_type": "literalExpression",
@@ -325,7 +325,7 @@
   },
   "pokenix.events.<name>.tradeHistory": {
     "declarations": [
-      "/nix/store/0r6azzmx2jx3xqcgv1sn0djjk05gjl4r-source/options.nix"
+      "/nix/store/330cfv4gzxd24rq6ihsi4hlf9fcc26l0-source/options.nix"
     ],
     "default": {
       "_type": "literalExpression",
@@ -347,7 +347,7 @@
   },
   "pokenix.events.<name>.year": {
     "declarations": [
-      "/nix/store/0r6azzmx2jx3xqcgv1sn0djjk05gjl4r-source/options.nix"
+      "/nix/store/330cfv4gzxd24rq6ihsi4hlf9fcc26l0-source/options.nix"
     ],
     "default": {
       "_type": "literalExpression",
@@ -369,7 +369,7 @@
   },
   "pokenix.specials": {
     "declarations": [
-      "/nix/store/0r6azzmx2jx3xqcgv1sn0djjk05gjl4r-source/options.nix"
+      "/nix/store/330cfv4gzxd24rq6ihsi4hlf9fcc26l0-source/options.nix"
     ],
     "default": {
       "_type": "literalExpression",
@@ -389,7 +389,7 @@
   },
   "pokenix.specials.<name>.ability": {
     "declarations": [
-      "/nix/store/0r6azzmx2jx3xqcgv1sn0djjk05gjl4r-source/options.nix"
+      "/nix/store/330cfv4gzxd24rq6ihsi4hlf9fcc26l0-source/options.nix"
     ],
     "default": {
       "_type": "literalExpression",
@@ -411,7 +411,7 @@
   },
   "pokenix.specials.<name>.ball": {
     "declarations": [
-      "/nix/store/0r6azzmx2jx3xqcgv1sn0djjk05gjl4r-source/options.nix"
+      "/nix/store/330cfv4gzxd24rq6ihsi4hlf9fcc26l0-source/options.nix"
     ],
     "default": {
       "_type": "literalExpression",
@@ -433,7 +433,7 @@
   },
   "pokenix.specials.<name>.dex": {
     "declarations": [
-      "/nix/store/0r6azzmx2jx3xqcgv1sn0djjk05gjl4r-source/options.nix"
+      "/nix/store/330cfv4gzxd24rq6ihsi4hlf9fcc26l0-source/options.nix"
     ],
     "default": {
       "_type": "literalExpression",
@@ -455,7 +455,7 @@
   },
   "pokenix.specials.<name>.evs": {
     "declarations": [
-      "/nix/store/0r6azzmx2jx3xqcgv1sn0djjk05gjl4r-source/options.nix"
+      "/nix/store/330cfv4gzxd24rq6ihsi4hlf9fcc26l0-source/options.nix"
     ],
     "default": {
       "_type": "literalExpression",
@@ -477,7 +477,7 @@
   },
   "pokenix.specials.<name>.evs.atk": {
     "declarations": [
-      "/nix/store/0r6azzmx2jx3xqcgv1sn0djjk05gjl4r-source/options.nix"
+      "/nix/store/330cfv4gzxd24rq6ihsi4hlf9fcc26l0-source/options.nix"
     ],
     "default": {
       "_type": "literalExpression",
@@ -500,7 +500,7 @@
   },
   "pokenix.specials.<name>.evs.def": {
     "declarations": [
-      "/nix/store/0r6azzmx2jx3xqcgv1sn0djjk05gjl4r-source/options.nix"
+      "/nix/store/330cfv4gzxd24rq6ihsi4hlf9fcc26l0-source/options.nix"
     ],
     "default": {
       "_type": "literalExpression",
@@ -523,7 +523,7 @@
   },
   "pokenix.specials.<name>.evs.hp": {
     "declarations": [
-      "/nix/store/0r6azzmx2jx3xqcgv1sn0djjk05gjl4r-source/options.nix"
+      "/nix/store/330cfv4gzxd24rq6ihsi4hlf9fcc26l0-source/options.nix"
     ],
     "default": {
       "_type": "literalExpression",
@@ -546,7 +546,7 @@
   },
   "pokenix.specials.<name>.evs.spa": {
     "declarations": [
-      "/nix/store/0r6azzmx2jx3xqcgv1sn0djjk05gjl4r-source/options.nix"
+      "/nix/store/330cfv4gzxd24rq6ihsi4hlf9fcc26l0-source/options.nix"
     ],
     "default": {
       "_type": "literalExpression",
@@ -569,7 +569,7 @@
   },
   "pokenix.specials.<name>.evs.spd": {
     "declarations": [
-      "/nix/store/0r6azzmx2jx3xqcgv1sn0djjk05gjl4r-source/options.nix"
+      "/nix/store/330cfv4gzxd24rq6ihsi4hlf9fcc26l0-source/options.nix"
     ],
     "default": {
       "_type": "literalExpression",
@@ -592,7 +592,7 @@
   },
   "pokenix.specials.<name>.evs.spe": {
     "declarations": [
-      "/nix/store/0r6azzmx2jx3xqcgv1sn0djjk05gjl4r-source/options.nix"
+      "/nix/store/330cfv4gzxd24rq6ihsi4hlf9fcc26l0-source/options.nix"
     ],
     "default": {
       "_type": "literalExpression",
@@ -615,7 +615,7 @@
   },
   "pokenix.specials.<name>.heldItem": {
     "declarations": [
-      "/nix/store/0r6azzmx2jx3xqcgv1sn0djjk05gjl4r-source/options.nix"
+      "/nix/store/330cfv4gzxd24rq6ihsi4hlf9fcc26l0-source/options.nix"
     ],
     "default": {
       "_type": "literalExpression",
@@ -637,7 +637,7 @@
   },
   "pokenix.specials.<name>.id": {
     "declarations": [
-      "/nix/store/0r6azzmx2jx3xqcgv1sn0djjk05gjl4r-source/options.nix"
+      "/nix/store/330cfv4gzxd24rq6ihsi4hlf9fcc26l0-source/options.nix"
     ],
     "default": {
       "_type": "literalExpression",
@@ -659,7 +659,7 @@
   },
   "pokenix.specials.<name>.ivs": {
     "declarations": [
-      "/nix/store/0r6azzmx2jx3xqcgv1sn0djjk05gjl4r-source/options.nix"
+      "/nix/store/330cfv4gzxd24rq6ihsi4hlf9fcc26l0-source/options.nix"
     ],
     "default": {
       "_type": "literalExpression",
@@ -681,7 +681,7 @@
   },
   "pokenix.specials.<name>.ivs.atk": {
     "declarations": [
-      "/nix/store/0r6azzmx2jx3xqcgv1sn0djjk05gjl4r-source/options.nix"
+      "/nix/store/330cfv4gzxd24rq6ihsi4hlf9fcc26l0-source/options.nix"
     ],
     "default": {
       "_type": "literalExpression",
@@ -704,7 +704,7 @@
   },
   "pokenix.specials.<name>.ivs.def": {
     "declarations": [
-      "/nix/store/0r6azzmx2jx3xqcgv1sn0djjk05gjl4r-source/options.nix"
+      "/nix/store/330cfv4gzxd24rq6ihsi4hlf9fcc26l0-source/options.nix"
     ],
     "default": {
       "_type": "literalExpression",
@@ -727,7 +727,7 @@
   },
   "pokenix.specials.<name>.ivs.hp": {
     "declarations": [
-      "/nix/store/0r6azzmx2jx3xqcgv1sn0djjk05gjl4r-source/options.nix"
+      "/nix/store/330cfv4gzxd24rq6ihsi4hlf9fcc26l0-source/options.nix"
     ],
     "default": {
       "_type": "literalExpression",
@@ -750,7 +750,7 @@
   },
   "pokenix.specials.<name>.ivs.spa": {
     "declarations": [
-      "/nix/store/0r6azzmx2jx3xqcgv1sn0djjk05gjl4r-source/options.nix"
+      "/nix/store/330cfv4gzxd24rq6ihsi4hlf9fcc26l0-source/options.nix"
     ],
     "default": {
       "_type": "literalExpression",
@@ -773,7 +773,7 @@
   },
   "pokenix.specials.<name>.ivs.spd": {
     "declarations": [
-      "/nix/store/0r6azzmx2jx3xqcgv1sn0djjk05gjl4r-source/options.nix"
+      "/nix/store/330cfv4gzxd24rq6ihsi4hlf9fcc26l0-source/options.nix"
     ],
     "default": {
       "_type": "literalExpression",
@@ -796,7 +796,7 @@
   },
   "pokenix.specials.<name>.ivs.spe": {
     "declarations": [
-      "/nix/store/0r6azzmx2jx3xqcgv1sn0djjk05gjl4r-source/options.nix"
+      "/nix/store/330cfv4gzxd24rq6ihsi4hlf9fcc26l0-source/options.nix"
     ],
     "default": {
       "_type": "literalExpression",
@@ -819,7 +819,7 @@
   },
   "pokenix.specials.<name>.level": {
     "declarations": [
-      "/nix/store/0r6azzmx2jx3xqcgv1sn0djjk05gjl4r-source/options.nix"
+      "/nix/store/330cfv4gzxd24rq6ihsi4hlf9fcc26l0-source/options.nix"
     ],
     "default": {
       "_type": "literalExpression",
@@ -841,7 +841,7 @@
   },
   "pokenix.specials.<name>.marks": {
     "declarations": [
-      "/nix/store/0r6azzmx2jx3xqcgv1sn0djjk05gjl4r-source/options.nix"
+      "/nix/store/330cfv4gzxd24rq6ihsi4hlf9fcc26l0-source/options.nix"
     ],
     "default": {
       "_type": "literalExpression",
@@ -863,7 +863,7 @@
   },
   "pokenix.specials.<name>.moves": {
     "declarations": [
-      "/nix/store/0r6azzmx2jx3xqcgv1sn0djjk05gjl4r-source/options.nix"
+      "/nix/store/330cfv4gzxd24rq6ihsi4hlf9fcc26l0-source/options.nix"
     ],
     "default": {
       "_type": "literalExpression",
@@ -885,7 +885,7 @@
   },
   "pokenix.specials.<name>.name": {
     "declarations": [
-      "/nix/store/0r6azzmx2jx3xqcgv1sn0djjk05gjl4r-source/options.nix"
+      "/nix/store/330cfv4gzxd24rq6ihsi4hlf9fcc26l0-source/options.nix"
     ],
     "default": {
       "_type": "literalExpression",
@@ -907,7 +907,7 @@
   },
   "pokenix.specials.<name>.nature": {
     "declarations": [
-      "/nix/store/0r6azzmx2jx3xqcgv1sn0djjk05gjl4r-source/options.nix"
+      "/nix/store/330cfv4gzxd24rq6ihsi4hlf9fcc26l0-source/options.nix"
     ],
     "default": {
       "_type": "literalExpression",
@@ -929,7 +929,7 @@
   },
   "pokenix.specials.<name>.notes": {
     "declarations": [
-      "/nix/store/0r6azzmx2jx3xqcgv1sn0djjk05gjl4r-source/options.nix"
+      "/nix/store/330cfv4gzxd24rq6ihsi4hlf9fcc26l0-source/options.nix"
     ],
     "default": {
       "_type": "literalExpression",
@@ -951,7 +951,7 @@
   },
   "pokenix.specials.<name>.obtained": {
     "declarations": [
-      "/nix/store/0r6azzmx2jx3xqcgv1sn0djjk05gjl4r-source/options.nix"
+      "/nix/store/330cfv4gzxd24rq6ihsi4hlf9fcc26l0-source/options.nix"
     ],
     "default": {
       "_type": "literalExpression",
@@ -973,7 +973,7 @@
   },
   "pokenix.specials.<name>.ot": {
     "declarations": [
-      "/nix/store/0r6azzmx2jx3xqcgv1sn0djjk05gjl4r-source/options.nix"
+      "/nix/store/330cfv4gzxd24rq6ihsi4hlf9fcc26l0-source/options.nix"
     ],
     "default": {
       "_type": "literalExpression",
@@ -995,7 +995,7 @@
   },
   "pokenix.specials.<name>.proof": {
     "declarations": [
-      "/nix/store/0r6azzmx2jx3xqcgv1sn0djjk05gjl4r-source/options.nix"
+      "/nix/store/330cfv4gzxd24rq6ihsi4hlf9fcc26l0-source/options.nix"
     ],
     "default": {
       "_type": "literalExpression",
@@ -1017,7 +1017,7 @@
   },
   "pokenix.specials.<name>.region": {
     "declarations": [
-      "/nix/store/0r6azzmx2jx3xqcgv1sn0djjk05gjl4r-source/options.nix"
+      "/nix/store/330cfv4gzxd24rq6ihsi4hlf9fcc26l0-source/options.nix"
     ],
     "default": {
       "_type": "literalExpression",
@@ -1039,7 +1039,7 @@
   },
   "pokenix.specials.<name>.ribbons": {
     "declarations": [
-      "/nix/store/0r6azzmx2jx3xqcgv1sn0djjk05gjl4r-source/options.nix"
+      "/nix/store/330cfv4gzxd24rq6ihsi4hlf9fcc26l0-source/options.nix"
     ],
     "default": {
       "_type": "literalExpression",
@@ -1061,7 +1061,7 @@
   },
   "pokenix.specials.<name>.selfObtained": {
     "declarations": [
-      "/nix/store/0r6azzmx2jx3xqcgv1sn0djjk05gjl4r-source/options.nix"
+      "/nix/store/330cfv4gzxd24rq6ihsi4hlf9fcc26l0-source/options.nix"
     ],
     "default": {
       "_type": "literalExpression",
@@ -1083,7 +1083,7 @@
   },
   "pokenix.specials.<name>.shiny": {
     "declarations": [
-      "/nix/store/0r6azzmx2jx3xqcgv1sn0djjk05gjl4r-source/options.nix"
+      "/nix/store/330cfv4gzxd24rq6ihsi4hlf9fcc26l0-source/options.nix"
     ],
     "default": {
       "_type": "literalExpression",
@@ -1105,7 +1105,7 @@
   },
   "pokenix.specials.<name>.species": {
     "declarations": [
-      "/nix/store/0r6azzmx2jx3xqcgv1sn0djjk05gjl4r-source/options.nix"
+      "/nix/store/330cfv4gzxd24rq6ihsi4hlf9fcc26l0-source/options.nix"
     ],
     "description": "Species identifier — a breedable key (`mewtwo`) or free-form id for unique forms. Used to auto-resolve dex, sprite, and display name.",
     "example": {
@@ -1123,7 +1123,7 @@
   },
   "pokenix.specials.<name>.sprite": {
     "declarations": [
-      "/nix/store/0r6azzmx2jx3xqcgv1sn0djjk05gjl4r-source/options.nix"
+      "/nix/store/330cfv4gzxd24rq6ihsi4hlf9fcc26l0-source/options.nix"
     ],
     "default": {
       "_type": "literalExpression",
@@ -1145,7 +1145,7 @@
   },
   "pokenix.specials.<name>.teraType": {
     "declarations": [
-      "/nix/store/0r6azzmx2jx3xqcgv1sn0djjk05gjl4r-source/options.nix"
+      "/nix/store/330cfv4gzxd24rq6ihsi4hlf9fcc26l0-source/options.nix"
     ],
     "default": {
       "_type": "literalExpression",
@@ -1167,7 +1167,7 @@
   },
   "pokenix.specials.<name>.tradeHistory": {
     "declarations": [
-      "/nix/store/0r6azzmx2jx3xqcgv1sn0djjk05gjl4r-source/options.nix"
+      "/nix/store/330cfv4gzxd24rq6ihsi4hlf9fcc26l0-source/options.nix"
     ],
     "default": {
       "_type": "literalExpression",
@@ -1189,7 +1189,7 @@
   },
   "pokenix.stats.aprimonsOwned": {
     "declarations": [
-      "/nix/store/0r6azzmx2jx3xqcgv1sn0djjk05gjl4r-source/options.nix"
+      "/nix/store/330cfv4gzxd24rq6ihsi4hlf9fcc26l0-source/options.nix"
     ],
     "default": {
       "_type": "literalExpression",
@@ -1206,7 +1206,7 @@
   },
   "pokenix.stats.aprimonsTotal": {
     "declarations": [
-      "/nix/store/0r6azzmx2jx3xqcgv1sn0djjk05gjl4r-source/options.nix"
+      "/nix/store/330cfv4gzxd24rq6ihsi4hlf9fcc26l0-source/options.nix"
     ],
     "default": {
       "_type": "literalExpression",
@@ -1223,7 +1223,7 @@
   },
   "pokenix.stats.ballCaptures": {
     "declarations": [
-      "/nix/store/0r6azzmx2jx3xqcgv1sn0djjk05gjl4r-source/options.nix"
+      "/nix/store/330cfv4gzxd24rq6ihsi4hlf9fcc26l0-source/options.nix"
     ],
     "default": {
       "_type": "literalExpression",
@@ -1240,7 +1240,7 @@
   },
   "pokenix.stats.ballPossible": {
     "declarations": [
-      "/nix/store/0r6azzmx2jx3xqcgv1sn0djjk05gjl4r-source/options.nix"
+      "/nix/store/330cfv4gzxd24rq6ihsi4hlf9fcc26l0-source/options.nix"
     ],
     "default": {
       "_type": "literalExpression",
@@ -1257,7 +1257,7 @@
   },
   "pokenix.stats.eventCount": {
     "declarations": [
-      "/nix/store/0r6azzmx2jx3xqcgv1sn0djjk05gjl4r-source/options.nix"
+      "/nix/store/330cfv4gzxd24rq6ihsi4hlf9fcc26l0-source/options.nix"
     ],
     "default": {
       "_type": "literalExpression",
@@ -1274,7 +1274,7 @@
   },
   "pokenix.stats.shinyOwned": {
     "declarations": [
-      "/nix/store/0r6azzmx2jx3xqcgv1sn0djjk05gjl4r-source/options.nix"
+      "/nix/store/330cfv4gzxd24rq6ihsi4hlf9fcc26l0-source/options.nix"
     ],
     "default": {
       "_type": "literalExpression",
@@ -1291,7 +1291,7 @@
   },
   "pokenix.stats.shinyTotal": {
     "declarations": [
-      "/nix/store/0r6azzmx2jx3xqcgv1sn0djjk05gjl4r-source/options.nix"
+      "/nix/store/330cfv4gzxd24rq6ihsi4hlf9fcc26l0-source/options.nix"
     ],
     "default": {
       "_type": "literalExpression",
@@ -1308,7 +1308,7 @@
   },
   "pokenix.stats.specialsCount": {
     "declarations": [
-      "/nix/store/0r6azzmx2jx3xqcgv1sn0djjk05gjl4r-source/options.nix"
+      "/nix/store/330cfv4gzxd24rq6ihsi4hlf9fcc26l0-source/options.nix"
     ],
     "default": {
       "_type": "literalExpression",
@@ -1325,7 +1325,7 @@
   },
   "pokenix.stats.totalMons": {
     "declarations": [
-      "/nix/store/0r6azzmx2jx3xqcgv1sn0djjk05gjl4r-source/options.nix"
+      "/nix/store/330cfv4gzxd24rq6ihsi4hlf9fcc26l0-source/options.nix"
     ],
     "default": {
       "_type": "literalExpression",
@@ -1342,7 +1342,7 @@
   },
   "pokenix.trainer": {
     "declarations": [
-      "/nix/store/0r6azzmx2jx3xqcgv1sn0djjk05gjl4r-source/options.nix"
+      "/nix/store/330cfv4gzxd24rq6ihsi4hlf9fcc26l0-source/options.nix"
     ],
     "default": {
       "_type": "literalExpression",
@@ -1362,7 +1362,7 @@
   },
   "pokenix.trainer.about": {
     "declarations": [
-      "/nix/store/0r6azzmx2jx3xqcgv1sn0djjk05gjl4r-source/options.nix"
+      "/nix/store/330cfv4gzxd24rq6ihsi4hlf9fcc26l0-source/options.nix"
     ],
     "default": {
       "_type": "literalExpression",
@@ -1383,7 +1383,7 @@
   },
   "pokenix.trainer.contact": {
     "declarations": [
-      "/nix/store/0r6azzmx2jx3xqcgv1sn0djjk05gjl4r-source/options.nix"
+      "/nix/store/330cfv4gzxd24rq6ihsi4hlf9fcc26l0-source/options.nix"
     ],
     "default": {
       "_type": "literalExpression",
@@ -1404,7 +1404,7 @@
   },
   "pokenix.trainer.friendCode": {
     "declarations": [
-      "/nix/store/0r6azzmx2jx3xqcgv1sn0djjk05gjl4r-source/options.nix"
+      "/nix/store/330cfv4gzxd24rq6ihsi4hlf9fcc26l0-source/options.nix"
     ],
     "default": {
       "_type": "literalExpression",
@@ -1425,7 +1425,7 @@
   },
   "pokenix.trainer.name": {
     "declarations": [
-      "/nix/store/0r6azzmx2jx3xqcgv1sn0djjk05gjl4r-source/options.nix"
+      "/nix/store/330cfv4gzxd24rq6ihsi4hlf9fcc26l0-source/options.nix"
     ],
     "default": {
       "_type": "literalExpression",
@@ -1446,7 +1446,7 @@
   },
   "pokenix.trainer.picture": {
     "declarations": [
-      "/nix/store/0r6azzmx2jx3xqcgv1sn0djjk05gjl4r-source/options.nix"
+      "/nix/store/330cfv4gzxd24rq6ihsi4hlf9fcc26l0-source/options.nix"
     ],
     "default": {
       "_type": "literalExpression",
@@ -1455,7 +1455,7 @@
     "description": "Avatar shown at the top of the trainer card. PNG/JPG/WEBP/GIF — mime detected from extension. Base64-embedded; no external asset needed.",
     "example": {
       "_type": "literalExpression",
-      "text": "/nix/store/0r6azzmx2jx3xqcgv1sn0djjk05gjl4r-source/images/me.png"
+      "text": "/nix/store/330cfv4gzxd24rq6ihsi4hlf9fcc26l0-source/images/me.png"
     },
     "loc": [
       "pokenix",
@@ -1467,7 +1467,7 @@
   },
   "pokenix.trainer.region": {
     "declarations": [
-      "/nix/store/0r6azzmx2jx3xqcgv1sn0djjk05gjl4r-source/options.nix"
+      "/nix/store/330cfv4gzxd24rq6ihsi4hlf9fcc26l0-source/options.nix"
     ],
     "default": {
       "_type": "literalExpression",
@@ -1488,7 +1488,7 @@
   },
   "pokenix.trainer.secretId": {
     "declarations": [
-      "/nix/store/0r6azzmx2jx3xqcgv1sn0djjk05gjl4r-source/options.nix"
+      "/nix/store/330cfv4gzxd24rq6ihsi4hlf9fcc26l0-source/options.nix"
     ],
     "default": {
       "_type": "literalExpression",
@@ -1509,7 +1509,7 @@
   },
   "pokenix.trainer.switchName": {
     "declarations": [
-      "/nix/store/0r6azzmx2jx3xqcgv1sn0djjk05gjl4r-source/options.nix"
+      "/nix/store/330cfv4gzxd24rq6ihsi4hlf9fcc26l0-source/options.nix"
     ],
     "default": {
       "_type": "literalExpression",
@@ -1530,7 +1530,7 @@
   },
   "pokenix.trainer.timezone": {
     "declarations": [
-      "/nix/store/0r6azzmx2jx3xqcgv1sn0djjk05gjl4r-source/options.nix"
+      "/nix/store/330cfv4gzxd24rq6ihsi4hlf9fcc26l0-source/options.nix"
     ],
     "default": {
       "_type": "literalExpression",
@@ -1551,7 +1551,7 @@
   },
   "pokenix.trainer.trainerId": {
     "declarations": [
-      "/nix/store/0r6azzmx2jx3xqcgv1sn0djjk05gjl4r-source/options.nix"
+      "/nix/store/330cfv4gzxd24rq6ihsi4hlf9fcc26l0-source/options.nix"
     ],
     "default": {
       "_type": "literalExpression",
