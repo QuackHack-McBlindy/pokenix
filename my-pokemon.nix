@@ -109,7 +109,7 @@ in {
         region       = "ENG";
         obtained     = "2023/08/15";
         notes        = "SR 3 days";
-        name         = "Mewtwo"
+        name         = "Mewtwo";
       };
       # ADD MORE HERE
       # ...
