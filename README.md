@@ -37,30 +37,32 @@
 <a href="https://quackhack-mcblindy.github.io/pokenix/">PokéNix Live Example</a>
 <br>
 
-## **Prerequisites**
-
-- A GitHub account *(free)*.
-
-<br>
-
 ## **Installation**
 
+Pick one of the three ways below.<br>
+Battle tested and ready to use templates for every section can be found in <a href="templates/">templates/</a>.<br>
+
+<br>
 
 <details><summary><strong>
 Using GitHub Pages: No terminal, Nix or local install required.
 </strong></summary>
 
-1. Create a GitHub account, login and click "Fork" on this repository.
-2. On the forked repo go to: Settings > Pages > Source: GitHub Actions.
-3. On your forked repo click on the pencil icon on the file `my-pokemon.nix`.
-4. Write your trainer name **(important!)** and your Pokémon (helpful comments in file), save the file when done.
-5. Wait 3 minutes. First time may take a  few minutes longer.
-6. Visit https://<github-username>.github.io/pokenix/
+You need a GitHub account *(free)*.
+
+1. Log in to GitHub and click **Fork** on this repository. Keep the name `pokenix`.
+2. On your forked repo open the **Actions** tab and click **I understand my workflows, go ahead and enable them**. Forks start with Actions turned off, so nothing gets built until you do this.
+3. Go to **Settings > Pages** and set **Source** to **GitHub Actions**.
+4. Open the file `my-pokemon.nix` and click the pencil icon.
+5. Change `name = "PokèNix";` to your trainer name **(important!)**. If you keep the default name, your site shows the example collection instead of yours.
+6. Add your Pokémon (helpful comments in the file), then click **Commit changes**.
+7. Open the **Actions** tab and wait for **Build and deploy** to turn green. It takes about 3 minutes, a few minutes longer the first time. If it turns red, click the run to see which line of `my-pokemon.nix` it didn't like.
+8. Visit `https://<github-username>.github.io/pokenix/`. The link is also shown on the finished run.
 
 <br>
 
-If PokéNix's version update (fix bugs) or new Pokémon are available click "Sync fork" on your forked repository.<br>
-It won't affect the `my-pokemon.nix` file.<br>
+When a PokéNix update (bug fixes or new Pokémon) is available, click **Sync fork** on your forked repository. Your `my-pokemon.nix` is kept.<br>
+If GitHub reports a conflict, don't click **Discard commits**, that deletes your changes.<br>
 
 <br>
 
@@ -74,41 +76,55 @@ It won't affect the `my-pokemon.nix` file.<br>
 </strong></summary>
 
 
-#### **1: Add PokéNix as input in your flake.nix**
+#### **1: Add PokéNix as input in your flake.nix and add the module**
 
 ```nix
+{
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     pokenix.url = "github:quackhack-mcblindy/pokenix";
   };
+
+  outputs = { nixpkgs, pokenix, ... }: {
+    nixosConfigurations.myhost = nixpkgs.lib.nixosSystem {
+      system = "x86_64-linux";
+      modules = [
+        ./configuration.nix
+        pokenix.nixosModules.pokenix
+      ];
+    };
+  };
+}
 ```
 
 <br>
 
-#### **2: Import the module into your configuration**
+#### **2: Write your Pokémon and serve the site**
 
+Your collection goes under `pokenix` in your configuration, the same options as in `my-pokemon.nix`.<br>
+The module builds the site into `config.pokenix.html`, so any web server can serve it. Example with nginx:
 
 ```nix
-  imports = [
-    pokenix.nixosModules.pokenix
-  ];
+{ config, ... }: {
+  pokenix.trainer.name = "Ash";
+  # Add your Pokémon here, see templates/
+
+  services.nginx = {
+    enable = true;
+    virtualHosts."pokemon.local".root = config.pokenix.html;
+  };
+}
 ```
 
 <br>
 
 #### **3: Rebuild your system**
 
+```bash
+sudo nixos-rebuild switch --flake .#myhost
+```
 
-**Done!**
-
-<br>
-
-
-## **Templates**
-
-
-Battle tested and ready to use templates can be found in <a href="templates/">templates/</a>.<br>
-
+**Done!** Your collection is served on the host name you set in `virtualHosts`.
 
 <br>
 
@@ -117,17 +133,19 @@ Battle tested and ready to use templates can be found in <a href="templates/">te
 <br>
 
 <details><summary><strong>
-macOS / Linux / WSL, with Nix installed
+Linux / WSL, with Nix installed
 </strong></summary>
 
 
-```
+```bash
 git clone https://github.com/QuackHack-McBlindy/pokenix
 cd pokenix
 $EDITOR my-pokemon.nix
-nix build .#default
-xdg-open result/index.html  # or `open` on macOS
+nix --extra-experimental-features 'nix-command flakes' build .#default
+xdg-open result/index.html
 ```
+
+macOS isn't supported yet, the flake only builds for `x86_64-linux` and `aarch64-linux`.
 
 <br>
 
