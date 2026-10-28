@@ -23,7 +23,7 @@ in {
     # 🦆 ⮞ TRAINER CARD
     trainer = {
       name       = "pungkula";
-      picture    = ./../home/profile.png;
+      picture    = ./profile-picture.png;
       about      = "★ breeding master ★ shiny hunter ★ ducklett lover ★";
       region     = "Sweden";
       timezone   = "Europe/Stockholm";

@@ -421,7 +421,7 @@ dd > p:last-child  { margin-bottom: 0; }
       <div class="footer-coverage" title="74/74 options documented"><span class="coverage-value">100%</span> documented</div>
       <a class="footer-link" href="https://github.com/quackhack-mcblindy/pokenix/blob/main/CHANGELOG.md" target="_blank" rel="noopener">Changelog</a>
       <a class="footer-link" href="https://QuackHack-McBlindy.com" target="_blank" rel="noopener">QuackHack-McBlindy.com</a>
-      <div class="footer-build">built 2026-10-28 17:14:33 UTC</div>
+      <div class="footer-build">built 2026-10-28 17:20:02 UTC</div>
     </div>
   </aside>
   <main id="main">
@@ -434,11 +434,1948 @@ dd > p:last-child  { margin-bottom: 0; }
   or click any group to expand it and browse the tree.<br>
 </p>
 </section>
-    <section class="quickstart-section" id="quickstart"><details class="quickstart"><summary>Quick start configuration</summary><pre><code>pokenix = {
-    breedables = {
+    <section class="quickstart-section" id="quickstart"><details class="quickstart"><summary>Quick start configuration</summary><pre><code># ★ ─────────────────────────────────────────────────────────────────────── ★
+# THIS IS THE ONLY FILE USERS EDIT!
+# FIRST TIME HERE? - SCROLL DOWN &amp; FOLLOW THE INSTRUCTIONS
 
+# CTRL + F `specials = {`   TO GET TO SPECIAL POKEMON
+# CTRL + F `events = {`     TO GET TO EVENT POKEMON
+# CTRL + F `shiny = {`      TO GET TO SHINY LIVING DEX
+# CTRL + F `breedables = {` TO GET TO APRIBALLS BREEDABLES
+# ★ ─────────────────────────────────────────────────────────────────────── ★
+{
+  lib,
+  ...
+} : let 
+# ★ ─────────────────────────────────────────────────────────────────────── ★
+# DO NOT EDIT THIS SECTION!
+  balls   = [ 
+    &quot;safari&quot; &quot;sport&quot; &quot;fast&quot; &quot;friend&quot; &quot;heavy&quot;
+    &quot;level&quot; &quot;love&quot; &quot;lure&quot; &quot;moon&quot; &quot;dream&quot; &quot;beast&quot;
+  ];
+
+  mkBalls = flags: lib.genAttrs balls (_: flags);
+  none    = { ball = false; ha = false; eggMoves = false; };  # not caught
+  ball    = { ball = true;  ha = false; eggMoves = false; };  # caught, no extras
+  HA      = { ball = true;  ha = true;  eggMoves = false; };  # caught + HA
+  HAEM    = { ball = true;  ha = true;  eggMoves = true;  };  # caught + HA + EM
+  allNone = mkBalls none;
+  allBall = mkBalls ball;
+  allHA   = mkBalls HA;
+  allDone = mkBalls HAEM;
+in {
+# ★ ─────────────────────────────────────────────────────────────────────── ★
+#  POKÉNIX CONFIG — PLEASE READ BEFORE EDITING
+# ★ ─────────────────────────────────────────────────────────────────────── ★
+#  ▸ ANYTHING AFTER A `#` ON A LINE IS A COMMENT. THE SITE IGNORES IT.
+#      COMMENTS ARE USED BOTH FOR INSTRUCTIONS AND TO HIDE ENTRIES YOU HAVEN&#x27;T FILLED IN YET.
+#  ▸ EVERY ENTRY ENDS WITH `;`  — IF YOU REMOVE THE `;`, THE SITE BREAKS.
+#  ▸ CURLY BRACES `{ }` GROUP THINGS TOGETHER. 
+#      FOR EVERY `{` THERE MUST BE A MATCHING `}`.
+#  ▸ TEXT VALUES GO IN &quot;double quotes&quot;.  NUMBERS AND true/false DO NOT.
+#  ▸ USE CTRL + F (Cmd + F ON MAC) TO SEARCH FOR A POKÉMON BEFORE ADDING IT,
+#      SO YOU DON&#x27;T CREATE A DUPLICATE ENTRY (DUPLICATES BREAK THE SITE).
+# ★ ─────────────────────────────────────────────────────────────────────── ★
+# ★ USER START EDIT FROM HERE!
+# ★ ─────────────────────────────────────────────────────────────────────── ★
+  pokenix = {
+
+    # ★ ─────────────────────────────────────────────────────────────────────── ★
+    # TRAINER CARD - WHO ARE YOU? - TEXT MUST STAY INSIDE THE QUOTES. ALL FIELDS ARE OPTINAL
+    # ★ ─────────────────────────────────────────────────────────────────────── ★
+    trainer = {
+      name       = &quot;PokèNix&quot;; # &lt;-- CHANGE ME!
+      picture    = ./profile-profile.png;
+      about      = &quot;★ breeding master ★ shiny hunter ★ ducklett lover ★&quot;;
+      region     = &quot;Sweden&quot;;
+      timezone   = &quot;Europe/Stockholm&quot;;
+      contact    = &quot;Discord pungkula#0001&quot;;
+      friendCode = &quot;SW-1234-5678-9012&quot;;
+      switchName = &quot;pungkula&quot;;
+      trainerId  = &quot;082409&quot;;
     };
-  };</code></pre></details></section>
+
+
+    # ★ ─────────────────────────────────────────────────────────────────────── ★
+    # SPECIAL POKÉMON - ADD ANY POKÉMON YOUR PROUD OF
+    # ★ ─────────────────────────────────────────────────────────────────────── ★
+    #  TO ADD A POKÉMON: COPY THE WHOLE &quot;mewtwo-ribbon-master&quot; BLOCK
+    #  FROM THE OPENING `{` TO THE CLOSING `};`. AND EDIT THE FIELDS.
+    #
+    #  THE QUOTED NAME AT THE START IS A UNIQUE ID — USE LOWERCASE AND
+    #  DASHES.  IT DOESN&#x27;T HAVE TO MATCH THE SPECIES.
+    #
+    #  FIELD GUIDE: (SKIP ANY FIELD YOU DON&#x27;T CARE ABOUT — NONE ARE REQUIRED.)
+    #    species      = LOWERCASE SPECIES NAME
+    #                 EXAMPLE: &quot;charizard-gmax&quot;, &quot;meowth-galar&quot;
+    #    ball         = WHICH BALL IT&#x27;S CAUGHT IN (FREE TEXT)
+    #                 EXAMPLE: &quot;master&quot;, &quot;luxury&quot;, &quot;pokeball&quot;, &quot;beast&quot;
+    #    shiny        = true / false
+    #    selfObtained = true IF YOU CAUGHT IT, false IF TRADED
+    #    level        = 1–100
+    #    nature       = EXAMPLE: &quot;Timid&quot;, &quot;Jolly&quot;, &quot;Modest&quot;
+    #    ability      = EXAMPLE: &quot;Pressure&quot;, &quot;Intimidate&quot;
+    #    heldItem     = EXAMPLE: &quot;Life Orb&quot;, &quot;Leftovers&quot;
+    #    teraType     = EXAMPLE: &quot;Psychic&quot;, &quot;Water&quot; (GEN 9 ONLY)
+    #    evs / ivs    = STAT NUMBERS (EACH FIELD ENDS WITH `;`)
+    #    moves        = LIST (START WITH `[` END WITH `];`) OF MOVE NAMES IN &quot;quotes&quot;, SEPERATED BY SPACES
+    #    ribbons      = LIST (START WITH `[` END WITH `];`) OF RIBBON NAMES IN &quot;quotes&quot;
+    #    marks        = LIST (START WITH `[` END WITH `];`) OF MARK NAMES IN &quot;quotes&quot; (GEN 8+)
+    #    ot           = ORIGINAL TRAINER NAME (IN QUOTES)
+    #    id           = original trainer ID (IN QUOTES)
+    #    region       = LANGUAGE TAG, EXAMPLE: &quot;ENG&quot;, &quot;JPN&quot;, &quot;GER&quot;, &quot;FRE&quot;
+    #    obtained     = DATE, FORMAT: &quot;YYYY/MM/DD&quot;
+    #    notes        = FREE TEXT (STORY, HUNT TIME, AND SO ON)
+    #    name         = NAME OF YOUR POKÉMON. 
+    # ★ ─────────────────────────────────────────────────────────────────────── ★
+    specials = {
+      &quot;mewtwo-ribbon-master&quot; = {
+        species      = &quot;mewtwo&quot;;
+        ball         = &quot;master&quot;;
+        shiny        = true;
+        selfObtained = true;
+        level        = 100;
+        nature       = &quot;Timid&quot;;
+        ability      = &quot;Pressure&quot;;
+        heldItem     = &quot;Life Orb&quot;;
+        teraType     = &quot;Psychic&quot;;
+        evs          = { hp = 4; spa = 252; spe = 252; };
+        ivs          = { hp = 31; atk = 0; def = 31; spa = 31; spd = 31; spe = 31; };
+        moves        = [ &quot;Psystrike&quot; &quot;Aura Sphere&quot; &quot;Ice Beam&quot; &quot;Calm Mind&quot; ];
+        ribbons      = [ &quot;Effort Ribbon&quot; &quot;Master Rank Ribbon&quot; ];
+        marks        = [ &quot;The Unrivaled&quot; ];
+        ot           = &quot;pungkula&quot;;
+        id           = &quot;082409&quot;;
+        region       = &quot;ENG&quot;;
+        obtained     = &quot;2023/08/15&quot;;
+        notes        = &quot;SR 3 days&quot;;
+        name         = &quot;Mewtwo&quot;;
+      };
+      # ADD MORE HERE
+      # ...
+    };
+
+
+    # ★ ─────────────────────────────────────────────────────────────────────── ★
+    # EVENT POKÉMON - OFFICIAL DISTRIBUTIONS
+    # ★ ─────────────────────────────────────────────────────────────────────── ★
+    #  COPY THE &quot;gastrodon-2023-eduardo&quot; BLOCK AND EDIT THE FIELDS.
+    #
+    #  FIELD GUIDE: (SKIP ANY FIELD YOU DON&#x27;T CARE ABOUT — NONE ARE REQUIRED.)
+    #    species      = LOWERCASE SPECIES NAME
+    #    dex          = NATIONAL POKÉDEX NUMBER
+    #    name         = DISPLAY NAME SHOWN ON THE SITE
+    #    ball         = THE BALL IT ARRIVED IN
+    #    year         = EVENT YEAR
+    #    ot / id      = ORIGINAL TRAINER NAME / ID
+    #    region       = LANGUAGE TAG, EXAMPLE: &quot;ENG&quot;, &quot;JPN&quot;, &quot;GER&quot;
+    #    notes        = FREE TEXT ABOUT THE EVENT
+    #    proof        = WHERE THE REDEMPTION PROOF IS, NOTE TO YOURSELF, FREE TEXT, WRITE WHATEVER YOU WANT
+    #    obtained     = DATE RECEIVED, FORMAT: &quot;YYYY/MM/DD&quot;
+    #    moves        = LIST (START WITH `[` END WITH `];`) OF MOVE NAMES IN &quot;quotes&quot;, SEPERATED BY SPACES
+    #    tradeHistory = WHO IT CAME FROM, FREE TEXT, WRITE WHATEVER YOU WANT
+    #
+    #    NOTE: HERE `ot` IS A NAME (&quot;Ash&quot;).  IN THE SHINY SECTION `ot` IS
+    #    INSTEAD true/false — DIFFERENT MEANING, SAME FIELD NAME.
+    # ★ ─────────────────────────────────────────────────────────────────────── ★
+    events = {
+      &quot;gastrodon-2023-eduardo&quot; = {
+        species = &quot;gastrodon&quot;;
+        dex     = 423;
+        name    = &quot;Gastrodon&quot;;
+        selfObtained = true;
+        year         = &quot;2023&quot;;
+        ot           = &quot;Eduardo&quot;;
+        id           = &quot;230811&quot;;
+        region       = &quot;ENG&quot;;
+        notes        = &quot;23WCSGASTR0D0N&quot;;
+        proof        = &quot;WC&quot;;     
+        obtained     = &quot;2023/08/12&quot;;
+        moves        = [ &quot;Earth Power&quot; &quot;Icy Wind&quot; &quot;Yawn&quot; &quot;Protect&quot; ];
+      };
+      # ADD MORE HERE
+      # ...
+    };
+
+
+
+
+    # ★ ─────────────────────────────────────────────────────────────────────── ★
+    # SHINY LIVING DEX
+    # ★ ─────────────────────────────────────────────────────────────────────── ★
+    #  EVERY POKÉMON IS PRE-WRITTEN BUT HIDDEN WITH A `#` AT THE START OF IT&#x27;S LINE.
+    #  TO MARK ONE AS CAUGHT, DELETE THE `# ` AT THE VERY
+    #  BEGINNING OF IT&#x27;S LINE:
+    #      # bulbasaur = { … };  &lt;- HIDDEN (NOT CAUGHT/COUNTED)
+    #      bulbasaur   = { … };  &lt;- CAUGHT &amp; COUNTED
+    #
+    #  FIELD GUIDE: (SKIP ANY FIELD YOU DON&#x27;T CARE ABOUT — NONE ARE REQUIRED.)    
+    # ★ ─────────────────────────────────────────────────────────────────────── ★
+    shiny = {
+      # » GENERATION 1 - KANTO REGION
+      bulbasaur       = { ball = &quot;friend&quot;;  ot = true; style = &quot;star&quot;;   egg = false; notes = &quot;my shiny&quot;; };
+      ivysaur         = { ball = &quot;friend&quot;;  ot = true; style = &quot;square&quot;; egg = true; notes = &quot;my shiny&quot;; };
+      venusaur-f      = { ball = &quot;ultra&quot;;   ot = true; style = &quot;star&quot;;   egg = false; notes = &quot;&quot;; };
+      # venusaur-m      = { ball = &quot;beast&quot;;   ot = true; style = &quot;star&quot;;   egg = false; notes = &quot;&quot;; };
+      # venusaur-gmax   = { ball = &quot;safari&quot;;  ot = true; style = &quot;star&quot;;   egg = false; notes = &quot;&quot;; };
+      # charmander      = { ball = &quot;ultra&quot;;   ot = true; style = &quot;star&quot;;   egg = false; notes = &quot;&quot;; };
+      # charmeleon      = { ball = &quot;ultra&quot;;   ot = true; style = &quot;star&quot;;   egg = false; notes = &quot;&quot;; };
+      # charizard       = { ball = &quot;sport&quot;;   ot = true; style = &quot;star&quot;;   egg = false; notes = &quot;&quot;; };
+      # charizard-gmax  = { ball = &quot;sport&quot;;   ot = true; style = &quot;star&quot;;   egg = false; notes = &quot;&quot;; };
+      # squirtle        = { ball = &quot;net&quot;;     ot = true; style = &quot;star&quot;;   egg = false; notes = &quot;&quot;; };
+      # wartortle       = { ball = &quot;moon&quot;;    ot = true; style = &quot;star&quot;;   egg = false; notes = &quot;&quot;; };
+      # blastoise       = { ball = &quot;safari&quot;;   ot = true; style = &quot;star&quot;;   egg = false; notes = &quot;&quot;; };
+      # blastoise-gmax  = { ball = &quot;master&quot;;  ot = true; style = &quot;star&quot;;   egg = false; notes = &quot;&quot;; };
+      # caterpie        = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;;   egg = false; notes = &quot;&quot;; };
+      # metapod         = { ball = &quot;poke&quot;;    ot = true; style = &quot;star&quot;;   egg = false; notes = &quot;&quot;; };
+      # butterfree-f    = { ball = &quot;beast&quot;;   ot = true; style = &quot;star&quot;;   egg = false; notes = &quot;&quot;; };
+      # butterfree-m    = { ball = &quot;luxury&quot;;     ot = true; style = &quot;square&quot;; egg = true;  notes = &quot;egg hatch&quot;; };
+      # butterfree-gmax = { ball = &quot;luxury&quot;;     ot = true; style = &quot;square&quot;; egg = true;  notes = &quot;Egg hatch&quot;; };
+      # weedle          = { ball = &quot;poke&quot;;    ot = true; style = &quot;star&quot;;   egg = false; notes = &quot;&quot;; };
+      # kakuna          = { ball = &quot;poke&quot;;    ot = true; style = &quot;star&quot;;   egg = false; notes = &quot;&quot;; };
+      # beedrill        = { ball = &quot;ultra&quot;;   ot = true; style = &quot;star&quot;;   egg = false; notes = &quot;&quot;; };
+      # pidgey          = { ball = &quot;fast&quot;;    ot = true; style = &quot;star&quot;;   egg = false; notes = &quot;&quot;; };
+      # pidgeotto       = { ball = &quot;great&quot;;   ot = true; style = &quot;star&quot;;   egg = false; notes = &quot;&quot;; };
+      # pidgeot         = { ball = &quot;ultra&quot;;   ot = true; style = &quot;star&quot;;   egg = false; notes = &quot;&quot;; };
+      # rattata-f       = { ball = &quot;poke&quot;;    ot = true; style = &quot;star&quot;;   egg = false; notes = &quot;&quot;; };
+      # rattata-m       = { ball = &quot;ultra&quot;;   ot = true; style = &quot;star&quot;;   egg = false; notes = &quot;&quot;; };
+      # rattata-alola   = { ball = &quot;poke&quot;;    ot = true; style = &quot;star&quot;;   egg = false; notes = &quot;&quot;; };
+      # raticate-f      = { ball = &quot;poke&quot;;    ot = true; style = &quot;star&quot;;   egg = false; notes = &quot;&quot;; };
+      # raticate-m      = { ball = &quot;poke&quot;;    ot = true; style = &quot;star&quot;;   egg = false; notes = &quot;&quot;; };
+      # raticate-alola  = { ball = &quot;poke&quot;;    ot = true; style = &quot;star&quot;;   egg = false; notes = &quot;&quot;; };
+      # spearow         = { ball = &quot;great&quot;;   ot = true; style = &quot;star&quot;;   egg = false; notes = &quot;&quot;; };
+      # fearow          = { ball = &quot;ultra&quot;;   ot = true; style = &quot;star&quot;;   egg = false; notes = &quot;&quot;; };
+      # ekans           = { ball = &quot;poke&quot;;    ot = true; style = &quot;star&quot;;   egg = false; notes = &quot;&quot;; };
+      # arbok           = { ball = &quot;poke&quot;;    ot = true; style = &quot;star&quot;;   egg = false; notes = &quot;&quot;; };
+      # pikachu-f       = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;;   egg = false; notes = &quot;&quot;; };
+      # pikachu-m       = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;;   egg = false; notes = &quot;&quot;; };
+      # pikachu-gmax    = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;;   egg = false; notes = &quot;&quot;; };
+      # raichu-f        = { ball = &quot;moon&quot;;    ot = true; style = &quot;star&quot;;   egg = false; notes = &quot;&quot;; };
+      # raichu-m        = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;;   egg = false; notes = &quot;&quot;; };
+      # raichu-alola    = { ball = &quot;beast&quot;;   ot = true; style = &quot;star&quot;;   egg = false; notes = &quot;&quot;; };
+      # sandshrew       = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;;   egg = false; notes = &quot;&quot;; };
+      # sandshrew-alola = { ball = &quot;beast&quot;;   ot = true; style = &quot;star&quot;;   egg = false; notes = &quot;&quot;; };
+      # sandslash       = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;;   egg = false; notes = &quot;&quot;; };
+      # sandslash-alola = { ball = &quot;beast&quot;;   ot = true; style = &quot;star&quot;;   egg = false; notes = &quot;&quot;; };
+      # nidoran-f       = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;;   egg = false; notes = &quot;&quot;; };
+      # nidorina        = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;;   egg = false; notes = &quot;&quot;; };
+      # nidoqueen       = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;;   egg = false; notes = &quot;&quot;; };
+      # nidoran-m       = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;;   egg = false; notes = &quot;&quot;; };
+      # nidorino        = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;;   egg = false; notes = &quot;&quot;; };
+      # nidoking        = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;;   egg = false; notes = &quot;&quot;; };
+      # clefairy        = { ball = &quot;safari&quot;;   ot = true; style = &quot;star&quot;;   egg = false; notes = &quot;&quot;; };
+      # clefable        = { ball = &quot;heavy&quot;;   ot = true; style = &quot;star&quot;;   egg = false; notes = &quot;&quot;; };
+      # vulpix          = { ball = &quot;safari&quot;;   ot = true; style = &quot;star&quot;;   egg = false; notes = &quot;&quot;; };
+      # vulpix-alola    = { ball = &quot;safari&quot;;   ot = true; style = &quot;star&quot;;   egg = false; notes = &quot;&quot;; };
+      # ninetales       = { ball = &quot;safari&quot;;   ot = true; style = &quot;star&quot;;   egg = false; notes = &quot;&quot;; };
+      # ninetales-alola = { ball = &quot;sport&quot;;   ot = true; style = &quot;star&quot;;   egg = false; notes = &quot;&quot;; };
+      # jigglypuff      = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;;   egg = false; notes = &quot;&quot;; };
+      # wigglytuff      = { ball = &quot;safari&quot;;   ot = true; style = &quot;star&quot;;   egg = false; notes = &quot;&quot;; };
+      # zubat-f         = { ball = &quot;safari&quot;;   ot = true; style = &quot;star&quot;;   egg = false; notes = &quot;&quot;; };
+      # zubat-m         = { ball = &quot;premier&quot;; ot = true; style = &quot;star&quot;;   egg = false; notes = &quot;&quot;; };
+      # golbat-f        = { ball = &quot;safari&quot;;   ot = true; style = &quot;star&quot;;   egg = false; notes = &quot;&quot;; };
+      # golbat-m        = { ball = &quot;fast&quot;;    ot = true; style = &quot;star&quot;;   egg = false; notes = &quot;&quot;; };
+      # oddish          = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;;   egg = false; notes = &quot;&quot;; };
+      # gloom-f         = { ball = &quot;friend&quot;;  ot = true; style = &quot;star&quot;;   egg = false; notes = &quot;&quot;; };
+      # gloom-m         = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;;   egg = false; notes = &quot;&quot;; };
+      # vileplume-f     = { ball = &quot;ultra&quot;;   ot = true; style = &quot;star&quot;;   egg = false; notes = &quot;&quot;; };
+      # vileplume-m     = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;;   egg = false; notes = &quot;&quot;; };
+      # paras           = { ball = &quot;sport&quot;;   ot = true; style = &quot;star&quot;;   egg = false; notes = &quot;&quot;; };
+      # parasect        = { ball = &quot;ultra&quot;;   ot = true; style = &quot;star&quot;;   egg = false; notes = &quot;&quot;; };
+      # venonat         = { ball = &quot;premier&quot;; ot = true; style = &quot;star&quot;;   egg = false; notes = &quot;&quot;; };
+      # venomoth        = { ball = &quot;quick&quot;;   ot = true; style = &quot;star&quot;;   egg = false; notes = &quot;&quot;; };
+      # diglett         = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;;   egg = false; notes = &quot;&quot;; };
+      # diglett-alola   = { ball = &quot;beast&quot;;   ot = true; style = &quot;star&quot;;   egg = false; notes = &quot;&quot;; };
+      # dugtrio         = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;;   egg = false; notes = &quot;&quot;; };
+      # dugtrio-alola   = { ball = &quot;beast&quot;;   ot = true; style = &quot;star&quot;;   egg = false; notes = &quot;&quot;; };
+      # meowth          = { ball = &quot;safari&quot;;   ot = true; style = &quot;star&quot;;   egg = false; notes = &quot;&quot;; };
+      # meowth-alola    = { ball = &quot;safari&quot;;   ot = true; style = &quot;star&quot;;   egg = false; notes = &quot;&quot;; };
+      # meowth-galar    = { ball = &quot;safari&quot;;   ot = true; style = &quot;star&quot;;   egg = false; notes = &quot;&quot;; };
+      # meowth-gmax     = { ball = &quot;safari&quot;;   ot = true; style = &quot;star&quot;;   egg = false; notes = &quot;&quot;; };
+      # persian         = { ball = &quot;safari&quot;;   ot = true; style = &quot;star&quot;;   egg = false; notes = &quot;&quot;; };
+      # persian-alola   = { ball = &quot;safari&quot;;   ot = true; style = &quot;star&quot;;   egg = false; notes = &quot;&quot;; };
+      # psyduck         = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;;   egg = false; notes = &quot;&quot;; };
+      # golduck         = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;;   egg = false; notes = &quot;&quot;; };
+      # mankey          = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;;   egg = false; notes = &quot;&quot;; };
+      # primeape        = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;;   egg = false; notes = &quot;&quot;; };
+      # growlithe       = { ball = &quot;safari&quot;;   ot = true; style = &quot;star&quot;;   egg = false; notes = &quot;&quot;; };
+      # arcanine        = { ball = &quot;repeat&quot;;  ot = true; style = &quot;star&quot;;   egg = false; notes = &quot;&quot;; };
+      # poliwag         = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;;   egg = false; notes = &quot;&quot;; };
+      # poliwhirl       = { ball = &quot;heavy&quot;;   ot = true; style = &quot;star&quot;;   egg = false; notes = &quot;&quot;; };
+      # poliwrath       = { ball = &quot;love&quot;;    ot = true; style = &quot;star&quot;;   egg = false; notes = &quot;&quot;; };
+      # abra            = { ball = &quot;poke&quot;;    ot = true; style = &quot;star&quot;;   egg = false; notes = &quot;&quot;; };
+      # kadabra-f       = { ball = &quot;safari&quot;;   ot = true; style = &quot;star&quot;;   egg = false; notes = &quot;&quot;; };
+      # kadabra-m       = { ball = &quot;poke&quot;;    ot = true; style = &quot;star&quot;;   egg = false; notes = &quot;&quot;; };
+      # alakazam-f      = { ball = &quot;master&quot;;  ot = true; style = &quot;star&quot;;   egg = false; notes = &quot;&quot;; };
+      # alakazam-m      = { ball = &quot;heavy&quot;;   ot = true; style = &quot;star&quot;;   egg = false; notes = &quot;&quot;; };
+      # machop          = { ball = &quot;safari&quot;;   ot = true; style = &quot;star&quot;;   egg = false; notes = &quot;&quot;; };
+      # machoke         = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;;   egg = false; notes = &quot;&quot;; };
+      # machamp         = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;;   egg = false; notes = &quot;&quot;; };
+      # machamp-gmax    = { ball = &quot;luxury&quot;;  ot = true; style = &quot;star&quot;;   egg = false; notes = &quot;&quot;; };
+      # bellsprout      = { ball = &quot;great&quot;;   ot = true; style = &quot;star&quot;;   egg = false; notes = &quot;&quot;; };
+      # weepinbell      = { ball = &quot;sport&quot;;   ot = true; style = &quot;star&quot;;   egg = false; notes = &quot;&quot;; };
+      # victreebel      = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;;   egg = false; notes = &quot;&quot;; };
+      # tentacool       = { ball = &quot;lure&quot;;    ot = true; style = &quot;star&quot;;   egg = false; notes = &quot;&quot;; };
+      # tentacruel      = { ball = &quot;safari&quot;;   ot = true; style = &quot;star&quot;;   egg = false; notes = &quot;&quot;; };
+      # geodude         = { ball = &quot;ultra&quot;;   ot = true; style = &quot;star&quot;;   egg = false; notes = &quot;&quot;; };
+      # geodude-alola   = { ball = &quot;sport&quot;;   ot = true; style = &quot;star&quot;;   egg = false; notes = &quot;&quot;; };
+      # graveler        = { ball = &quot;ultra&quot;;   ot = true; style = &quot;star&quot;;   egg = false; notes = &quot;&quot;; };
+      # graveler-alola  = { ball = &quot;sport&quot;;   ot = true; style = &quot;star&quot;;   egg = false; notes = &quot;&quot;; };
+      # golem           = { ball = &quot;great&quot;;   ot = true; style = &quot;star&quot;;   egg = false; notes = &quot;&quot;; };
+      # golem-alola     = { ball = &quot;sport&quot;;   ot = true; style = &quot;star&quot;;   egg = false; notes = &quot;&quot;; };
+      # ponyta          = { ball = &quot;safari&quot;;   ot = true; style = &quot;star&quot;;   egg = false; notes = &quot;&quot;; };
+      # ponyta-galar    = { ball = &quot;premier&quot;; ot = true; style = &quot;star&quot;;   egg = false; notes = &quot;&quot;; };
+      # rapidash        = { ball = &quot;sport&quot;;   ot = true; style = &quot;star&quot;;   egg = false; notes = &quot;&quot;; };
+      # rapidash-galar  = { ball = &quot;repeat&quot;;  ot = true; style = &quot;star&quot;;   egg = false; notes = &quot;&quot;; };
+      # slowpoke        = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;;   egg = false; notes = &quot;&quot;; };
+      # slowpoke-galar  = { ball = &quot;safari&quot;;  ot = true; style = &quot;star&quot;;   egg = false; notes = &quot;&quot;; };
+      # slowbro         = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;;   egg = false; notes = &quot;&quot;; };
+      # slowbro-galar   = { ball = &quot;sport&quot;;   ot = true; style = &quot;star&quot;;   egg = false; notes = &quot;&quot;; };
+      # magnemite       = { ball = &quot;premier&quot;; ot = true; style = &quot;star&quot;;   egg = false; notes = &quot;&quot;; };
+      # magneton        = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;;   egg = false; notes = &quot;&quot;; };
+      # farfetchd       = { ball = &quot;love&quot;;    ot = true; style = &quot;star&quot;;   egg = false; notes = &quot;&quot;; };
+      # farfetchd-galar = { ball = &quot;safari&quot;;  ot = true; style = &quot;star&quot;;   egg = false; notes = &quot;&quot;; };
+      # doduo-f         = { ball = &quot;sport&quot;;   ot = true; style = &quot;star&quot;;   egg = false; notes = &quot;&quot;; };
+      # doduo-m         = { ball = &quot;sport&quot;;   ot = true; style = &quot;star&quot;;   egg = false; notes = &quot;&quot;; };
+      # dodrio-f        = { ball = &quot;sport&quot;;   ot = true; style = &quot;star&quot;;   egg = false; notes = &quot;&quot;; };
+      # dodrio-m        = { ball = &quot;poke&quot;;    ot = true; style = &quot;star&quot;;   egg = false; notes = &quot;&quot;; };
+      # seel            = { ball = &quot;sport&quot;;   ot = true; style = &quot;star&quot;;   egg = false; notes = &quot;&quot;; };
+      # dewgong         = { ball = &quot;poke&quot;;    ot = true; style = &quot;star&quot;;   egg = false; notes = &quot;&quot;; };
+      # grimer          = { ball = &quot;great&quot;;   ot = true; style = &quot;star&quot;;   egg = false; notes = &quot;&quot;; };
+      # grimer-alola    = { ball = &quot;sport&quot;;   ot = true; style = &quot;star&quot;;   egg = false; notes = &quot;&quot;; };
+      # muk             = { ball = &quot;great&quot;;   ot = true; style = &quot;star&quot;;   egg = false; notes = &quot;&quot;; };
+      # muk-alola       = { ball = &quot;sport&quot;;   ot = true; style = &quot;star&quot;;   egg = false; notes = &quot;&quot;; };
+      # shellder        = { ball = &quot;lure&quot;;    ot = true; style = &quot;star&quot;;   egg = false; notes = &quot;&quot;; };
+      # cloyster        = { ball = &quot;dive&quot;;    ot = true; style = &quot;star&quot;;   egg = false; notes = &quot;&quot;; };
+      # gastly          = { ball = &quot;moon&quot;;    ot = true; style = &quot;star&quot;;   egg = false; notes = &quot;&quot;; };
+      # haunter         = { ball = &quot;premier&quot;; ot = true; style = &quot;star&quot;;   egg = false; notes = &quot;&quot;; };
+      # gengar          = { ball = &quot;master&quot;;  ot = true; style = &quot;star&quot;;   egg = false; notes = &quot;&quot;; };
+      # gengar-gmax     = { ball = &quot;master&quot;;  ot = true; style = &quot;star&quot;;   egg = false; notes = &quot;&quot;; };
+      # onix            = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;;   egg = false; notes = &quot;&quot;; };
+      # drowzee         = { ball = &quot;heal&quot;;    ot = true; style = &quot;star&quot;;   egg = false; notes = &quot;&quot;; };
+      # hypno-f         = { ball = &quot;quick&quot;;   ot = true; style = &quot;star&quot;;   egg = false; notes = &quot;&quot;; };
+      # hypno-m         = { ball = &quot;ultra&quot;;   ot = true; style = &quot;star&quot;;   egg = false; notes = &quot;&quot;; };
+      # krabby          = { ball = &quot;net&quot;;     ot = true; style = &quot;star&quot;;   egg = false; notes = &quot;&quot;; };
+      # kingler         = { ball = &quot;beast&quot;;   ot = true; style = &quot;star&quot;;   egg = false; notes = &quot;&quot;; };
+      # kingler-gmax    = { ball = &quot;beast&quot;;   ot = true; style = &quot;star&quot;;   egg = false; notes = &quot;&quot;; };
+      # voltorb         = { ball = &quot;great&quot;;   ot = true; style = &quot;star&quot;;   egg = false; notes = &quot;&quot;; };
+      # electrode       = { ball = &quot;poke&quot;;    ot = true; style = &quot;star&quot;;   egg = false; notes = &quot;&quot;; };
+      # exeggcute       = { ball = &quot;premier&quot;; ot = true; style = &quot;star&quot;;   egg = false; notes = &quot;&quot;; };
+      # exeggutor       = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;;   egg = false; notes = &quot;&quot;; };
+      # exeggutor-alola = { ball = &quot;ultra&quot;;   ot = true; style = &quot;star&quot;;   egg = false; notes = &quot;&quot;; };
+      # cubone          = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;;   egg = false; notes = &quot;&quot;; };
+      # marowak         = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;;   egg = false; notes = &quot;&quot;; };
+      # marowak-alola   = { ball = &quot;luxury&quot;;  ot = true; style = &quot;star&quot;;   egg = false; notes = &quot;&quot;; };
+      # hitmonlee       = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;;   egg = false; notes = &quot;&quot;; };
+      # hitmonchan      = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;;   egg = false; notes = &quot;&quot;; };
+      # lickitung       = { ball = &quot;beast&quot;;   ot = true; style = &quot;star&quot;;   egg = false; notes = &quot;&quot;; };
+      # koffing         = { ball = &quot;poke&quot;;    ot = true; style = &quot;star&quot;;   egg = false; notes = &quot;&quot;; };
+      # weezing         = { ball = &quot;poke&quot;;    ot = true; style = &quot;star&quot;;   egg = false; notes = &quot;&quot;; };
+      # weezing-galar   = { ball = &quot;master&quot;;  ot = true; style = &quot;star&quot;;   egg = false; notes = &quot;&quot;; };
+      # rhyhorn-f       = { ball = &quot;premier&quot;; ot = true; style = &quot;star&quot;;   egg = false; notes = &quot;&quot;; };
+      # rhyhorn-m       = { ball = &quot;safari&quot;;   ot = true; style = &quot;star&quot;;   egg = false; notes = &quot;&quot;; };
+      # rhydon-f        = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;;   egg = false; notes = &quot;&quot;; };
+      # rhydon-m        = { ball = &quot;great&quot;;   ot = true; style = &quot;star&quot;;   egg = false; notes = &quot;&quot;; };
+      # chansey         = { ball = &quot;poke&quot;;    ot = true; style = &quot;star&quot;;   egg = false; notes = &quot;&quot;; };
+      # tangela         = { ball = &quot;safari&quot;;   ot = true; style = &quot;star&quot;;   egg = false; notes = &quot;&quot;; };
+      # kangaskhan      = { ball = &quot;dusk&quot;;    ot = true; style = &quot;star&quot;;   egg = false; notes = &quot;&quot;; };
+      # horsea          = { ball = &quot;lure&quot;;    ot = true; style = &quot;star&quot;;   egg = false; notes = &quot;&quot;; };
+      # seadra          = { ball = &quot;lure&quot;;    ot = true; style = &quot;star&quot;;   egg = false; notes = &quot;&quot;; };
+      # goldeen-f       = { ball = &quot;friend&quot;;  ot = true; style = &quot;star&quot;;   egg = false; notes = &quot;&quot;; };
+      # goldeen-m       = { ball = &quot;lure&quot;;    ot = true; style = &quot;star&quot;;   egg = false; notes = &quot;&quot;; };
+      # seaking-f       = { ball = &quot;beast&quot;;   ot = true; style = &quot;star&quot;;   egg = false; notes = &quot;&quot;; };
+      # seaking-m       = { ball = &quot;master&quot;;  ot = true; style = &quot;star&quot;;   egg = false; notes = &quot;&quot;; };
+      # staryu          = { ball = &quot;premier&quot;; ot = true; style = &quot;star&quot;;   egg = false; notes = &quot;&quot;; };
+      # starmie         = { ball = &quot;sport&quot;;   ot = true; style = &quot;star&quot;;   egg = false; notes = &quot;&quot;; };
+      # mr-mime         = { ball = &quot;safari&quot;;   ot = true; style = &quot;star&quot;;   egg = false; notes = &quot;&quot;; };
+      # mr-mime-galar   = { ball = &quot;safari&quot;;   ot = true; style = &quot;star&quot;;   egg = false; notes = &quot;&quot;; };
+      # scyther-f       = { ball = &quot;ultra&quot;;   ot = true; style = &quot;star&quot;;   egg = false; notes = &quot;&quot;; };
+      # scyther-m       = { ball = &quot;premier&quot;; ot = true; style = &quot;star&quot;;   egg = false; notes = &quot;&quot;; };
+      # jynx            = { ball = &quot;sport&quot;;   ot = true; style = &quot;star&quot;;   egg = false; notes = &quot;&quot;; };
+      # electabuzz      = { ball = &quot;master&quot;;  ot = true; style = &quot;star&quot;;   egg = false; notes = &quot;&quot;; };
+      # magmar          = { ball = &quot;sport&quot;;   ot = true; style = &quot;star&quot;;   egg = false; notes = &quot;&quot;; };
+      # pinsir          = { ball = &quot;poke&quot;;    ot = true; style = &quot;star&quot;;   egg = false; notes = &quot;&quot;; };
+      # tauros          = { ball = &quot;level&quot;;   ot = true; style = &quot;star&quot;;   egg = false; notes = &quot;&quot;; };
+      # tauros-paldea   = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;;   egg = false; notes = &quot;&quot;; };
+      # tauros-blaze    = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;;   egg = false; notes = &quot;&quot;; };
+      # tauros-aqua     = { ball = &quot;heavy&quot;;   ot = true; style = &quot;star&quot;;   egg = false; notes = &quot;&quot;; };
+      # magikarp-f      = { ball = &quot;friend&quot;;  ot = true; style = &quot;star&quot;;   egg = false; notes = &quot;&quot;; };
+      # magikarp-m      = { ball = &quot;great&quot;;   ot = true; style = &quot;star&quot;;   egg = false; notes = &quot;&quot;; };
+      # gyarados-f      = { ball = &quot;dive&quot;;    ot = true; style = &quot;star&quot;;   egg = false; notes = &quot;&quot;; };
+      # gyarados-m      = { ball = &quot;dive&quot;;    ot = true; style = &quot;star&quot;;   egg = false; notes = &quot;&quot;; };
+      # lapras          = { ball = &quot;master&quot;;  ot = true; style = &quot;star&quot;;   egg = false; notes = &quot;&quot;; };
+      # lapras-gmax     = { ball = &quot;master&quot;;  ot = true; style = &quot;star&quot;;   egg = false; notes = &quot;&quot;; };
+      # ditto           = { ball = &quot;master&quot;;  ot = true; style = &quot;star&quot;;   egg = false; notes = &quot;&quot;; };
+      # eevee-f         = { ball = &quot;safari&quot;;   ot = true; style = &quot;star&quot;;   egg = false; notes = &quot;&quot;; };
+      # eevee-m         = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;;   egg = false; notes = &quot;&quot;; };
+      # eevee-gmax      = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;;   egg = false; notes = &quot;&quot;; };
+      # vaporeon        = { ball = &quot;love&quot;;    ot = true; style = &quot;star&quot;;   egg = false; notes = &quot;&quot;; };
+      # jolteon         = { ball = &quot;fast&quot;;    ot = true; style = &quot;star&quot;;   egg = false; notes = &quot;&quot;; };
+      # flareon         = { ball = &quot;sport&quot;;   ot = true; style = &quot;star&quot;;   egg = false; notes = &quot;&quot;; };
+      # porygon         = { ball = &quot;poke&quot;;    ot = true; style = &quot;star&quot;;   egg = false; notes = &quot;&quot;; };
+      # omanyte         = { ball = &quot;ultra&quot;;   ot = true; style = &quot;star&quot;;   egg = false; notes = &quot;&quot;; };
+      # omastar         = { ball = &quot;dream&quot;;   ot = true; style = &quot;star&quot;;   egg = false; notes = &quot;&quot;; };
+      # kabuto          = { ball = &quot;safari&quot;;  ot = true; style = &quot;star&quot;;   egg = false; notes = &quot;&quot;; };
+      # kabutops        = { ball = &quot;friend&quot;;  ot = true; style = &quot;star&quot;;   egg = false; notes = &quot;&quot;; };
+      # aerodactyl      = { ball = &quot;safari&quot;;   ot = true; style = &quot;star&quot;;   egg = false; notes = &quot;&quot;; };
+      # snorlax         = { ball = &quot;dusk&quot;;    ot = true; style = &quot;star&quot;;   egg = false; notes = &quot;&quot;; };
+      # snorlax-gmax    = { ball = &quot;dusk&quot;;    ot = true; style = &quot;star&quot;;   egg = false; notes = &quot;&quot;; };
+      # articuno        = { ball = &quot;moon&quot;;    ot = true; style = &quot;star&quot;;   egg = false; notes = &quot;&quot;; };
+      # articuno-galar  = { ball = &quot;cherish&quot;; ot = true; style = &quot;star&quot;;   egg = false; notes = &quot;&quot;; };
+      # zapdos          = { ball = &quot;luxury&quot;;  ot = true; style = &quot;star&quot;;   egg = false; notes = &quot;&quot;; };
+      # zapdos-galar    = { ball = &quot;luxury&quot;; ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # moltres         = { ball = &quot;beast&quot;;   ot = true; style = &quot;star&quot;;   egg = false; notes = &quot;&quot;; };
+      # moltres-galar   = { ball = &quot;cherish&quot;; ot = true; style = &quot;star&quot;;   egg = false; notes = &quot;&quot;; };
+      # dratini         = { ball = &quot;level&quot;;   ot = true; style = &quot;star&quot;;   egg = false; notes = &quot;&quot;; };
+      # dragonair       = { ball = &quot;level&quot;;   ot = true; style = &quot;star&quot;;   egg = false; notes = &quot;&quot;; };
+      # dragonite       = { ball = &quot;level&quot;;   ot = true; style = &quot;star&quot;;   egg = false; notes = &quot;&quot;; };
+      # mewtwo          = { ball = &quot;cherish&quot;; ot = true; style = &quot;star&quot;;   egg = false; notes = &quot;&quot;; };
+      # mew             = { ball = &quot;poke&quot;;    ot = true; style = &quot;star&quot;;   egg = false; notes = &quot;&quot;; };
+
+      # » GENERATION 2 - JOHTO
+      # chikorita       = { ball = &quot;poke&quot;;    ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # bayleef         = { ball = &quot;poke&quot;;    ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # meganium-f      = { ball = &quot;poke&quot;;    ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # meganium-m      = { ball = &quot;poke&quot;;    ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # cyndaquil       = { ball = &quot;ultra&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # quilava         = { ball = &quot;poke&quot;;    ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # typhlosion      = { ball = &quot;poke&quot;;    ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # totodile        = { ball = &quot;poke&quot;;    ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # croconaw        = { ball = &quot;poke&quot;;    ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # feraligatr      = { ball = &quot;poke&quot;;    ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # sentret         = { ball = &quot;poke&quot;;    ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # furret          = { ball = &quot;dusk&quot;;    ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # hoothoot        = { ball = &quot;master&quot;;  ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # noctowl         = { ball = &quot;poke&quot;;    ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # ledyba-f        = { ball = &quot;great&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # ledyba-m        = { ball = &quot;poke&quot;;    ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # ledian-f        = { ball = &quot;quick&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # ledian-m        = { ball = &quot;poke&quot;;    ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # spinarak        = { ball = &quot;dive&quot;;    ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # ariados         = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # crobat          = { ball = &quot;level&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # chinchou        = { ball = &quot;repeat&quot;;  ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # lanturn         = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # pichu           = { ball = &quot;safari&quot;;  ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # cleffa          = { ball = &quot;poke&quot;;    ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # igglybuff       = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # togepi          = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # togetic         = { ball = &quot;dusk&quot;;    ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # natu            = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # xatu-f          = { ball = &quot;master&quot;;  ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # xatu-m          = { ball = &quot;premier&quot;; ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # mareep          = { ball = &quot;heal&quot;;    ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # flaaffy         = { ball = &quot;great&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # ampharos        = { ball = &quot;poke&quot;;    ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # bellossom       = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # marill          = { ball = &quot;heal&quot;;    ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # azumarill       = { ball = &quot;dream&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # sudowoodo-f     = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # sudowoodo-m     = { ball = &quot;repeat&quot;;  ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # politoed-f      = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # politoed-m      = { ball = &quot;dive&quot;;    ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # hoppip          = { ball = &quot;ultra&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # skiploom        = { ball = &quot;great&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # jumpluff        = { ball = &quot;ultra&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # aipom-f         = { ball = &quot;poke&quot;;    ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # aipom-m         = { ball = &quot;poke&quot;;    ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # sunkern         = { ball = &quot;friend&quot;;  ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # sunflora        = { ball = &quot;friend&quot;;  ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # yanma           = { ball = &quot;poke&quot;;    ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # wooper-f        = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # wooper-m        = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # quagsire-f      = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # quagsire-m      = { ball = &quot;level&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # espeon          = { ball = &quot;friend&quot;;  ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # umbreon         = { ball = &quot;moon&quot;;    ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # murkrow-f       = { ball = &quot;great&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # murkrow-m       = { ball = &quot;dream&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # slowking        = { ball = &quot;luxury&quot;;  ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # slowking-galar  = { ball = &quot;fast&quot;;    ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # misdreavus      = { ball = &quot;heal&quot;;    ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # unown-a            = { ball = &quot;luxury&quot;; ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # unown-b            = { ball = &quot;luxury&quot;; ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # unown-c            = { ball = &quot;luxury&quot;; ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # unown-d            = { ball = &quot;luxury&quot;; ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # unown-e            = { ball = &quot;luxury&quot;; ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # unown-exclamation  = { ball = &quot;luxury&quot;; ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # unown-f             = { ball = &quot;ultra&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # unown-g             = { ball = &quot;ultra&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # unown-h            = { ball = &quot;luxury&quot;; ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # unown-i            = { ball = &quot;luxury&quot;; ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # unown-j            = { ball = &quot;luxury&quot;; ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # unown-k            = { ball = &quot;luxury&quot;; ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # unown-l            = { ball = &quot;luxury&quot;; ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # unown-m            = { ball = &quot;luxury&quot;; ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # unown-n            = { ball = &quot;luxury&quot;; ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # unown-o            = { ball = &quot;luxury&quot;; ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # unown-p            = { ball = &quot;luxury&quot;; ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # unown-q            = { ball = &quot;luxury&quot;; ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # unown-question     = { ball = &quot;luxury&quot;; ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # unown-r            = { ball = &quot;luxury&quot;; ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # unown-s            = { ball = &quot;luxury&quot;; ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # unown-t            = { ball = &quot;luxury&quot;; ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # unown-u             = { ball = &quot;premier&quot;; ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # unown-v            = { ball = &quot;luxury&quot;; ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # unown-w            = { ball = &quot;luxury&quot;; ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # unown-x            = { ball = &quot;luxury&quot;; ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # unown-y            = { ball = &quot;luxury&quot;; ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # unown-z            = { ball = &quot;luxury&quot;; ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # wobbuffet-f     = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # wobbuffet-m     = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # girafarig-f     = { ball = &quot;level&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # girafarig-m     = { ball = &quot;level&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # pineco          = { ball = &quot;poke&quot;;    ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # forretress      = { ball = &quot;ultra&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # dunsparce       = { ball = &quot;luxury&quot;;  ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # gligar-f        = { ball = &quot;luxury&quot;;  ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # gligar-m        = { ball = &quot;dusk&quot;;    ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # steelix-f       = { ball = &quot;repeat&quot;;  ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # steelix-m       = { ball = &quot;poke&quot;;    ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # snubbull        = { ball = &quot;poke&quot;;    ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # granbull        = { ball = &quot;ultra&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # qwilfish        = { ball = &quot;net&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # scizor-f        = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # scizor-m        = { ball = &quot;repeat&quot;;  ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # shuckle         = { ball = &quot;friend&quot;;  ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # heracross-f     = { ball = &quot;level&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # heracross-m     = { ball = &quot;master&quot;;  ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # sneasel-f       = { ball = &quot;safari&quot;;  ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # sneasel-m       = { ball = &quot;safari&quot;;  ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # teddiursa       = { ball = &quot;level&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # ursaring-f      = { ball = &quot;level&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # ursaring-m      = { ball = &quot;level&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # slugma          = { ball = &quot;poke&quot;;    ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # magcargo        = { ball = &quot;repeat&quot;;  ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # swinub          = { ball = &quot;beast&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # piloswine-f     = { ball = &quot;ultra&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # piloswine-m     = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # corsola         = { ball = &quot;dive&quot;;    ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # corsola-galar   = { ball = &quot;moon&quot;;    ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # remoraid        = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # octillery-f     = { ball = &quot;ultra&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # octillery-m     = { ball = &quot;heal&quot;;    ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # delibird        = { ball = &quot;dusk&quot;;    ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # mantine         = { ball = &quot;beast&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # skarmory        = { ball = &quot;friend&quot;;  ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # houndour        = { ball = &quot;ultra&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # houndoom-f      = { ball = &quot;great&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # houndoom-m      = { ball = &quot;great&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # kingdra         = { ball = &quot;dream&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # phanpy          = { ball = &quot;level&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # donphan-f       = { ball = &quot;level&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # donphan-m       = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # porygon2        = { ball = &quot;dream&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # stantler        = { ball = &quot;dusk&quot;;    ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # smeargle        = { ball = &quot;ultra&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # tyrogue         = { ball = &quot;repeat&quot;;  ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # hitmontop       = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # smoochum        = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # elekid          = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # magby           = { ball = &quot;level&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # miltank         = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # blissey         = { ball = &quot;poke&quot;;    ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # raikou          = { ball = &quot;cherish&quot;; ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # entei           = { ball = &quot;beast&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # suicune         = { ball = &quot;cherish&quot;; ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # larvitar        = { ball = &quot;beast&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # pupitar         = { ball = &quot;repeat&quot;;  ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # tyranitar       = { ball = &quot;cherish&quot;; ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # lugia           = { ball = &quot;premier&quot;; ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # ho-oh           = { ball = &quot;cherish&quot;; ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # celebi          = { ball = &quot;cherish&quot;; ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+
+      # ── GENERATION 3 — HOENN (no Regirock / Regice) ──────────────────────
+      # treecko         = { ball = &quot;safari&quot;;  ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # grovyle         = { ball = &quot;safari&quot;;  ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # sceptile        = { ball = &quot;safari&quot;;  ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # torchic-f       = { ball = &quot;love&quot;;    ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # torchic-m       = { ball = &quot;sport&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # combusken-f     = { ball = &quot;lure&quot;;    ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # combusken-m     = { ball = &quot;sport&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # blaziken-f      = { ball = &quot;moon&quot;;    ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # blaziken-m      = { ball = &quot;fast&quot;;    ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # mudkip          = { ball = &quot;love&quot;;    ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # marshtomp       = { ball = &quot;love&quot;;    ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # Swampert        = { ball = &quot;love&quot;;    ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # poochyena       = { ball = &quot;heavy&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # mightyena       = { ball = &quot;poke&quot;;    ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # zigzagoon       = { ball = &quot;safari&quot;;  ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # zigzagoon-galar = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # linoone         = { ball = &quot;safari&quot;;  ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # linoone-galar   = { ball = &quot;beast&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # wurmple         = { ball = &quot;poke&quot;;    ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # silcoon         = { ball = &quot;poke&quot;;    ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # beautifly-f     = { ball = &quot;poke&quot;;    ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # beautifly-m     = { ball = &quot;poke&quot;;    ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # cascoon         = { ball = &quot;poke&quot;;    ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # dustox-f        = { ball = &quot;poke&quot;;    ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # dustox-m        = { ball = &quot;poke&quot;;    ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # lotad           = { ball = &quot;poke&quot;;    ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # lombre          = { ball = &quot;safari&quot;;  ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # ludicolo-f      = { ball = &quot;repeat&quot;;  ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # ludicolo-m      = { ball = &quot;poke&quot;;    ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # seedot          = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # nuzleaf-f       = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # nuzleaf-m       = { ball = &quot;beast&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # shiftry-f       = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # shiftry-m       = { ball = &quot;beast&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # taillow         = { ball = &quot;poke&quot;;    ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # swellow         = { ball = &quot;quick&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # wingull         = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # pelipper        = { ball = &quot;ultra&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # ralts           = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # kirlia          = { ball = &quot;ultra&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # gardevoir       = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # surskit         = { ball = &quot;lure&quot;;    ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # masquerain      = { ball = &quot;lure&quot;;    ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # shroomish       = { ball = &quot;safari&quot;;  ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # breloom         = { ball = &quot;safari&quot;;  ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # slakoth         = { ball = &quot;beast&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # vigoroth        = { ball = &quot;great&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # slaking         = { ball = &quot;poke&quot;;    ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # nincada         = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # ninjask         = { ball = &quot;poke&quot;;    ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # shedinja        = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # whismur         = { ball = &quot;dream&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # loudred         = { ball = &quot;beast&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # exploud         = { ball = &quot;beast&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # makuhita        = { ball = &quot;poke&quot;;    ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # hariyama        = { ball = &quot;ultra&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # azurill         = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # nosepass        = { ball = &quot;poke&quot;;    ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # skitty          = { ball = &quot;poke&quot;;    ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # delcatty        = { ball = &quot;dream&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # sableye         = { ball = &quot;safari&quot;;  ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # mawile          = { ball = &quot;dream&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # aron            = { ball = &quot;poke&quot;;    ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # lairon          = { ball = &quot;premier&quot;; ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # aggron          = { ball = &quot;heavy&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # meditite-f      = { ball = &quot;great&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # meditite-m      = { ball = &quot;poke&quot;;    ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # medicham-f      = { ball = &quot;ultra&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # medicham-m      = { ball = &quot;ultra&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # electrike       = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # manectric       = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # plusle          = { ball = &quot;fast&quot;;    ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # minun           = { ball = &quot;great&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # volbeat         = { ball = &quot;poke&quot;;    ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # illumise        = { ball = &quot;ultra&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # roselia-f       = { ball = &quot;repeat&quot;;  ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # roselia-m       = { ball = &quot;sport&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # gulpin-f        = { ball = &quot;heavy&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # gulpin-m        = { ball = &quot;lure&quot;;    ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # swalot-f        = { ball = &quot;moon&quot;;    ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # swalot-m        = { ball = &quot;moon&quot;;    ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # carvanha        = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # sharpedo        = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # wailmer         = { ball = &quot;net&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # wailord         = { ball = &quot;dive&quot;;    ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # numel-f         = { ball = &quot;fast&quot;;    ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # numel-m         = { ball = &quot;fast&quot;;    ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # camerupt-f      = { ball = &quot;lure&quot;;    ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # camerupt-m      = { ball = &quot;moon&quot;;    ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # torkoal         = { ball = &quot;safari&quot;;  ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # spoink          = { ball = &quot;ultra&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # grumpig         = { ball = &quot;timer&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # spinda          = { ball = &quot;repeat&quot;;  ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # trapinch        = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # vibrava         = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # flygon          = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # cacnea          = { ball = &quot;dream&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # cacturne-f      = { ball = &quot;dream&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # cacturne-m      = { ball = &quot;dream&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # swablu          = { ball = &quot;premier&quot;; ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # altaria         = { ball = &quot;ultra&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # zangoose        = { ball = &quot;great&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # seviper         = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # lunatone        = { ball = &quot;moon&quot;;    ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # solrock         = { ball = &quot;level&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # barboach        = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # whiscash        = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # corphish        = { ball = &quot;lure&quot;;    ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # crawdaunt       = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # baltoy          = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # claydol         = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # lileep          = { ball = &quot;sport&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # cradily         = { ball = &quot;level&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # anorith         = { ball = &quot;level&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # armaldo         = { ball = &quot;sport&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # feebas          = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # milotic-f       = { ball = &quot;love&quot;;    ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # milotic-m       = { ball = &quot;beast&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # castform        = { ball = &quot;poke&quot;;    ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # kecleon         = { ball = &quot;safari&quot;;  ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # shuppet         = { ball = &quot;dream&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # banette         = { ball = &quot;dream&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # duskull         = { ball = &quot;safari&quot;;  ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # dusclops        = { ball = &quot;beast&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # tropius         = { ball = &quot;poke&quot;;    ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # chimecho        = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # absol           = { ball = &quot;level&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # wynaut          = { ball = &quot;poke&quot;;    ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # snorunt         = { ball = &quot;safari&quot;;  ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # glalie          = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # spheal          = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # sealeo          = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # walrein         = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # clamperl        = { ball = &quot;poke&quot;;    ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # huntail         = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # gorebyss        = { ball = &quot;poke&quot;;    ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # relicanth-f     = { ball = &quot;net&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # relicanth-m     = { ball = &quot;master&quot;;  ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # luvdisc         = { ball = &quot;ultra&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # bagon           = { ball = &quot;safari&quot;;  ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # shelgon         = { ball = &quot;friend&quot;;  ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # salamence       = { ball = &quot;level&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # beldum          = { ball = &quot;poke&quot;;    ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # metang          = { ball = &quot;poke&quot;;    ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # metagross       = { ball = &quot;master&quot;;  ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # registeel       = { ball = &quot;master&quot;;  ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # regirock        = { ball = &quot;luxury&quot;; ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # regice          = { ball = &quot;luxury&quot;; ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # latias          = { ball = &quot;luxury&quot;;  ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # latios          = { ball = &quot;luxury&quot;;  ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # kyogre          = { ball = &quot;luxury&quot;;  ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # groudon         = { ball = &quot;friend&quot;;  ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # rayquaza        = { ball = &quot;cherish&quot;; ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # jirachi         = { ball = &quot;cherish&quot;; ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # deoxys          = { ball = &quot;master&quot;;  ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+
+      # » GENERATION 4 - SINNOH
+      # turtwig         = { ball = &quot;friend&quot;;  ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # grotle          = { ball = &quot;friend&quot;;  ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # torterra        = { ball = &quot;friend&quot;;  ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # chimchar        = { ball = &quot;poke&quot;;    ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # monferno        = { ball = &quot;poke&quot;;    ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # infernape       = { ball = &quot;level&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # piplup          = { ball = &quot;poke&quot;;    ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # prinplup        = { ball = &quot;great&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # empoleon        = { ball = &quot;ultra&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # starly-f        = { ball = &quot;beast&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # starly-m        = { ball = &quot;safari&quot;;  ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # staravia-f      = { ball = &quot;beast&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # staravia-m      = { ball = &quot;safari&quot;;  ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # staraptor-f     = { ball = &quot;beast&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # staraptor-m     = { ball = &quot;beast&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # bidoof-f        = { ball = &quot;safari&quot;;  ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # bidoof-m        = { ball = &quot;safari&quot;;  ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # bibarel-f       = { ball = &quot;repeat&quot;;  ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # bibarel-m       = { ball = &quot;safari&quot;;  ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # kricketot-f     = { ball = &quot;moon&quot;;    ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # kricketot-m     = { ball = &quot;moon&quot;;    ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # kricketune-f    = { ball = &quot;moon&quot;;    ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # kricketune-m    = { ball = &quot;moon&quot;;    ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # shinx-f         = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # shinx-m         = { ball = &quot;ultra&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # luxio-f         = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # luxio-m         = { ball = &quot;safari&quot;;  ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # luxray-f        = { ball = &quot;ultra&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # luxray-m        = { ball = &quot;dusk&quot;;    ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # budew           = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # roserade-f      = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # roserade-m      = { ball = &quot;ultra&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # cranidos        = { ball = &quot;poke&quot;;    ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # rampardos       = { ball = &quot;poke&quot;;    ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # shieldon        = { ball = &quot;poke&quot;;    ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # bastiodon       = { ball = &quot;poke&quot;;    ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # burmy-plant     = { ball = &quot;friend&quot;;  ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # burmy-sandy     = { ball = &quot;moon&quot;;    ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # burmy-trash     = { ball = &quot;love&quot;;    ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # wormadam-plant  = { ball = &quot;friend&quot;;  ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # wormadam-sandy  = { ball = &quot;moon&quot;;    ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # wormadam-trash  = { ball = &quot;dream&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # mothim          = { ball = &quot;moon&quot;;    ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # combee-f        = { ball = &quot;net&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # combee-m        = { ball = &quot;sport&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # vespiquen       = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # pachirisu-f     = { ball = &quot;love&quot;;    ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # pachirisu-m     = { ball = &quot;love&quot;;    ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # buizel-f        = { ball = &quot;dusk&quot;;    ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # buizel-m        = { ball = &quot;sport&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # floatzel-f      = { ball = &quot;quick&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # floatzel-m      = { ball = &quot;safari&quot;;  ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # cherubi         = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # cherrim         = { ball = &quot;master&quot;;  ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # shellos-east    = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # shellos-west    = { ball = &quot;love&quot;;    ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # gastrodon-east  = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # gastrodon-west  = { ball = &quot;dream&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # ambipom-f       = { ball = &quot;dream&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # ambipom-m       = { ball = &quot;luxury&quot;;  ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # drifloon        = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # drifblim        = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # buneary         = { ball = &quot;poke&quot;;    ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # lopunny         = { ball = &quot;dusk&quot;;    ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # mismagius       = { ball = &quot;moon&quot;;    ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # honchkrow       = { ball = &quot;dream&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # glameow         = { ball = &quot;great&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # purugly         = { ball = &quot;poke&quot;;    ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # chingling       = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # stunky          = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # skuntank        = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # bronzor         = { ball = &quot;dream&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # bronzong        = { ball = &quot;heavy&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # bonsly          = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # mime-jr         = { ball = &quot;sport&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # happiny         = { ball = &quot;love&quot;;    ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # chatot          = { ball = &quot;moon&quot;;    ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # spiritomb       = { ball = &quot;safari&quot;;  ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # gible-f         = { ball = &quot;safari&quot;;  ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # gible-m         = { ball = &quot;friend&quot;;  ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # gabite-f        = { ball = &quot;friend&quot;;  ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # gabite-m        = { ball = &quot;poke&quot;;    ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # garchomp-f      = { ball = &quot;heavy&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # garchomp-m      = { ball = &quot;friend&quot;;  ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # munchlax        = { ball = &quot;safari&quot;;  ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # riolu           = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # lucario         = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # hippopotas-f    = { ball = &quot;safari&quot;;  ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # hippopotas-m    = { ball = &quot;beast&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # hippowdon-f     = { ball = &quot;beast&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # hippowdon-m     = { ball = &quot;beast&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # skorupi         = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # drapion         = { ball = &quot;repeat&quot;;  ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # croagunk-f      = { ball = &quot;beast&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # croagunk-m      = { ball = &quot;safari&quot;;  ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # toxicroak-f     = { ball = &quot;sport&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # toxicroak-m     = { ball = &quot;beast&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # carnivine       = { ball = &quot;safari&quot;;  ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # finneon-f       = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # finneon-m       = { ball = &quot;level&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # lumineon-f      = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # lumineon-m      = { ball = &quot;level&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # mantyke         = { ball = &quot;beast&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # snover-f        = { ball = &quot;beast&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # snover-m        = { ball = &quot;beast&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # abomasnow-f     = { ball = &quot;beast&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # abomasnow-m     = { ball = &quot;beast&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # weavile-f       = { ball = &quot;ultra&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # weavile-m       = { ball = &quot;sport&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # magnezone       = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # lickilicky      = { ball = &quot;beast&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # rhyperior-f     = { ball = &quot;safari&quot;;  ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # rhyperior-m     = { ball = &quot;safari&quot;;  ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # tangrowth-f     = { ball = &quot;poke&quot;;    ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # tangrowth-m     = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # electivire      = { ball = &quot;master&quot;;  ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # magmortar       = { ball = &quot;fast&quot;;    ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # togekiss        = { ball = &quot;safari&quot;;  ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # yanmega         = { ball = &quot;repeat&quot;;  ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # leafeon         = { ball = &quot;safari&quot;;  ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # glaceon         = { ball = &quot;lure&quot;;    ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # gliscor         = { ball = &quot;luxury&quot;; ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # mamoswine-f     = { ball = &quot;beast&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # mamoswine-m     = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # porygon-z       = { ball = &quot;dream&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # gallade         = { ball = &quot;ultra&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # probopass       = { ball = &quot;moon&quot;;    ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # dusknoir        = { ball = &quot;level&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # froslass        = { ball = &quot;sport&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # rotom           = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # rotom-fan       = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # rotom-frost     = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # rotom-heat      = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # rotom-mow       = { ball = &quot;dusk&quot;;    ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # rotom-wash      = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # uxie            = { ball = &quot;level&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # mesprit         = { ball = &quot;level&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # azelf           = { ball = &quot;great&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # dialga          = { ball = &quot;luxury&quot;; ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # palkia          = { ball = &quot;luxury&quot;; ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # heatran         = { ball = &quot;luxury&quot;; ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # regigigas       = { ball = &quot;master&quot;;  ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # giratina        = { ball = &quot;cherish&quot;; ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # phione          = { ball = &quot;poke&quot;;    ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # darkrai         = { ball = &quot;ultra&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # shaymin         = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # cresselia       = { ball = &quot;luxury&quot;; ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # arceus          = { ball = &quot;luxury&quot;; ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+
+      # » GENERATION 5 - UNOVAno
+      # victini         = { ball = &quot;luxury&quot;; ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # snivy           = { ball = &quot;poke&quot;;    ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # servine         = { ball = &quot;ultra&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # serperior       = { ball = &quot;ultra&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # tepig           = { ball = &quot;poke&quot;;    ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # pignite         = { ball = &quot;poke&quot;;    ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # emboar          = { ball = &quot;poke&quot;;    ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # oshawott        = { ball = &quot;great&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # dewott          = { ball = &quot;great&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # samurott        = { ball = &quot;great&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # patrat          = { ball = &quot;poke&quot;;    ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # watchog         = { ball = &quot;poke&quot;;    ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # lillipup        = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # herdier         = { ball = &quot;poke&quot;;    ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # stoutland       = { ball = &quot;repeat&quot;;  ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # purrloin        = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # liepard         = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # pansage         = { ball = &quot;ultra&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # simisage        = { ball = &quot;luxury&quot;; ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # pansear         = { ball = &quot;poke&quot;;    ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # simisear        = { ball = &quot;poke&quot;;    ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # panpour         = { ball = &quot;poke&quot;;    ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # simipour        = { ball = &quot;luxury&quot;; ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # munna           = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # musharna        = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # pidove          = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # tranquill       = { ball = &quot;master&quot;;  ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # unfezant-f      = { ball = &quot;master&quot;;  ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # unfezant-m      = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # blitzle         = { ball = &quot;poke&quot;;    ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # zebstrika       = { ball = &quot;great&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # roggenrola      = { ball = &quot;heavy&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # boldore         = { ball = &quot;repeat&quot;;  ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # gigalith        = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # woobat          = { ball = &quot;love&quot;;    ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # swoobat         = { ball = &quot;ultra&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # drilbur         = { ball = &quot;beast&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # excadrill       = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # audino          = { ball = &quot;level&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # timburr         = { ball = &quot;poke&quot;;    ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # gurdurr         = { ball = &quot;repeat&quot;;  ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # conkeldurr      = { ball = &quot;beast&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # tympole         = { ball = &quot;repeat&quot;;  ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # palpitoad       = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # seismitoad      = { ball = &quot;dive&quot;;    ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # throh           = { ball = &quot;safari&quot;;  ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # sawk            = { ball = &quot;ultra&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # sewaddle        = { ball = &quot;friend&quot;;  ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # swadloon        = { ball = &quot;luxury&quot;;  ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # leavanny        = { ball = &quot;luxury&quot;;  ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # venipede        = { ball = &quot;safari&quot;;  ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # whirlipede      = { ball = &quot;ultra&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # scolipede       = { ball = &quot;dream&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # cottonee        = { ball = &quot;safari&quot;;  ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # whimsicott      = { ball = &quot;repeat&quot;;  ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # petilil         = { ball = &quot;level&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # lilligant       = { ball = &quot;dream&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # basculin-blue   = { ball = &quot;safari&quot;;  ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # basculin-red    = { ball = &quot;safari&quot;;  ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # sandile         = { ball = &quot;level&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # krokorok        = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # krookodile      = { ball = &quot;master&quot;;  ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # darumaka        = { ball = &quot;safari&quot;;  ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # darumaka-galar  = { ball = &quot;safari&quot;;  ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # darmanitan      = { ball = &quot;safari&quot;;  ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # darmanitan-galar= { ball = &quot;moon&quot;;    ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # maractus        = { ball = &quot;friend&quot;;  ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # dwebble         = { ball = &quot;poke&quot;;    ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # crustle         = { ball = &quot;level&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # scraggy         = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # scrafty         = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # sigilyph        = { ball = &quot;master&quot;;  ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # yamask          = { ball = &quot;love&quot;;    ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # yamask-galar    = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # cofagrigus      = { ball = &quot;dream&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # tirtouga        = { ball = &quot;friend&quot;;  ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # carracosta      = { ball = &quot;friend&quot;;  ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # archen          = { ball = &quot;safari&quot;;  ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # archeops        = { ball = &quot;sport&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # trubbish        = { ball = &quot;poke&quot;;    ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # garbodor        = { ball = &quot;master&quot;;  ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # garbodor-gmax   = { ball = &quot;master&quot;;  ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # zorua           = { ball = &quot;master&quot;;  ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # zoroark         = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # minccino        = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # cinccino        = { ball = &quot;level&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # gothita         = { ball = &quot;poke&quot;;    ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # gothorita       = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # gothitelle      = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # solosis         = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # duosion         = { ball = &quot;repeat&quot;;  ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # reuniclus       = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # ducklett        = { ball = &quot;love&quot;;    ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # swanna          = { ball = &quot;ultra&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # vanillite       = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # vanillish       = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # vanilluxe       = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # deerling-autumn = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # deerling-spring = { ball = &quot;love&quot;;    ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # deerling-summer = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # deerling-winter = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # sawsbuck-autumn = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # sawsbuck-spring = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # sawsbuck-summer = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # sawsbuck-winter = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # emolga          = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # karrablast      = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # escavalier      = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # foongus         = { ball = &quot;safari&quot;;  ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # amoonguss       = { ball = &quot;cherish&quot;; ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # frillish-f      = { ball = &quot;dream&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # frillish-m      = { ball = &quot;level&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # jellicent-f     = { ball = &quot;beast&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # jellicent-m     = { ball = &quot;beast&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # alomomola       = { ball = &quot;poke&quot;;    ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # joltik          = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # galvantula      = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # ferroseed       = { ball = &quot;safari&quot;;  ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # ferrothorn      = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # klink           = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # klang           = { ball = &quot;premier&quot;; ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # klinklang       = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # tynamo          = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # eelektrik       = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # eelektross      = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # elgyem          = { ball = &quot;sport&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # beheeyem        = { ball = &quot;love&quot;;    ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # litwick         = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # lampent         = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # chandelure      = { ball = &quot;dusk&quot;;    ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # axew            = { ball = &quot;master&quot;;  ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # fraxure         = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # haxorus         = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # cubchoo         = { ball = &quot;dream&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # beartic         = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # cryogonal       = { ball = &quot;safari&quot;;  ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # shelmet         = { ball = &quot;premier&quot;; ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # accelgor        = { ball = &quot;dream&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # stunfisk        = { ball = &quot;repeat&quot;;  ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # stunfisk-galar  = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # mienfoo         = { ball = &quot;love&quot;;    ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # mienshao        = { ball = &quot;dream&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # druddigon       = { ball = &quot;fast&quot;;    ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # golett          = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # golurk          = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # pawniard        = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # bisharp         = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # bouffalant      = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # rufflet         = { ball = &quot;fast&quot;;    ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # braviary        = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # vullaby         = { ball = &quot;repeat&quot;;  ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # mandibuzz       = { ball = &quot;master&quot;;  ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # heatmor         = { ball = &quot;repeat&quot;;  ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # durant          = { ball = &quot;premier&quot;; ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # deino           = { ball = &quot;premier&quot;; ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # zweilous        = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # hydreigon       = { ball = &quot;repeat&quot;;  ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # larvesta        = { ball = &quot;poke&quot;;    ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # volcarona       = { ball = &quot;ultra&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # cobalion        = { ball = &quot;moon&quot;;    ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # terrakion       = { ball = &quot;friend&quot;;  ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # virizion        = { ball = &quot;love&quot;;    ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # tornadus        = { ball = &quot;premier&quot;; ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # landorus        = { ball = &quot;luxury&quot;; ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # thundurus       = { ball = &quot;premier&quot;; ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # reshiram        = { ball = &quot;ultra&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # zekrom          = { ball = &quot;luxury&quot;; ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # kyurem          = { ball = &quot;ultra&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # genesect        = { ball = &quot;cherish&quot;; ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+
+      # » GENERATION 6 - KALOS
+      # chespin         = { ball = &quot;poke&quot;;    ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # quilladin       = { ball = &quot;poke&quot;;    ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # chesnaught      = { ball = &quot;poke&quot;;    ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # fennekin        = { ball = &quot;poke&quot;;    ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # braixen         = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # delphox         = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # froakie         = { ball = &quot;dream&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # frogadier       = { ball = &quot;luxury&quot;;  ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # greninja        = { ball = &quot;dream&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # bunnelby        = { ball = &quot;safari&quot;;  ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # diggersby       = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # fletchling      = { ball = &quot;poke&quot;;    ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # fletchinder     = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # talonflame      = { ball = &quot;level&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # scatterbug      = { ball = &quot;luxury&quot;;  ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # spewpa          = { ball = &quot;luxury&quot;;  ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # vivillon-archipelago = { ball = &quot;luxury&quot;; ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # vivillon-continental = { ball = &quot;luxury&quot;; ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # vivillon-elegant     = { ball = &quot;luxury&quot;; ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # vivillon-garden      = { ball = &quot;luxury&quot;; ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # vivillon-high-plains = { ball = &quot;luxury&quot;; ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # vivillon-icy-snow    = { ball = &quot;luxury&quot;; ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # vivillon-jungle      = { ball = &quot;luxury&quot;; ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # vivillon-marine      = { ball = &quot;luxury&quot;; ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # vivillon-meadow      = { ball = &quot;luxury&quot;; ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # vivillon-modern      = { ball = &quot;luxury&quot;; ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # vivillon-monsoon     = { ball = &quot;luxury&quot;; ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # vivillon-ocean       = { ball = &quot;luxury&quot;; ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # vivillon-polar       = { ball = &quot;luxury&quot;; ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # vivillon-river       = { ball = &quot;luxury&quot;; ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # vivillon-sandstorm   = { ball = &quot;luxury&quot;; ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # vivillon-savanna     = { ball = &quot;luxury&quot;; ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # vivillon-sun         = { ball = &quot;luxury&quot;; ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # vivillon-tundra      = { ball = &quot;luxury&quot;; ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # litleo          = { ball = &quot;ultra&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # pyroar-f        = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # pyroar-m        = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # flabebe-blue    = { ball = &quot;beast&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # flabebe-orange  = { ball = &quot;beast&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # flabebe-red     = { ball = &quot;love&quot;;    ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # flabebe-white   = { ball = &quot;beast&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # flabebe-yellow  = { ball = &quot;beast&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # floette-blue    = { ball = &quot;beast&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # floette-eternal = { ball = &quot;luxury&quot;;  ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # floette-orange  = { ball = &quot;beast&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # floette-red     = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # floette-white   = { ball = &quot;beast&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # floette-yellow  = { ball = &quot;beast&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # florges-blue    = { ball = &quot;beast&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # florges-orange  = { ball = &quot;beast&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # florges-red     = { ball = &quot;love&quot;;    ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # florges-white   = { ball = &quot;beast&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # florges-yellow  = { ball = &quot;beast&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # skiddo          = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # gogoat          = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # pancham         = { ball = &quot;repeat&quot;;  ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # pangoro         = { ball = &quot;poke&quot;;    ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # furfrou         = { ball = &quot;poke&quot;;    ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # espurr          = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # meowstic-f      = { ball = &quot;safari&quot;;  ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # meowstic-m      = { ball = &quot;safari&quot;;  ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # honedge         = { ball = &quot;level&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # doublade        = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # aegislash       = { ball = &quot;quick&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # spritzee        = { ball = &quot;safari&quot;;  ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # aromatisse      = { ball = &quot;sport&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # swirlix         = { ball = &quot;beast&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # slurpuff        = { ball = &quot;beast&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # inkay           = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # malamar         = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # binacle         = { ball = &quot;repeat&quot;;  ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # barbaracle      = { ball = &quot;safari&quot;;  ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # skrelp          = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # dragalge        = { ball = &quot;master&quot;;  ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # clauncher       = { ball = &quot;premier&quot;; ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # clawitzer       = { ball = &quot;premier&quot;; ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # helioptile      = { ball = &quot;dusk&quot;;    ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # heliolisk       = { ball = &quot;level&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # tyrunt          = { ball = &quot;lure&quot;;    ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # tyrantrum       = { ball = &quot;heavy&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # amaura          = { ball = &quot;repeat&quot;;  ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # aurorus         = { ball = &quot;moon&quot;;    ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # sylveon         = { ball = &quot;dream&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # hawlucha        = { ball = &quot;love&quot;;    ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # dedenne         = { ball = &quot;repeat&quot;;  ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # carbink         = { ball = &quot;heavy&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # goomy           = { ball = &quot;master&quot;;  ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # sliggoo         = { ball = &quot;master&quot;;  ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # goodra          = { ball = &quot;poke&quot;;    ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # klefki          = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # phantump        = { ball = &quot;poke&quot;;    ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # trevenant       = { ball = &quot;premier&quot;; ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # pumpkaboo-small = { ball = &quot;beast&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # pumpkaboo-average = { ball = &quot;beast&quot;; ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # pumpkaboo-large = { ball = &quot;beast&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # pumpkaboo-super = { ball = &quot;beast&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # gourgeist-small = { ball = &quot;beast&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # gourgeist-average = { ball = &quot;beast&quot;; ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # gourgeist-large = { ball = &quot;beast&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # gourgeist-super = { ball = &quot;beast&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # bergmite        = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # avalugg         = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # noibat          = { ball = &quot;repeat&quot;;  ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # noivern         = { ball = &quot;repeat&quot;;  ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # xerneas         = { ball = &quot;cherish&quot;; ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # yveltal         = { ball = &quot;cherish&quot;; ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # zygarde         = { ball = &quot;cherish&quot;; ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+
+      # » GENERATION 7 - ALOLA
+      # rowlet          = { ball = &quot;poke&quot;;    ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # dartrix         = { ball = &quot;poke&quot;;    ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # decidueye       = { ball = &quot;poke&quot;;    ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # litten          = { ball = &quot;poke&quot;;    ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # torracat        = { ball = &quot;poke&quot;;    ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # incineroar      = { ball = &quot;poke&quot;;    ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # popplio         = { ball = &quot;poke&quot;;    ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # brionne         = { ball = &quot;poke&quot;;    ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # primarina       = { ball = &quot;poke&quot;;    ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # pikipek         = { ball = &quot;luxury&quot;;  ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # trumbeak        = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # toucannon       = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # yungoos         = { ball = &quot;sport&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # gumshoos        = { ball = &quot;sport&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # grubbin         = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # charjabug       = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # vikavolt        = { ball = &quot;repeat&quot;;  ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # crabrawler      = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # crabominable    = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # oricorio-baile  = { ball = &quot;heavy&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # oricorio-pompom = { ball = &quot;dream&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # oricorio-pau    = { ball = &quot;lure&quot;;    ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # oricorio-sensu  = { ball = &quot;friend&quot;;  ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # cutiefly        = { ball = &quot;beast&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # ribombee        = { ball = &quot;beast&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # rockruff        = { ball = &quot;beast&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # lycanroc-dusk   = { ball = &quot;friend&quot;;  ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # lycanroc-midday = { ball = &quot;ultra&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # lycanroc-midnight = { ball = &quot;moon&quot;;  ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # wishiwashi      = { ball = &quot;dive&quot;;    ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # mareanie        = { ball = &quot;sport&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # toxapex         = { ball = &quot;dream&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # mudbray         = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # mudsdale        = { ball = &quot;ultra&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # dewpider        = { ball = &quot;moon&quot;;    ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # araquanid       = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # fomantis        = { ball = &quot;friend&quot;;  ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # lurantis        = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # morelull        = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # shiinotic       = { ball = &quot;level&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # salandit        = { ball = &quot;level&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # salazzle        = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # stufful         = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # bewear          = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # bounsweet       = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # steenee         = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # tsareena        = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # comfey          = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # oranguru        = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # passimian       = { ball = &quot;master&quot;;  ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # wimpod          = { ball = &quot;safari&quot;;  ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # golisopod       = { ball = &quot;premier&quot;; ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # sandygast       = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # palossand       = { ball = &quot;safari&quot;;  ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # pyukumuku       = { ball = &quot;net&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # type-null       = { ball = &quot;luxury&quot;;  ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # silvally        = { ball = &quot;cherish&quot;; ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # minior          = { ball = &quot;luxury&quot;; ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # komala          = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # turtonator      = { ball = &quot;master&quot;;  ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # togedemaru      = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # mimikyu         = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # bruxish         = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # drampa          = { ball = &quot;poke&quot;;    ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # dhelmise        = { ball = &quot;friend&quot;;  ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # jangmo-o        = { ball = &quot;ultra&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # hakamo-o        = { ball = &quot;repeat&quot;;  ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # kommo-o         = { ball = &quot;repeat&quot;;  ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # tapu-koko       = { ball = &quot;cherish&quot;; ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # tapu-lele       = { ball = &quot;cherish&quot;; ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # tapu-bulu       = { ball = &quot;cherish&quot;; ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # tapu-fini       = { ball = &quot;cherish&quot;; ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # solgaleo        = { ball = &quot;cherish&quot;; ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # lunala          = { ball = &quot;cherish&quot;; ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # nihilego        = { ball = &quot;beast&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # pheromosa       = { ball = &quot;luxury&quot;; ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # xurkitree       = { ball = &quot;luxury&quot;; ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # celesteela      = { ball = &quot;luxury&quot;; ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # necrozma        = { ball = &quot;luxury&quot;; ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # buzzwole        = { ball = &quot;poke&quot;;    ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # kartana         = { ball = &quot;beast&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # guzzlord        = { ball = &quot;beast&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # poipole         = { ball = &quot;cherish&quot;; ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # naganadel       = { ball = &quot;poke&quot;;    ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # stakataka       = { ball = &quot;level&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # blacephalon     = { ball = &quot;beast&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # zeraora         = { ball = &quot;cherish&quot;; ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # meltan          = { ball = &quot;ultra&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # melmetal        = { ball = &quot;ultra&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+
+      # » GENERATION 8 - GALAR
+      # grookey         = { ball = &quot;poke&quot;;    ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # thwackey        = { ball = &quot;poke&quot;;    ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # rillaboom       = { ball = &quot;poke&quot;;    ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # rillaboom-gmax  = { ball = &quot;poke&quot;;    ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # scorbunny       = { ball = &quot;poke&quot;;    ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # raboot          = { ball = &quot;poke&quot;;    ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # cinderace       = { ball = &quot;poke&quot;;    ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # cinderace-gmax  = { ball = &quot;poke&quot;;    ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # sobble          = { ball = &quot;poke&quot;;    ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # drizzile        = { ball = &quot;poke&quot;;    ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # inteleon        = { ball = &quot;poke&quot;;    ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # inteleon-gmax   = { ball = &quot;poke&quot;;    ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # skwovet         = { ball = &quot;heavy&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # greedent        = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # rookidee        = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # corvisquire     = { ball = &quot;ultra&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # corviknight     = { ball = &quot;heavy&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+#      corviknight-gmax= { ball = &quot;luxury&quot;; ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # blipbug         = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # dottler         = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # orbeetle        = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+ #     orbeetle-gmax   = { ball = &quot;luxury&quot;; ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # nickit          = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # thievul         = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # gossifleur      = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # eldegoss        = { ball = &quot;master&quot;;  ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # wooloo          = { ball = &quot;ultra&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # dubwool         = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # chewtle         = { ball = &quot;safari&quot;;  ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # drednaw         = { ball = &quot;master&quot;;  ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # drednaw-gmax    = { ball = &quot;master&quot;;  ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # yamper          = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # boltund         = { ball = &quot;level&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # rolycoly        = { ball = &quot;safari&quot;;  ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # carkol          = { ball = &quot;sport&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # coalossal       = { ball = &quot;fast&quot;;    ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+#      coalossal-gmax  = { ball = &quot;luxury&quot;; ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # applin          = { ball = &quot;beast&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # flapple         = { ball = &quot;master&quot;;  ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+ #     flapple-gmax    = { ball = &quot;luxury&quot;; ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # appletun        = { ball = &quot;master&quot;;  ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+ #     appletun-gmax   = { ball = &quot;luxury&quot;; ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # silicobra       = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # sandaconda      = { ball = &quot;beast&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+  #    sandaconda-gmax = { ball = &quot;luxury&quot;; ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # cramorant       = { ball = &quot;timer&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # arrokuda        = { ball = &quot;level&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # barraskewda     = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # toxel           = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # toxtricity-amped   = { ball = &quot;level&quot;; ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # toxtricity-lowkey  = { ball = &quot;safari&quot;; ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+   #   toxtricity-gmax    = { ball = &quot;luxury&quot;; ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # sizzlipede      = { ball = &quot;master&quot;;  ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # centiskorch     = { ball = &quot;beast&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # centiskorch-gmax= { ball = &quot;beast&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # clobbopus       = { ball = &quot;repeat&quot;;  ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # grapploct       = { ball = &quot;fast&quot;;    ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # sinistea        = { ball = &quot;luxury&quot;;  ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # sinistea-antique= { ball = &quot;level&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # polteageist     = { ball = &quot;repeat&quot;;  ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # polteageist-antique = { ball = &quot;level&quot;; ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # hatenna         = { ball = &quot;premier&quot;; ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # hattrem         = { ball = &quot;premier&quot;; ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # hatterene       = { ball = &quot;safari&quot;;  ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # hatterene-gmax  = { ball = &quot;master&quot;;  ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # impidimp        = { ball = &quot;friend&quot;;  ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # morgrem         = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # grimmsnarl      = { ball = &quot;beast&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # obstagoon       = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # perrserker      = { ball = &quot;safari&quot;;  ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # cursola         = { ball = &quot;dream&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # sirfetchd       = { ball = &quot;love&quot;;    ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # mr-rime         = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # runerigus       = { ball = &quot;sport&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # milcery         = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # milcery-gmax    = { ball = &quot;luxury&quot;; ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # alcremie-strawberry = { ball = &quot;master&quot;; ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # alcremie-berry     = { ball = &quot;luxury&quot;;  ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # alcremie-love      = { ball = &quot;luxury&quot;;  ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # alcremie-clover    = { ball = &quot;luxury&quot;;  ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # alcremie-flower    = { ball = &quot;luxury&quot;;  ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # alcremie-star      = { ball = &quot;luxury&quot;;  ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # alcremie-ribbon    = { ball = &quot;luxury&quot;;  ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # alcremie-gmax      = { ball = &quot;luxury&quot;; ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # falinks         = { ball = &quot;safari&quot;;  ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # pincurchin      = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # snom            = { ball = &quot;safari&quot;;  ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # frosmoth        = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # stonjourner     = { ball = &quot;ultra&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # eiscue          = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # indeedee-f      = { ball = &quot;safari&quot;;  ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # indeedee-m      = { ball = &quot;safari&quot;;  ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # morpeko         = { ball = &quot;repeat&quot;;  ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # cufant          = { ball = &quot;repeat&quot;;  ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # copperajah      = { ball = &quot;beast&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+   #   copperajah-gmax = { ball = &quot;luxury&quot;; ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # dracozolt       = { ball = &quot;safari&quot;;  ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # arctozolt       = { ball = &quot;master&quot;;  ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # dracovish       = { ball = &quot;safari&quot;;  ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # arctovish       = { ball = &quot;dive&quot;;    ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # duraludon       = { ball = &quot;beast&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # dreepy          = { ball = &quot;master&quot;;  ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # drakloak        = { ball = &quot;master&quot;;  ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # dragapult       = { ball = &quot;safari&quot;;  ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # zacian          = { ball = &quot;cherish&quot;; ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # zamazenta       = { ball = &quot;cherish&quot;; ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # eternatus       = { ball = &quot;cherish&quot;; ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # regieleki       = { ball = &quot;luxury&quot;;  ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # regidrago       = { ball = &quot;luxury&quot;;  ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+
+      # PLA — HISUI
+      # wyrdeer         = { ball = &quot;luxury&quot;; ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # kleavor         = { ball = &quot;luxury&quot;; ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # ursaluna        = { ball = &quot;luxury&quot;; ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # sneasler        = { ball = &quot;luxury&quot;; ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # overqwil        = { ball = &quot;luxury&quot;; ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # enamorus        = { ball = &quot;luxury&quot;; ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # growlithe-hisui = { ball = &quot;luxury&quot;; ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # arcanine-hisui  = { ball = &quot;luxury&quot;; ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # voltorb-hisui   = { ball = &quot;luxury&quot;; ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # electrode-hisui = { ball = &quot;luxury&quot;; ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # qwilfish-hisui  = { ball = &quot;luxury&quot;; ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # sneasel-hisui   = { ball = &quot;luxury&quot;; ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # lilligant-hisui = { ball = &quot;luxury&quot;; ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # zoroark-hisui   = { ball = &quot;luxury&quot;; ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # braviary-hisui  = { ball = &quot;luxury&quot;; ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # sliggoo-hisui   = { ball = &quot;luxury&quot;; ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # goodra-hisui    = { ball = &quot;luxury&quot;; ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # dialga-origin   = { ball = &quot;luxury&quot;; ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # palkia-origin   = { ball = &quot;luxury&quot;; ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # basculegion-f   = { ball = &quot;poke&quot;;    ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # basculegion-m   = { ball = &quot;beast&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # zorua-hisui     = { ball = &quot;poke&quot;;    ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # samurott-hisui  = { ball = &quot;great&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # typhlosion-hisui= { ball = &quot;poke&quot;;    ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # decidueye-hisui = { ball = &quot;poke&quot;;    ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+
+      # » GENERATION 9 - PALDEA
+      # sprigatito      = { ball = &quot;poke&quot;;    ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # floragato       = { ball = &quot;poke&quot;;    ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # meowscarada     = { ball = &quot;poke&quot;;    ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # fuecoco         = { ball = &quot;poke&quot;;    ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # crocalor        = { ball = &quot;poke&quot;;    ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # skeledirge      = { ball = &quot;poke&quot;;    ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # quaxly          = { ball = &quot;poke&quot;;    ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # quaxwell        = { ball = &quot;poke&quot;;    ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # quaquaval       = { ball = &quot;poke&quot;;    ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # lechonk         = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # oinkologne-f    = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # oinkologne-m    = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # dudunsparce-two   = { ball = &quot;luxury&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # dudunsparce-three = { ball = &quot;luxury&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # tarountula      = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # spidops         = { ball = &quot;dream&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # nymble          = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # lokix           = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # rellor          = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # rabsca          = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # greavard        = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # houndstone      = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # flittle         = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # espathra        = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # farigiraf       = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # wiglett         = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # wugtrio         = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # dondozo         = { ball = &quot;love&quot;;    ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # veluza          = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # finizen         = { ball = &quot;lure&quot;;    ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # palafin         = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # smoliv          = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # dolliv          = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # arboliva        = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # capsakid        = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # scovillain      = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # tadbulb         = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # bellibolt       = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # varoom          = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # revavroom       = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # orthworm        = { ball = &quot;heavy&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # tandemaus       = { ball = &quot;poke&quot;;    ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # maushold-three  = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # maushold-four   = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # cetoddle        = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # cetitan         = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # frigibax        = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # arctibax        = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # baxcalibur      = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # tatsugiri-curly = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # tatsugiri-droopy= { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # tatsugiri-stretchy = { ball = &quot;luxury&quot;;  ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # cyclizar        = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # pawmi           = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # pawmo           = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # pawmot          = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # wattrel         = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # kilowattrel     = { ball = &quot;level&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # bombirdier      = { ball = &quot;beast&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # squawkabilly-green = { ball = &quot;friend&quot;; ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # squawkabilly-blue  = { ball = &quot;lure&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # squawkabilly-white = { ball = &quot;luxury&quot;; ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # squawkabilly-yellow= { ball = &quot;luxury&quot;;    ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # flamigo         = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # klawf           = { ball = &quot;friend&quot;;  ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # nacli           = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # naclstack       = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # garganacl       = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # glimmet         = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # glimmora        = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # shroodle        = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # grafaiai        = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # fidough         = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # dachsbun        = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # maschiff        = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # mabosstiff      = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # bramblin        = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # brambleghast    = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # great-tusk      = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # brute-bonnet    = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # sandy-shocks    = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # scream-tail     = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # flutter-mane    = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # slither-wing    = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # roaring-moon    = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # iron-treads     = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # iron-moth       = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # iron-hands      = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # iron-jugulis    = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # iron-thorns     = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # iron-bundle     = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # iron-valiant    = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # tinkatink       = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # tinkatuff       = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # tinkaton        = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # charcadet       = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # armarouge       = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # ceruledge       = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # toedscool       = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # toedscruel      = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+#      wooper-paldea   = { ball = &quot;luxury&quot;; ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # clodsire        = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # kingambit       = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # annihilape      = { ball = &quot;beast&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # dipplin         = { ball = &quot;ultra&quot;;   ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # poltchageist    = { ball = &quot;dusk&quot;;    ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+      # sinistcha       = { ball = &quot;luxury&quot;;     ot = true; style = &quot;star&quot;; egg = false; notes = &quot;&quot;; };
+    };
+
+
+
+    # ★ ─────────────────────────────────────────────────────────────────────── ★
+    # APRIBALLS BREEDABLES
+    # ★ ─────────────────────────────────────────────────────────────────────── ★
+    
+    #  SHORTCUTS GUIDE: 
+    #      allNone;                                      -&gt;  NO  APRIBALLS, NO HIDDEN ABILITY, NO EGG MOVES
+    #      allHA;                                        -&gt;  ALL APRIBALLS + HIDDEN ABILITY, BUT NO EGG MOVES
+    #      allDone;                                      -&gt;  ALL APRIBALLS + HIDDEN ABILITY + EGG MOVES
+    #      allHA // { dream = none; };                   -&gt;  ALL APRIBALLS + HIDDEN ABILITY - DREAM BALL
+    #      allDone // { safari = none; beast = none; };  -&gt;  ALL APRIBALLS + HA + EM - SAFARI BALL - BEAST BALL
+
+    #  PER-BALL OVERRIDE VALUES (RIGHT-SIDE of //):
+    #      none  -&gt;  REMOVE THAT BALL
+    #      ball  -&gt;  THAT BALL ONLY (no HA, no EM)
+    #      HA    -&gt;  THAT BALL + HIDDEN ABILITY (no EM)
+    #      HAEM  -&gt;  THAT BALL + HIDDEN ABILITY + EGG MOVES
+    # ★ ─────────────────────────────────────────────────────────────────────── ★
+    breedables = {
+      # » GENERATION 1 - KANTO REGION
+      bulbasaur       = allHA   // { moon   = HAEM; };
+      charmander      = allHA   // { friend = HAEM; heavy = HAEM; love = HAEM; dream = HAEM; beast = HAEM; };
+      squirtle        = allHA   // { friend = HAEM; heavy = HAEM; love = HAEM; moon  = HAEM; beast = HAEM; };
+      caterpie        = allHA   // { beast  = ball; };
+      weedle          = allHA   // { dream  = none; };
+      pidgey          = allBall // { beast = HAEM; safari = HA; fast = HA; sport = none; };
+      rattata         = allBall // { safari = HAEM; beast = HAEM; love = none; lure = none; moon = none; sport = none; };
+      rattata-alola   = allNone;
+      spearow         = allNone;
+      ekans           = allNone;
+      pichu           = allNone;
+      sandshrew       = allNone;
+      sandshrew-alola = allNone;
+      nidoran-f       = allNone;
+      clefairy        = allNone;
+      vulpix          = allNone;
+      vulpix-alola    = allNone;
+      zubat           = allNone;
+      oddish          = allNone;
+      paras           = allNone;
+      venonat         = allNone;
+      jigglypuff      = allNone;
+      diglett         = allNone;
+      diglett-alola   = allNone;
+      meowth          = allNone;
+      meowth-alola    = allNone;
+      meowth-galar    = allNone;
+      psyduck         = allNone;
+      mankey          = allNone;
+      growlithe       = allNone;
+      poliwag         = allNone;
+      abra            = allNone;
+      machop          = allNone;
+      bellsprout      = allNone;
+      tentacool       = allNone;
+      geodude         = allNone;
+      geodude-alola   = allNone;
+      ponyta          = allNone;
+      ponyta-galar    = allNone;
+      slowpoke        = allNone;
+      slowpoke-galar  = allNone;
+      magnemite       = allNone;
+      farfetchd       = allNone;
+      farfetchd-galar = allNone;
+      doduo           = allNone;
+      seel            = allNone;
+      grimer          = allNone;
+      grimer-alola    = allNone;
+      shellder        = allNone;
+      gastly          = allNone;
+      onix            = allNone;
+      drowzee         = allNone;
+      krabby          = allNone;
+      voltorb         = allNone;
+      exeggcute       = allNone;
+      cubone          = allNone;
+      lickitung       = allNone;
+      koffing         = allNone;
+      rhyhorn         = allNone;
+      chansey         = allNone;
+      tangela         = allNone;
+      kangaskhan      = allNone;
+      horsea          = allNone;
+      goldeen         = allNone;
+      staryu          = allNone;
+      mr-mime         = allNone;
+      mr-mime-galar   = allNone;
+      scyther         = allNone;
+      smoochum        = allNone;
+      elekid          = allNone;
+      magby           = allNone;
+      pinsir          = allNone;
+      tauros          = allNone;
+      tauros-paldea   = allNone;
+      tauros-paldea-blaze    = allNone;
+      tauros-paldea-aqua     = allNone;
+      magikarp        = allNone;
+      lapras          = allNone;
+      eevee           = allNone;
+      porygon         = allNone;
+      omanyte         = allNone;
+      kabuto          = allNone;
+      aerodactyl      = allNone;
+      snorlax         = allNone;
+      dratini         = allNone;
+      
+  
+      # » GENERATION 2 - JOHTO REGION
+      chikorita     = allNone;
+      cyndaquil     = allNone;
+      totodile      = allNone;
+      sentret       = allNone;
+      hoothoot      = allNone;
+      ledyba        = allNone;
+      spinarak      = allNone;
+      chinchou      = allNone;
+      togepi        = allNone;
+      natu          = allNone;
+      mareep        = allNone;
+      marill        = allNone;
+      sudowoodo     = allNone;
+      hoppip        = allNone;
+      aipom         = allNone;
+      sunkern       = allNone;
+      yanma         = allNone;
+      wooper        = allNone;
+      wooper-paldea = allNone;
+      murkrow       = allNone;
+      misdreavus    = allNone;
+      wobbuffet     = allNone;
+      girafarig     = allNone;
+      pineco        = allNone;
+      dunsparce     = allNone;
+      gligar        = allNone;
+      snubbull      = allNone;
+      qwilfish      = allNone;
+      shuckle       = allNone;
+      heracross     = allNone;
+      sneasel       = allNone;
+      teddiursa     = allNone;
+      slugma        = allNone;
+      swinub        = allNone;
+      corsola       = allNone;
+      corsola-galar = allNone;
+      remoraid      = allNone;
+      delibird      = allNone;
+      mantine       = allNone;
+      skarmory      = allNone;
+      houndour      = allNone;
+      phanpy        = allNone;
+      stantler      = allNone;
+      smeargle      = allNone;
+      tyrogue       = allNone;
+      miltank       = allNone;
+      larvitar      = allNone;
+  
+      # » GENERATION 3 - HOENN REGION
+      treecko         = allNone;
+      torchic         = allNone;
+      mudkip          = allNone;
+      poochyena       = allNone;
+      zigzagoon       = allNone;
+      zigzagoon-galar = allNone;
+      wurmple   = allNone;
+      lotad     = allNone;
+      seedot    = allNone;
+      taillow   = allNone;
+      wingull   = allNone;
+      ralts     = allNone;
+      surskit   = allNone;
+      shroomish = allNone;
+      slakoth   = allNone;
+      nincada   = allNone;
+      whismur   = allNone;
+      makuhita  = allNone;
+      nosepass  = allNone;
+      skitty    = allNone;
+      sableye   = allNone;
+      mawile    = allNone;
+      aron      = allNone;
+      meditite  = allNone;
+      electrike = allNone;
+      plusle    = allNone;
+      minun     = allNone;
+      volbeat   = allNone;
+      illumise  = allNone;
+      roselia   = allNone;
+      gulpin    = allNone;
+      carvanha  = allNone;
+      wailmer   = allNone;
+      numel     = allNone;
+      torkoal   = allNone;
+      spoink    = allNone;
+      spinda    = allNone;
+      trapinch  = allNone;
+      cacnea    = allNone;
+      swablu    = allNone;
+      zangoose  = allNone;
+      seviper   = allNone;
+      lunatone  = allNone;
+      solrock   = allNone;
+      barboach  = allNone;
+      corphish  = allNone;
+      baltoy    = allNone;
+      lileep    = allNone;
+      anorith   = allNone;
+      feebas    = allNone;
+      castform  = allNone;
+      kecleon   = allNone;
+      shuppet   = allNone;
+      duskull   = allNone;
+      tropius   = allNone;
+      chingling = allNone;
+      absol     = allNone;
+      snorunt   = allNone;
+      spheal    = allNone;
+      clamperl  = allNone;
+      relicanth = allNone;
+      luvdisc   = allNone;
+      bagon     = allNone;
+      beldum    = allNone;
+      
+      
+      
+      # » GENERATION 4 - SINNOH REGION
+      turtwig = allNone;
+      chimchar = allNone;
+      piplup = allNone;
+      starly = allNone;
+      bidoof = allNone;
+      kricketot   = allNone;
+      shinx       = allNone;
+      cranidos    = allNone;
+      shieldon    = allNone;
+      burmy-plant = allNone;
+      burmy-sandy = allNone;
+      burmy-trash = allNone;
+      combee = allNone;
+      pachirisu = allNone;
+      buizel = allNone;
+      cherubi = allNone;
+      shellos-east = allNone;
+      shellos-west = allNone;
+      drifloon = allNone;
+      buneary = allNone;
+      glameow = allNone;
+      stunky = allNone;
+      bronzor = allNone;
+      chatot = allNone;
+      spiritomb = allNone;
+      gible = allNone;
+      riolu = allNone;
+      hippopotas = allNone;
+      skorupi = allNone;
+      croagunk = allNone;
+      carnivine = allNone;
+      finneon = allNone;
+      snover = allNone;
+      rotom = allNone;
+      
+      # » GENERATION 5 - UNOVA REGION
+      snivy          = allNone;
+      tepig          = allNone;
+      oshawott       = allNone;
+      patrat         = allNone;
+      lillipup       = allNone;
+      purrloin       = allNone;
+      pansage        = allNone;
+      pansear        = allNone;
+      panpour        = allNone;
+      munna          = allNone;
+      pidove         = allNone;
+      blitzle        = allNone;
+      roggenrola     = allNone;
+      woobat         = allNone;
+      drilbur        = allNone;
+      audino         = allNone;
+      timburr        = allNone;
+      tympole        = allNone;
+      throh          = allNone;
+      sawk           = allNone;
+      sewaddle       = allNone;
+      venipede       = allNone;
+      cottonee       = allNone;
+      petilil        = allNone;
+      basculin-red   = allNone;
+      basculin-blue  = allNone;
+      sandile        = allNone;
+      darumaka       = allNone;
+      darumaka-galar = allNone;
+      maractus       = allNone;
+      dwebble        = allNone;
+      scraggy        = allNone;
+      sigilyph       = allNone;
+      yamask         = allNone;
+      yamask-galar   = allNone;
+      tirtouga       = allNone;
+      archen         = allNone;
+      trubbish       = allNone;
+      zorua          = allNone;
+      minccino       = allNone;
+      gothita        = allNone;
+      solosis        = allNone;
+      ducklett       = allNone;
+      vanillite      = allNone;
+      deerling       = allNone;
+      emolga         = allNone;
+      karrablast     = allNone;
+      foongus        = allNone;
+      frillish       = allNone;
+      alomomola      = allNone;
+      joltik         = allNone;
+      ferroseed      = allNone;
+      klink          = allNone;
+      tynamo         = allNone;
+      elgyem         = allNone;
+      litwick        = allNone;
+      axew           = allNone;
+      cubchoo        = allNone;
+      cryogonal      = allNone;
+      shelmet        = allNone;
+      stunfisk       = allNone;
+      stunfisk-galar = allNone;
+      mienfoo        = allNone;
+      druddigon      = allNone;
+      golett         = allNone;
+      pawniard       = allNone;
+      bouffalant     = allNone;
+      rufflet        = allNone;
+      vullaby        = allNone;
+      heatmor        = allNone;
+      durant         = allNone;
+      deino          = allNone;
+      larvesta       = allNone;
+      
+  
+  
+      # » GENERATION 6 - KALOS REGION
+      chespin           = allNone;
+      fennekin          = allNone;
+      froakie           = allNone;
+      bunnelby          = allNone;
+      fletchling        = allNone;
+      scatterbug        = allNone;
+      litleo            = allNone;
+      flabebe-blue      = allNone;
+      flabebe-orange    = allNone;
+      flabebe-red       = allNone;
+      flabebe-white     = allNone;
+      flabebe-yellow    = allNone;
+      skiddo            = allNone;
+      pancham           = allNone;
+      furfrou           = allNone;
+      espurr            = allNone;
+      honedge           = allNone;
+      spritzee          = allNone;
+      swirlix           = allNone;
+      inkay             = allNone;
+      binacle           = allNone;
+      skrelp            = allNone;
+      clauncher         = allNone;
+      helioptile        = allNone;
+      tyrunt            = allNone;
+      amaura            = allNone;
+      hawlucha          = allNone;
+      dedenne           = allNone;
+      carbink           = allNone;
+      goomy             = allNone;
+      klefki            = allNone;
+      phantump          = allNone;
+      pumpkaboo-small   = allNone;
+      pumpkaboo-average = allNone;
+      pumpkaboo-large   = allNone;
+      pumpkaboo-super   = allNone;
+      bergmite          = allNone;
+      noibat            = allNone;
+  
+  
+  
+      # » GENERATION 7 - ALOLA REGION
+      rowlet          = allNone;
+      litten          = allNone;
+      popplio         = allNone;
+      pikipek         = allNone;
+      yungoos         = allNone;
+      grubbin         = allNone;
+      crabrawler      = allNone;
+      oricorio-baile  = allNone;
+      oricorio-pompom = allNone;
+      oricorio-pau    = allNone;
+      oricorio-sensu  = allNone;
+      cutiefly        = allNone;
+      rockruff        = allNone;
+      rockruff-dusk   = allNone;
+      wishiwashi      = allNone;
+      mareanie        = allNone;
+      mudbray         = allNone;
+      dewpider        = allNone;
+      fomantis        = allNone;
+      morelull        = allNone;
+      salandit        = allNone;
+      stufful         = allNone;
+      bounsweet       = allNone;
+      comfey          = allNone;
+      oranguru        = allNone;
+      passimian       = allNone;
+      wimpod          = allNone;
+      sandygast       = allNone;
+      pyukumuku       = allNone;
+      minior-blue     = allNone;
+      minior-green    = allNone;
+      minior-indigo   = allNone;
+      minior-orange   = allNone;
+      minior-red      = allNone;
+      minior-violet   = allNone;
+      minior-yellow   = allNone;
+      komala          = allNone;
+      turtonator      = allNone;
+      togedemaru      = allNone;
+      mimikyu         = allNone;
+      bruxish         = allNone;
+      drampa          = allNone;
+      dhelmise        = allNone;
+      jangmo-o        = allNone;
+  
+  
+  
+      # » GENERATION 8 - GALAR REGION
+      grookey     = allNone;
+      scorbunny   = allNone;
+      sobble      = allNone;
+      skwovet     = allNone;
+      rookidee    = allNone;
+      blipbug     = allNone;
+      nickit      = allNone;
+      gossifleur  = allNone;
+      wooloo      = allNone;
+      chewtle     = allNone;
+      yamper      = allNone;
+      rolycoly    = allNone;
+      applin      = allNone;
+      silicobra   = allNone;
+      cramorant   = allNone;
+      arrokuda    = allNone;
+      toxel       = allNone;
+      sizzlipede  = allNone;
+      clobbopus   = allNone;
+      sinistea    = allNone;
+      hatenna     = allNone;
+      impidimp    = allNone;
+      milcery     = allNone;
+      falinks     = allNone;
+      pincurchin  = allNone;
+      snom        = allNone;
+      stonjourner = allNone;
+      eiscue      = allNone;
+      indeedee    = allNone;
+      morpeko     = allNone;
+      cufant      = allNone;
+      duraludon   = allNone;
+      dreepy      = allNone;
+    };  
+  
+  };}</code></pre></details></section>
     
     <section class="options-section" id="options">
       <h2>Options</h2>
