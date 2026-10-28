@@ -1,11 +1,23 @@
 # project.toml — configuration for hooks/build-docs.py
 [options]
 include = ["pokenix"]
+exclude_prefixes = [
+  "pokenix.breedables",
+  "pokenix.shiny",
+  "pokenix.html",
+  "pokenix.debug",
+]
+keep_attrs = [
+  "pokenix.breedables.ducklett",
+  "pokenix.shiny.ducklett",
+]
+
 
 [project]
 name        = "pokenix"
 url         = "https://QuackHack-McBlindy.com"
 url_label   = "QuackHack-McBlindy.com"
+version     = "1.0.0"
 description = '''
 <p>
   Welcome to the <strong>{name}</strong> options page.<br>

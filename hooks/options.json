@@ -1,0 +1,1573 @@
+{
+  "pokenix.events": {
+    "declarations": [
+      "/nix/store/0r6azzmx2jx3xqcgv1sn0djjk05gjl4r-source/options.nix"
+    ],
+    "default": {
+      "_type": "literalExpression",
+      "text": "{ }"
+    },
+    "description": "Tracked event Pokémon. Each entry is a distibuted event you've redeemed —\nGameStop/GAME/JP distributions, movie events, HOME gifts, etc. Appears on\nthe **events** page.\n",
+    "example": {
+      "_type": "literalExpression",
+      "text": "{\n  jirachi-2003-wishmkr = {\n    ball = \"cherish\";\n    id = \"20043\";\n    moves = [\n      \"Wish\"\n      \"Confusion\"\n      \"Rest\"\n      \"Doom Desire\"\n    ];\n    ot = \"WISHMKR\";\n    region = \"ENG\";\n    shiny = true;\n    species = \"jirachi\";\n    year = \"2003\";\n  };\n}"
+    },
+    "loc": [
+      "pokenix",
+      "events"
+    ],
+    "readOnly": false,
+    "type": "attribute set of (submodule)"
+  },
+  "pokenix.events.<name>.ball": {
+    "declarations": [
+      "/nix/store/0r6azzmx2jx3xqcgv1sn0djjk05gjl4r-source/options.nix"
+    ],
+    "default": {
+      "_type": "literalExpression",
+      "text": "\"cherish\""
+    },
+    "description": "Ball sprite rendered next to the event. Matches `sprites/balls/<ball>.png` (`pokeball` maps to `poke.png`).",
+    "example": {
+      "_type": "literalExpression",
+      "text": "\"cherish\""
+    },
+    "loc": [
+      "pokenix",
+      "events",
+      "<name>",
+      "ball"
+    ],
+    "readOnly": false,
+    "type": "null or string"
+  },
+  "pokenix.events.<name>.dex": {
+    "declarations": [
+      "/nix/store/0r6azzmx2jx3xqcgv1sn0djjk05gjl4r-source/options.nix"
+    ],
+    "default": {
+      "_type": "literalExpression",
+      "text": "null"
+    },
+    "description": "National Pokédex number. Auto-resolved from the breedables entry if unset; required for species not in the breedables list.",
+    "example": {
+      "_type": "literalExpression",
+      "text": "385"
+    },
+    "loc": [
+      "pokenix",
+      "events",
+      "<name>",
+      "dex"
+    ],
+    "readOnly": false,
+    "type": "null or signed integer"
+  },
+  "pokenix.events.<name>.id": {
+    "declarations": [
+      "/nix/store/0r6azzmx2jx3xqcgv1sn0djjk05gjl4r-source/options.nix"
+    ],
+    "default": {
+      "_type": "literalExpression",
+      "text": "null"
+    },
+    "description": "Trainer ID (5–6 digit string). Rendered in the expanded details.",
+    "example": {
+      "_type": "literalExpression",
+      "text": "\"20043\""
+    },
+    "loc": [
+      "pokenix",
+      "events",
+      "<name>",
+      "id"
+    ],
+    "readOnly": false,
+    "type": "null or string"
+  },
+  "pokenix.events.<name>.moves": {
+    "declarations": [
+      "/nix/store/0r6azzmx2jx3xqcgv1sn0djjk05gjl4r-source/options.nix"
+    ],
+    "default": {
+      "_type": "literalExpression",
+      "text": "[ ]"
+    },
+    "description": "Moveset at the time of the event. Rendered joined with ` · ` in the expanded details.",
+    "example": {
+      "_type": "literalExpression",
+      "text": "[\n  \"Wish\"\n  \"Confusion\"\n  \"Rest\"\n  \"Doom Desire\"\n]"
+    },
+    "loc": [
+      "pokenix",
+      "events",
+      "<name>",
+      "moves"
+    ],
+    "readOnly": false,
+    "type": "list of string"
+  },
+  "pokenix.events.<name>.name": {
+    "declarations": [
+      "/nix/store/0r6azzmx2jx3xqcgv1sn0djjk05gjl4r-source/options.nix"
+    ],
+    "default": {
+      "_type": "literalExpression",
+      "text": "null"
+    },
+    "description": "Display name shown in the events list. Falls back to the breedable's name or the raw species key.",
+    "example": {
+      "_type": "literalExpression",
+      "text": "\"Jirachi\""
+    },
+    "loc": [
+      "pokenix",
+      "events",
+      "<name>",
+      "name"
+    ],
+    "readOnly": false,
+    "type": "null or string"
+  },
+  "pokenix.events.<name>.notes": {
+    "declarations": [
+      "/nix/store/0r6azzmx2jx3xqcgv1sn0djjk05gjl4r-source/options.nix"
+    ],
+    "default": {
+      "_type": "literalExpression",
+      "text": "null"
+    },
+    "description": "Free-form event notes — distribution name, source, anything worth remembering.",
+    "example": {
+      "_type": "literalExpression",
+      "text": "\"WiSHMKR GameCube distribution\""
+    },
+    "loc": [
+      "pokenix",
+      "events",
+      "<name>",
+      "notes"
+    ],
+    "readOnly": false,
+    "type": "null or string"
+  },
+  "pokenix.events.<name>.obtained": {
+    "declarations": [
+      "/nix/store/0r6azzmx2jx3xqcgv1sn0djjk05gjl4r-source/options.nix"
+    ],
+    "default": {
+      "_type": "literalExpression",
+      "text": "null"
+    },
+    "description": "Date obtained. Free-form, `YYYY/MM/DD` recommended.",
+    "example": {
+      "_type": "literalExpression",
+      "text": "\"2021/02/16\""
+    },
+    "loc": [
+      "pokenix",
+      "events",
+      "<name>",
+      "obtained"
+    ],
+    "readOnly": false,
+    "type": "null or string"
+  },
+  "pokenix.events.<name>.ot": {
+    "declarations": [
+      "/nix/store/0r6azzmx2jx3xqcgv1sn0djjk05gjl4r-source/options.nix"
+    ],
+    "default": {
+      "_type": "literalExpression",
+      "text": "null"
+    },
+    "description": "Original Trainer name.",
+    "example": {
+      "_type": "literalExpression",
+      "text": "\"WISHMKR\""
+    },
+    "loc": [
+      "pokenix",
+      "events",
+      "<name>",
+      "ot"
+    ],
+    "readOnly": false,
+    "type": "null or string"
+  },
+  "pokenix.events.<name>.proof": {
+    "declarations": [
+      "/nix/store/0r6azzmx2jx3xqcgv1sn0djjk05gjl4r-source/options.nix"
+    ],
+    "default": {
+      "_type": "literalExpression",
+      "text": "null"
+    },
+    "description": "Proof of legitimacy — WC photo, video, trade receipt, etc.",
+    "example": {
+      "_type": "literalExpression",
+      "text": "\"WC photo in /proofs/jirachi-wishmkr.png\""
+    },
+    "loc": [
+      "pokenix",
+      "events",
+      "<name>",
+      "proof"
+    ],
+    "readOnly": false,
+    "type": "null or string"
+  },
+  "pokenix.events.<name>.region": {
+    "declarations": [
+      "/nix/store/0r6azzmx2jx3xqcgv1sn0djjk05gjl4r-source/options.nix"
+    ],
+    "default": {
+      "_type": "literalExpression",
+      "text": "null"
+    },
+    "description": "Region/language code — `ENG`, `JPN`, `GER`, `KOR`, `SPA`, `ITA`, `FRE`, `CHT`, `CHS`.",
+    "example": {
+      "_type": "literalExpression",
+      "text": "\"ENG\""
+    },
+    "loc": [
+      "pokenix",
+      "events",
+      "<name>",
+      "region"
+    ],
+    "readOnly": false,
+    "type": "null or string"
+  },
+  "pokenix.events.<name>.selfObtained": {
+    "declarations": [
+      "/nix/store/0r6azzmx2jx3xqcgv1sn0djjk05gjl4r-source/options.nix"
+    ],
+    "default": {
+      "_type": "literalExpression",
+      "text": "false"
+    },
+    "description": "True if you obtained this yourself; false for trades. Drives the ✓ column on the events page.",
+    "example": {
+      "_type": "literalExpression",
+      "text": "false"
+    },
+    "loc": [
+      "pokenix",
+      "events",
+      "<name>",
+      "selfObtained"
+    ],
+    "readOnly": false,
+    "type": "boolean"
+  },
+  "pokenix.events.<name>.shiny": {
+    "declarations": [
+      "/nix/store/0r6azzmx2jx3xqcgv1sn0djjk05gjl4r-source/options.nix"
+    ],
+    "default": {
+      "_type": "literalExpression",
+      "text": "false"
+    },
+    "description": "Whether this event Pokémon is shiny. Affects sprite lookup (shiny/ vs regular/) and the ✨ column.",
+    "example": {
+      "_type": "literalExpression",
+      "text": "true"
+    },
+    "loc": [
+      "pokenix",
+      "events",
+      "<name>",
+      "shiny"
+    ],
+    "readOnly": false,
+    "type": "boolean"
+  },
+  "pokenix.events.<name>.species": {
+    "declarations": [
+      "/nix/store/0r6azzmx2jx3xqcgv1sn0djjk05gjl4r-source/options.nix"
+    ],
+    "description": "Species identifier — a breedable key (`jirachi`) or free-form id for event-only Pokémon (`walking-wake`). Used to auto-resolve dex, sprite, and display name.",
+    "example": {
+      "_type": "literalExpression",
+      "text": "\"jirachi\""
+    },
+    "loc": [
+      "pokenix",
+      "events",
+      "<name>",
+      "species"
+    ],
+    "readOnly": false,
+    "type": "string"
+  },
+  "pokenix.events.<name>.sprite": {
+    "declarations": [
+      "/nix/store/0r6azzmx2jx3xqcgv1sn0djjk05gjl4r-source/options.nix"
+    ],
+    "default": {
+      "_type": "literalExpression",
+      "text": "null"
+    },
+    "description": "Custom sprite path (relative to module root). Leave unset to use the auto-resolved sprite.",
+    "example": {
+      "_type": "literalExpression",
+      "text": "\"sprites/pokemon-gen8/shiny/385.png\""
+    },
+    "loc": [
+      "pokenix",
+      "events",
+      "<name>",
+      "sprite"
+    ],
+    "readOnly": false,
+    "type": "null or string"
+  },
+  "pokenix.events.<name>.tradeHistory": {
+    "declarations": [
+      "/nix/store/0r6azzmx2jx3xqcgv1sn0djjk05gjl4r-source/options.nix"
+    ],
+    "default": {
+      "_type": "literalExpression",
+      "text": "null"
+    },
+    "description": "Chain of trades that led to you owning this Pokémon.",
+    "example": {
+      "_type": "literalExpression",
+      "text": "\"GoroMajimaIsMyIdol#8508 > pungkula\""
+    },
+    "loc": [
+      "pokenix",
+      "events",
+      "<name>",
+      "tradeHistory"
+    ],
+    "readOnly": false,
+    "type": "null or string"
+  },
+  "pokenix.events.<name>.year": {
+    "declarations": [
+      "/nix/store/0r6azzmx2jx3xqcgv1sn0djjk05gjl4r-source/options.nix"
+    ],
+    "default": {
+      "_type": "literalExpression",
+      "text": "null"
+    },
+    "description": "Year of the distribution or event. Rendered in the Year column.",
+    "example": {
+      "_type": "literalExpression",
+      "text": "\"2003\""
+    },
+    "loc": [
+      "pokenix",
+      "events",
+      "<name>",
+      "year"
+    ],
+    "readOnly": false,
+    "type": "null or string"
+  },
+  "pokenix.specials": {
+    "declarations": [
+      "/nix/store/0r6azzmx2jx3xqcgv1sn0djjk05gjl4r-source/options.nix"
+    ],
+    "default": {
+      "_type": "literalExpression",
+      "text": "{ }"
+    },
+    "description": "Hand-curated special Pokémon — anything you want to document with full stats\n(level, nature, ability, EVs, IVs, marks, ribbons, moves, etc.). Appears on\nthe specials page. Use this for competitive-ready mons, memory-keeping\nmons, or anything not covered by breeding/shiny/event tracking.\n",
+    "example": {
+      "_type": "literalExpression",
+      "text": "{\n  mewtwo-ribbon-master = {\n    ability = \"Pressure\";\n    ball = \"master\";\n    evs = {\n      hp = 4;\n      spa = 252;\n      spe = 252;\n    };\n    ivs = {\n      atk = 0;\n      def = 31;\n      hp = 31;\n      spa = 31;\n      spd = 31;\n      spe = 31;\n    };\n    level = 100;\n    moves = [\n      \"Psystrike\"\n      \"Aura Sphere\"\n      \"Ice Beam\"\n      \"Calm Mind\"\n    ];\n    nature = \"Timid\";\n    ribbons = [\n      \"Effort Ribbon\"\n      \"Master Rank Ribbon\"\n    ];\n    shiny = true;\n    species = \"mewtwo\";\n  };\n}"
+    },
+    "loc": [
+      "pokenix",
+      "specials"
+    ],
+    "readOnly": false,
+    "type": "attribute set of (submodule)"
+  },
+  "pokenix.specials.<name>.ability": {
+    "declarations": [
+      "/nix/store/0r6azzmx2jx3xqcgv1sn0djjk05gjl4r-source/options.nix"
+    ],
+    "default": {
+      "_type": "literalExpression",
+      "text": "null"
+    },
+    "description": "Ability name. Include `(Hidden)` suffix if the Hidden Ability.",
+    "example": {
+      "_type": "literalExpression",
+      "text": "\"Pressure\""
+    },
+    "loc": [
+      "pokenix",
+      "specials",
+      "<name>",
+      "ability"
+    ],
+    "readOnly": false,
+    "type": "null or string"
+  },
+  "pokenix.specials.<name>.ball": {
+    "declarations": [
+      "/nix/store/0r6azzmx2jx3xqcgv1sn0djjk05gjl4r-source/options.nix"
+    ],
+    "default": {
+      "_type": "literalExpression",
+      "text": "null"
+    },
+    "description": "Ball sprite rendered next to the Pokémon. Matches `sprites/balls/<ball>.png`.",
+    "example": {
+      "_type": "literalExpression",
+      "text": "\"master\""
+    },
+    "loc": [
+      "pokenix",
+      "specials",
+      "<name>",
+      "ball"
+    ],
+    "readOnly": false,
+    "type": "null or string"
+  },
+  "pokenix.specials.<name>.dex": {
+    "declarations": [
+      "/nix/store/0r6azzmx2jx3xqcgv1sn0djjk05gjl4r-source/options.nix"
+    ],
+    "default": {
+      "_type": "literalExpression",
+      "text": "null"
+    },
+    "description": "National Pokédex number. Auto-resolved from breedables if unset; required for paradox/PLA-only species.",
+    "example": {
+      "_type": "literalExpression",
+      "text": "150"
+    },
+    "loc": [
+      "pokenix",
+      "specials",
+      "<name>",
+      "dex"
+    ],
+    "readOnly": false,
+    "type": "null or signed integer"
+  },
+  "pokenix.specials.<name>.evs": {
+    "declarations": [
+      "/nix/store/0r6azzmx2jx3xqcgv1sn0djjk05gjl4r-source/options.nix"
+    ],
+    "default": {
+      "_type": "literalExpression",
+      "text": "{ }"
+    },
+    "description": "EV spread. Each stat 0–252, total ≤ 508. Leave unset for untrained.",
+    "example": {
+      "_type": "literalExpression",
+      "text": "{\n  hp = 4;\n  spa = 252;\n  spe = 252;\n}"
+    },
+    "loc": [
+      "pokenix",
+      "specials",
+      "<name>",
+      "evs"
+    ],
+    "readOnly": false,
+    "type": "submodule"
+  },
+  "pokenix.specials.<name>.evs.atk": {
+    "declarations": [
+      "/nix/store/0r6azzmx2jx3xqcgv1sn0djjk05gjl4r-source/options.nix"
+    ],
+    "default": {
+      "_type": "literalExpression",
+      "text": "null"
+    },
+    "description": "Attack stat value (0–252 for EVs, 0–31 for IVs).",
+    "example": {
+      "_type": "literalExpression",
+      "text": "0"
+    },
+    "loc": [
+      "pokenix",
+      "specials",
+      "<name>",
+      "evs",
+      "atk"
+    ],
+    "readOnly": false,
+    "type": "null or signed integer"
+  },
+  "pokenix.specials.<name>.evs.def": {
+    "declarations": [
+      "/nix/store/0r6azzmx2jx3xqcgv1sn0djjk05gjl4r-source/options.nix"
+    ],
+    "default": {
+      "_type": "literalExpression",
+      "text": "null"
+    },
+    "description": "Defense stat value (0–252 for EVs, 0–31 for IVs).",
+    "example": {
+      "_type": "literalExpression",
+      "text": "0"
+    },
+    "loc": [
+      "pokenix",
+      "specials",
+      "<name>",
+      "evs",
+      "def"
+    ],
+    "readOnly": false,
+    "type": "null or signed integer"
+  },
+  "pokenix.specials.<name>.evs.hp": {
+    "declarations": [
+      "/nix/store/0r6azzmx2jx3xqcgv1sn0djjk05gjl4r-source/options.nix"
+    ],
+    "default": {
+      "_type": "literalExpression",
+      "text": "null"
+    },
+    "description": "HP stat value (0–252 for EVs, 0–31 for IVs).",
+    "example": {
+      "_type": "literalExpression",
+      "text": "4"
+    },
+    "loc": [
+      "pokenix",
+      "specials",
+      "<name>",
+      "evs",
+      "hp"
+    ],
+    "readOnly": false,
+    "type": "null or signed integer"
+  },
+  "pokenix.specials.<name>.evs.spa": {
+    "declarations": [
+      "/nix/store/0r6azzmx2jx3xqcgv1sn0djjk05gjl4r-source/options.nix"
+    ],
+    "default": {
+      "_type": "literalExpression",
+      "text": "null"
+    },
+    "description": "Special Attack stat value (0–252 for EVs, 0–31 for IVs).",
+    "example": {
+      "_type": "literalExpression",
+      "text": "252"
+    },
+    "loc": [
+      "pokenix",
+      "specials",
+      "<name>",
+      "evs",
+      "spa"
+    ],
+    "readOnly": false,
+    "type": "null or signed integer"
+  },
+  "pokenix.specials.<name>.evs.spd": {
+    "declarations": [
+      "/nix/store/0r6azzmx2jx3xqcgv1sn0djjk05gjl4r-source/options.nix"
+    ],
+    "default": {
+      "_type": "literalExpression",
+      "text": "null"
+    },
+    "description": "Special Defense stat value (0–252 for EVs, 0–31 for IVs).",
+    "example": {
+      "_type": "literalExpression",
+      "text": "0"
+    },
+    "loc": [
+      "pokenix",
+      "specials",
+      "<name>",
+      "evs",
+      "spd"
+    ],
+    "readOnly": false,
+    "type": "null or signed integer"
+  },
+  "pokenix.specials.<name>.evs.spe": {
+    "declarations": [
+      "/nix/store/0r6azzmx2jx3xqcgv1sn0djjk05gjl4r-source/options.nix"
+    ],
+    "default": {
+      "_type": "literalExpression",
+      "text": "null"
+    },
+    "description": "Speed stat value (0–252 for EVs, 0–31 for IVs).",
+    "example": {
+      "_type": "literalExpression",
+      "text": "252"
+    },
+    "loc": [
+      "pokenix",
+      "specials",
+      "<name>",
+      "evs",
+      "spe"
+    ],
+    "readOnly": false,
+    "type": "null or signed integer"
+  },
+  "pokenix.specials.<name>.heldItem": {
+    "declarations": [
+      "/nix/store/0r6azzmx2jx3xqcgv1sn0djjk05gjl4r-source/options.nix"
+    ],
+    "default": {
+      "_type": "literalExpression",
+      "text": "null"
+    },
+    "description": "Item currently held.",
+    "example": {
+      "_type": "literalExpression",
+      "text": "\"Life Orb\""
+    },
+    "loc": [
+      "pokenix",
+      "specials",
+      "<name>",
+      "heldItem"
+    ],
+    "readOnly": false,
+    "type": "null or string"
+  },
+  "pokenix.specials.<name>.id": {
+    "declarations": [
+      "/nix/store/0r6azzmx2jx3xqcgv1sn0djjk05gjl4r-source/options.nix"
+    ],
+    "default": {
+      "_type": "literalExpression",
+      "text": "null"
+    },
+    "description": "Trainer ID (5–6 digit string).",
+    "example": {
+      "_type": "literalExpression",
+      "text": "\"082409\""
+    },
+    "loc": [
+      "pokenix",
+      "specials",
+      "<name>",
+      "id"
+    ],
+    "readOnly": false,
+    "type": "null or string"
+  },
+  "pokenix.specials.<name>.ivs": {
+    "declarations": [
+      "/nix/store/0r6azzmx2jx3xqcgv1sn0djjk05gjl4r-source/options.nix"
+    ],
+    "default": {
+      "_type": "literalExpression",
+      "text": "{ }"
+    },
+    "description": "IV spread. Each stat 0–31. Leave unset for unknown / not-recorded.",
+    "example": {
+      "_type": "literalExpression",
+      "text": "{\n  atk = 0;\n  def = 31;\n  hp = 31;\n  spa = 31;\n  spd = 31;\n  spe = 31;\n}"
+    },
+    "loc": [
+      "pokenix",
+      "specials",
+      "<name>",
+      "ivs"
+    ],
+    "readOnly": false,
+    "type": "submodule"
+  },
+  "pokenix.specials.<name>.ivs.atk": {
+    "declarations": [
+      "/nix/store/0r6azzmx2jx3xqcgv1sn0djjk05gjl4r-source/options.nix"
+    ],
+    "default": {
+      "_type": "literalExpression",
+      "text": "null"
+    },
+    "description": "Attack stat value (0–252 for EVs, 0–31 for IVs).",
+    "example": {
+      "_type": "literalExpression",
+      "text": "0"
+    },
+    "loc": [
+      "pokenix",
+      "specials",
+      "<name>",
+      "ivs",
+      "atk"
+    ],
+    "readOnly": false,
+    "type": "null or signed integer"
+  },
+  "pokenix.specials.<name>.ivs.def": {
+    "declarations": [
+      "/nix/store/0r6azzmx2jx3xqcgv1sn0djjk05gjl4r-source/options.nix"
+    ],
+    "default": {
+      "_type": "literalExpression",
+      "text": "null"
+    },
+    "description": "Defense stat value (0–252 for EVs, 0–31 for IVs).",
+    "example": {
+      "_type": "literalExpression",
+      "text": "0"
+    },
+    "loc": [
+      "pokenix",
+      "specials",
+      "<name>",
+      "ivs",
+      "def"
+    ],
+    "readOnly": false,
+    "type": "null or signed integer"
+  },
+  "pokenix.specials.<name>.ivs.hp": {
+    "declarations": [
+      "/nix/store/0r6azzmx2jx3xqcgv1sn0djjk05gjl4r-source/options.nix"
+    ],
+    "default": {
+      "_type": "literalExpression",
+      "text": "null"
+    },
+    "description": "HP stat value (0–252 for EVs, 0–31 for IVs).",
+    "example": {
+      "_type": "literalExpression",
+      "text": "4"
+    },
+    "loc": [
+      "pokenix",
+      "specials",
+      "<name>",
+      "ivs",
+      "hp"
+    ],
+    "readOnly": false,
+    "type": "null or signed integer"
+  },
+  "pokenix.specials.<name>.ivs.spa": {
+    "declarations": [
+      "/nix/store/0r6azzmx2jx3xqcgv1sn0djjk05gjl4r-source/options.nix"
+    ],
+    "default": {
+      "_type": "literalExpression",
+      "text": "null"
+    },
+    "description": "Special Attack stat value (0–252 for EVs, 0–31 for IVs).",
+    "example": {
+      "_type": "literalExpression",
+      "text": "252"
+    },
+    "loc": [
+      "pokenix",
+      "specials",
+      "<name>",
+      "ivs",
+      "spa"
+    ],
+    "readOnly": false,
+    "type": "null or signed integer"
+  },
+  "pokenix.specials.<name>.ivs.spd": {
+    "declarations": [
+      "/nix/store/0r6azzmx2jx3xqcgv1sn0djjk05gjl4r-source/options.nix"
+    ],
+    "default": {
+      "_type": "literalExpression",
+      "text": "null"
+    },
+    "description": "Special Defense stat value (0–252 for EVs, 0–31 for IVs).",
+    "example": {
+      "_type": "literalExpression",
+      "text": "0"
+    },
+    "loc": [
+      "pokenix",
+      "specials",
+      "<name>",
+      "ivs",
+      "spd"
+    ],
+    "readOnly": false,
+    "type": "null or signed integer"
+  },
+  "pokenix.specials.<name>.ivs.spe": {
+    "declarations": [
+      "/nix/store/0r6azzmx2jx3xqcgv1sn0djjk05gjl4r-source/options.nix"
+    ],
+    "default": {
+      "_type": "literalExpression",
+      "text": "null"
+    },
+    "description": "Speed stat value (0–252 for EVs, 0–31 for IVs).",
+    "example": {
+      "_type": "literalExpression",
+      "text": "252"
+    },
+    "loc": [
+      "pokenix",
+      "specials",
+      "<name>",
+      "ivs",
+      "spe"
+    ],
+    "readOnly": false,
+    "type": "null or signed integer"
+  },
+  "pokenix.specials.<name>.level": {
+    "declarations": [
+      "/nix/store/0r6azzmx2jx3xqcgv1sn0djjk05gjl4r-source/options.nix"
+    ],
+    "default": {
+      "_type": "literalExpression",
+      "text": "null"
+    },
+    "description": "Current level (1–100). Rendered in the Level column.",
+    "example": {
+      "_type": "literalExpression",
+      "text": "100"
+    },
+    "loc": [
+      "pokenix",
+      "specials",
+      "<name>",
+      "level"
+    ],
+    "readOnly": false,
+    "type": "null or signed integer"
+  },
+  "pokenix.specials.<name>.marks": {
+    "declarations": [
+      "/nix/store/0r6azzmx2jx3xqcgv1sn0djjk05gjl4r-source/options.nix"
+    ],
+    "default": {
+      "_type": "literalExpression",
+      "text": "[ ]"
+    },
+    "description": "Marks earned (Gen 8+) — `The Unrivaled`, `The Recluse`, `Itemfinder`, etc.",
+    "example": {
+      "_type": "literalExpression",
+      "text": "[\n  \"The Unrivaled\"\n  \"Itemfinder\"\n]"
+    },
+    "loc": [
+      "pokenix",
+      "specials",
+      "<name>",
+      "marks"
+    ],
+    "readOnly": false,
+    "type": "list of string"
+  },
+  "pokenix.specials.<name>.moves": {
+    "declarations": [
+      "/nix/store/0r6azzmx2jx3xqcgv1sn0djjk05gjl4r-source/options.nix"
+    ],
+    "default": {
+      "_type": "literalExpression",
+      "text": "[ ]"
+    },
+    "description": "Current moveset (up to 4 moves). Rendered joined with ` · `.",
+    "example": {
+      "_type": "literalExpression",
+      "text": "[\n  \"Psystrike\"\n  \"Aura Sphere\"\n  \"Ice Beam\"\n  \"Calm Mind\"\n]"
+    },
+    "loc": [
+      "pokenix",
+      "specials",
+      "<name>",
+      "moves"
+    ],
+    "readOnly": false,
+    "type": "list of string"
+  },
+  "pokenix.specials.<name>.name": {
+    "declarations": [
+      "/nix/store/0r6azzmx2jx3xqcgv1sn0djjk05gjl4r-source/options.nix"
+    ],
+    "default": {
+      "_type": "literalExpression",
+      "text": "null"
+    },
+    "description": "Display name. Falls back to the breedable's name or the species key.",
+    "example": {
+      "_type": "literalExpression",
+      "text": "\"Mewtwo\""
+    },
+    "loc": [
+      "pokenix",
+      "specials",
+      "<name>",
+      "name"
+    ],
+    "readOnly": false,
+    "type": "null or string"
+  },
+  "pokenix.specials.<name>.nature": {
+    "declarations": [
+      "/nix/store/0r6azzmx2jx3xqcgv1sn0djjk05gjl4r-source/options.nix"
+    ],
+    "default": {
+      "_type": "literalExpression",
+      "text": "null"
+    },
+    "description": "Nature — `Timid`, `Adamant`, `Jolly`, `Modest`, etc.",
+    "example": {
+      "_type": "literalExpression",
+      "text": "\"Timid\""
+    },
+    "loc": [
+      "pokenix",
+      "specials",
+      "<name>",
+      "nature"
+    ],
+    "readOnly": false,
+    "type": "null or string"
+  },
+  "pokenix.specials.<name>.notes": {
+    "declarations": [
+      "/nix/store/0r6azzmx2jx3xqcgv1sn0djjk05gjl4r-source/options.nix"
+    ],
+    "default": {
+      "_type": "literalExpression",
+      "text": "null"
+    },
+    "description": "Free-form notes — origin, what makes it special, etc.",
+    "example": {
+      "_type": "literalExpression",
+      "text": "\"Soft-reset 3 days, Timid sync\""
+    },
+    "loc": [
+      "pokenix",
+      "specials",
+      "<name>",
+      "notes"
+    ],
+    "readOnly": false,
+    "type": "null or string"
+  },
+  "pokenix.specials.<name>.obtained": {
+    "declarations": [
+      "/nix/store/0r6azzmx2jx3xqcgv1sn0djjk05gjl4r-source/options.nix"
+    ],
+    "default": {
+      "_type": "literalExpression",
+      "text": "null"
+    },
+    "description": "Date obtained. Free-form, `YYYY/MM/DD` recommended.",
+    "example": {
+      "_type": "literalExpression",
+      "text": "\"2023/08/15\""
+    },
+    "loc": [
+      "pokenix",
+      "specials",
+      "<name>",
+      "obtained"
+    ],
+    "readOnly": false,
+    "type": "null or string"
+  },
+  "pokenix.specials.<name>.ot": {
+    "declarations": [
+      "/nix/store/0r6azzmx2jx3xqcgv1sn0djjk05gjl4r-source/options.nix"
+    ],
+    "default": {
+      "_type": "literalExpression",
+      "text": "null"
+    },
+    "description": "Original Trainer name.",
+    "example": {
+      "_type": "literalExpression",
+      "text": "\"pungkula\""
+    },
+    "loc": [
+      "pokenix",
+      "specials",
+      "<name>",
+      "ot"
+    ],
+    "readOnly": false,
+    "type": "null or string"
+  },
+  "pokenix.specials.<name>.proof": {
+    "declarations": [
+      "/nix/store/0r6azzmx2jx3xqcgv1sn0djjk05gjl4r-source/options.nix"
+    ],
+    "default": {
+      "_type": "literalExpression",
+      "text": "null"
+    },
+    "description": "Proof of legitimacy — WC photo, video, screenshot, etc.",
+    "example": {
+      "_type": "literalExpression",
+      "text": "\"Video in /proofs/mewtwo.mp4\""
+    },
+    "loc": [
+      "pokenix",
+      "specials",
+      "<name>",
+      "proof"
+    ],
+    "readOnly": false,
+    "type": "null or string"
+  },
+  "pokenix.specials.<name>.region": {
+    "declarations": [
+      "/nix/store/0r6azzmx2jx3xqcgv1sn0djjk05gjl4r-source/options.nix"
+    ],
+    "default": {
+      "_type": "literalExpression",
+      "text": "null"
+    },
+    "description": "Region/language code — `ENG`, `JPN`, `GER`, `KOR`, `SPA`, `ITA`, etc.",
+    "example": {
+      "_type": "literalExpression",
+      "text": "\"ENG\""
+    },
+    "loc": [
+      "pokenix",
+      "specials",
+      "<name>",
+      "region"
+    ],
+    "readOnly": false,
+    "type": "null or string"
+  },
+  "pokenix.specials.<name>.ribbons": {
+    "declarations": [
+      "/nix/store/0r6azzmx2jx3xqcgv1sn0djjk05gjl4r-source/options.nix"
+    ],
+    "default": {
+      "_type": "literalExpression",
+      "text": "[ ]"
+    },
+    "description": "Ribbons earned — `Effort Ribbon`, `Master Rank Ribbon`, `Best Friends Ribbon`, etc.",
+    "example": {
+      "_type": "literalExpression",
+      "text": "[\n  \"Effort Ribbon\"\n  \"Master Rank Ribbon\"\n]"
+    },
+    "loc": [
+      "pokenix",
+      "specials",
+      "<name>",
+      "ribbons"
+    ],
+    "readOnly": false,
+    "type": "list of string"
+  },
+  "pokenix.specials.<name>.selfObtained": {
+    "declarations": [
+      "/nix/store/0r6azzmx2jx3xqcgv1sn0djjk05gjl4r-source/options.nix"
+    ],
+    "default": {
+      "_type": "literalExpression",
+      "text": "false"
+    },
+    "description": "True if obtained yourself; false for trades.",
+    "example": {
+      "_type": "literalExpression",
+      "text": "true"
+    },
+    "loc": [
+      "pokenix",
+      "specials",
+      "<name>",
+      "selfObtained"
+    ],
+    "readOnly": false,
+    "type": "boolean"
+  },
+  "pokenix.specials.<name>.shiny": {
+    "declarations": [
+      "/nix/store/0r6azzmx2jx3xqcgv1sn0djjk05gjl4r-source/options.nix"
+    ],
+    "default": {
+      "_type": "literalExpression",
+      "text": "false"
+    },
+    "description": "Whether this Pokémon is shiny. Affects sprite lookup and the ✨ column.",
+    "example": {
+      "_type": "literalExpression",
+      "text": "true"
+    },
+    "loc": [
+      "pokenix",
+      "specials",
+      "<name>",
+      "shiny"
+    ],
+    "readOnly": false,
+    "type": "boolean"
+  },
+  "pokenix.specials.<name>.species": {
+    "declarations": [
+      "/nix/store/0r6azzmx2jx3xqcgv1sn0djjk05gjl4r-source/options.nix"
+    ],
+    "description": "Species identifier — a breedable key (`mewtwo`) or free-form id for unique forms. Used to auto-resolve dex, sprite, and display name.",
+    "example": {
+      "_type": "literalExpression",
+      "text": "\"mewtwo\""
+    },
+    "loc": [
+      "pokenix",
+      "specials",
+      "<name>",
+      "species"
+    ],
+    "readOnly": false,
+    "type": "string"
+  },
+  "pokenix.specials.<name>.sprite": {
+    "declarations": [
+      "/nix/store/0r6azzmx2jx3xqcgv1sn0djjk05gjl4r-source/options.nix"
+    ],
+    "default": {
+      "_type": "literalExpression",
+      "text": "null"
+    },
+    "description": "Custom sprite path (relative to module root). Leave unset to use the auto-resolved sprite.",
+    "example": {
+      "_type": "literalExpression",
+      "text": "\"sprites/pokemon-gen8/shiny/150.png\""
+    },
+    "loc": [
+      "pokenix",
+      "specials",
+      "<name>",
+      "sprite"
+    ],
+    "readOnly": false,
+    "type": "null or string"
+  },
+  "pokenix.specials.<name>.teraType": {
+    "declarations": [
+      "/nix/store/0r6azzmx2jx3xqcgv1sn0djjk05gjl4r-source/options.nix"
+    ],
+    "default": {
+      "_type": "literalExpression",
+      "text": "null"
+    },
+    "description": "Tera Type (Gen 9 only). One of the 18 types.",
+    "example": {
+      "_type": "literalExpression",
+      "text": "\"Psychic\""
+    },
+    "loc": [
+      "pokenix",
+      "specials",
+      "<name>",
+      "teraType"
+    ],
+    "readOnly": false,
+    "type": "null or string"
+  },
+  "pokenix.specials.<name>.tradeHistory": {
+    "declarations": [
+      "/nix/store/0r6azzmx2jx3xqcgv1sn0djjk05gjl4r-source/options.nix"
+    ],
+    "default": {
+      "_type": "literalExpression",
+      "text": "null"
+    },
+    "description": "Chain of trades that led to you owning this Pokémon.",
+    "example": {
+      "_type": "literalExpression",
+      "text": "\"Alto#0457 > pungkula\""
+    },
+    "loc": [
+      "pokenix",
+      "specials",
+      "<name>",
+      "tradeHistory"
+    ],
+    "readOnly": false,
+    "type": "null or string"
+  },
+  "pokenix.stats.aprimonsOwned": {
+    "declarations": [
+      "/nix/store/0r6azzmx2jx3xqcgv1sn0djjk05gjl4r-source/options.nix"
+    ],
+    "default": {
+      "_type": "literalExpression",
+      "text": "0"
+    },
+    "description": "Breedable species with at least one ball marked as caught.",
+    "loc": [
+      "pokenix",
+      "stats",
+      "aprimonsOwned"
+    ],
+    "readOnly": false,
+    "type": "signed integer"
+  },
+  "pokenix.stats.aprimonsTotal": {
+    "declarations": [
+      "/nix/store/0r6azzmx2jx3xqcgv1sn0djjk05gjl4r-source/options.nix"
+    ],
+    "default": {
+      "_type": "literalExpression",
+      "text": "0"
+    },
+    "description": "Total breedable species tracked.",
+    "loc": [
+      "pokenix",
+      "stats",
+      "aprimonsTotal"
+    ],
+    "readOnly": false,
+    "type": "signed integer"
+  },
+  "pokenix.stats.ballCaptures": {
+    "declarations": [
+      "/nix/store/0r6azzmx2jx3xqcgv1sn0djjk05gjl4r-source/options.nix"
+    ],
+    "default": {
+      "_type": "literalExpression",
+      "text": "0"
+    },
+    "description": "Total (species × ball) captures across every breedable.",
+    "loc": [
+      "pokenix",
+      "stats",
+      "ballCaptures"
+    ],
+    "readOnly": false,
+    "type": "signed integer"
+  },
+  "pokenix.stats.ballPossible": {
+    "declarations": [
+      "/nix/store/0r6azzmx2jx3xqcgv1sn0djjk05gjl4r-source/options.nix"
+    ],
+    "default": {
+      "_type": "literalExpression",
+      "text": "0"
+    },
+    "description": "Total legal (species × ball) combinations across every breedable.",
+    "loc": [
+      "pokenix",
+      "stats",
+      "ballPossible"
+    ],
+    "readOnly": false,
+    "type": "signed integer"
+  },
+  "pokenix.stats.eventCount": {
+    "declarations": [
+      "/nix/store/0r6azzmx2jx3xqcgv1sn0djjk05gjl4r-source/options.nix"
+    ],
+    "default": {
+      "_type": "literalExpression",
+      "text": "0"
+    },
+    "description": "Number of event Pokémon recorded.",
+    "loc": [
+      "pokenix",
+      "stats",
+      "eventCount"
+    ],
+    "readOnly": false,
+    "type": "signed integer"
+  },
+  "pokenix.stats.shinyOwned": {
+    "declarations": [
+      "/nix/store/0r6azzmx2jx3xqcgv1sn0djjk05gjl4r-source/options.nix"
+    ],
+    "default": {
+      "_type": "literalExpression",
+      "text": "0"
+    },
+    "description": "Number of shiny Pokémon marked as owned (ball ≠ null).",
+    "loc": [
+      "pokenix",
+      "stats",
+      "shinyOwned"
+    ],
+    "readOnly": false,
+    "type": "signed integer"
+  },
+  "pokenix.stats.shinyTotal": {
+    "declarations": [
+      "/nix/store/0r6azzmx2jx3xqcgv1sn0djjk05gjl4r-source/options.nix"
+    ],
+    "default": {
+      "_type": "literalExpression",
+      "text": "0"
+    },
+    "description": "Total shiny Pokémon tracked in the living dex.",
+    "loc": [
+      "pokenix",
+      "stats",
+      "shinyTotal"
+    ],
+    "readOnly": false,
+    "type": "signed integer"
+  },
+  "pokenix.stats.specialsCount": {
+    "declarations": [
+      "/nix/store/0r6azzmx2jx3xqcgv1sn0djjk05gjl4r-source/options.nix"
+    ],
+    "default": {
+      "_type": "literalExpression",
+      "text": "0"
+    },
+    "description": "Number of special Pokémon recorded.",
+    "loc": [
+      "pokenix",
+      "stats",
+      "specialsCount"
+    ],
+    "readOnly": false,
+    "type": "signed integer"
+  },
+  "pokenix.stats.totalMons": {
+    "declarations": [
+      "/nix/store/0r6azzmx2jx3xqcgv1sn0djjk05gjl4r-source/options.nix"
+    ],
+    "default": {
+      "_type": "literalExpression",
+      "text": "0"
+    },
+    "description": "Sum of shinyOwned + eventCount + specialsCount + aprimonsOwned.",
+    "loc": [
+      "pokenix",
+      "stats",
+      "totalMons"
+    ],
+    "readOnly": false,
+    "type": "signed integer"
+  },
+  "pokenix.trainer": {
+    "declarations": [
+      "/nix/store/0r6azzmx2jx3xqcgv1sn0djjk05gjl4r-source/options.nix"
+    ],
+    "default": {
+      "_type": "literalExpression",
+      "text": "{ }"
+    },
+    "description": "Trainer profile shown on the **trainer** page. Set `name` to override the\n**PokèNix** brand text in the header. All fields are optional; anything\nunset is silently omitted.\n",
+    "example": {
+      "_type": "literalExpression",
+      "text": "{\n  about = \"Shiny hunter\";\n  contact = \"Discord pungkula#0001\";\n  friendCode = \"SW-1234-5678-9012\";\n  name = \"pungkula\";\n  region = \"Sweden\";\n  timezone = \"Europe/Stockholm\";\n}"
+    },
+    "loc": [
+      "pokenix",
+      "trainer"
+    ],
+    "readOnly": false,
+    "type": "submodule"
+  },
+  "pokenix.trainer.about": {
+    "declarations": [
+      "/nix/store/0r6azzmx2jx3xqcgv1sn0djjk05gjl4r-source/options.nix"
+    ],
+    "default": {
+      "_type": "literalExpression",
+      "text": "null"
+    },
+    "description": "Short bio / one-liner shown under the name on the trainer card.",
+    "example": {
+      "_type": "literalExpression",
+      "text": "\"Shiny hunter · gen 1–5 done\""
+    },
+    "loc": [
+      "pokenix",
+      "trainer",
+      "about"
+    ],
+    "readOnly": false,
+    "type": "null or string"
+  },
+  "pokenix.trainer.contact": {
+    "declarations": [
+      "/nix/store/0r6azzmx2jx3xqcgv1sn0djjk05gjl4r-source/options.nix"
+    ],
+    "default": {
+      "_type": "literalExpression",
+      "text": "null"
+    },
+    "description": "Contact info — Discord handle, email, social media, etc.",
+    "example": {
+      "_type": "literalExpression",
+      "text": "\"Discord pungkula#0001\""
+    },
+    "loc": [
+      "pokenix",
+      "trainer",
+      "contact"
+    ],
+    "readOnly": false,
+    "type": "null or string"
+  },
+  "pokenix.trainer.friendCode": {
+    "declarations": [
+      "/nix/store/0r6azzmx2jx3xqcgv1sn0djjk05gjl4r-source/options.nix"
+    ],
+    "default": {
+      "_type": "literalExpression",
+      "text": "null"
+    },
+    "description": "Nintendo Switch friend code.",
+    "example": {
+      "_type": "literalExpression",
+      "text": "\"SW-1234-5678-9012\""
+    },
+    "loc": [
+      "pokenix",
+      "trainer",
+      "friendCode"
+    ],
+    "readOnly": false,
+    "type": "null or string"
+  },
+  "pokenix.trainer.name": {
+    "declarations": [
+      "/nix/store/0r6azzmx2jx3xqcgv1sn0djjk05gjl4r-source/options.nix"
+    ],
+    "default": {
+      "_type": "literalExpression",
+      "text": "null"
+    },
+    "description": "Trainer name. Replaces the `PokèNix` brand text in the sticky header on every page.",
+    "example": {
+      "_type": "literalExpression",
+      "text": "\"pungkula\""
+    },
+    "loc": [
+      "pokenix",
+      "trainer",
+      "name"
+    ],
+    "readOnly": false,
+    "type": "null or string"
+  },
+  "pokenix.trainer.picture": {
+    "declarations": [
+      "/nix/store/0r6azzmx2jx3xqcgv1sn0djjk05gjl4r-source/options.nix"
+    ],
+    "default": {
+      "_type": "literalExpression",
+      "text": "null"
+    },
+    "description": "Avatar shown at the top of the trainer card. PNG/JPG/WEBP/GIF — mime detected from extension. Base64-embedded; no external asset needed.",
+    "example": {
+      "_type": "literalExpression",
+      "text": "/nix/store/0r6azzmx2jx3xqcgv1sn0djjk05gjl4r-source/images/me.png"
+    },
+    "loc": [
+      "pokenix",
+      "trainer",
+      "picture"
+    ],
+    "readOnly": false,
+    "type": "null or absolute path"
+  },
+  "pokenix.trainer.region": {
+    "declarations": [
+      "/nix/store/0r6azzmx2jx3xqcgv1sn0djjk05gjl4r-source/options.nix"
+    ],
+    "default": {
+      "_type": "literalExpression",
+      "text": "null"
+    },
+    "description": "Location or region, free-form.",
+    "example": {
+      "_type": "literalExpression",
+      "text": "\"Sweden\""
+    },
+    "loc": [
+      "pokenix",
+      "trainer",
+      "region"
+    ],
+    "readOnly": false,
+    "type": "null or string"
+  },
+  "pokenix.trainer.secretId": {
+    "declarations": [
+      "/nix/store/0r6azzmx2jx3xqcgv1sn0djjk05gjl4r-source/options.nix"
+    ],
+    "default": {
+      "_type": "literalExpression",
+      "text": "null"
+    },
+    "description": "In-game Secret ID (SID). Usually not shared publicly — remove from your config if privacy-sensitive.",
+    "example": {
+      "_type": "literalExpression",
+      "text": "\"12345\""
+    },
+    "loc": [
+      "pokenix",
+      "trainer",
+      "secretId"
+    ],
+    "readOnly": false,
+    "type": "null or string"
+  },
+  "pokenix.trainer.switchName": {
+    "declarations": [
+      "/nix/store/0r6azzmx2jx3xqcgv1sn0djjk05gjl4r-source/options.nix"
+    ],
+    "default": {
+      "_type": "literalExpression",
+      "text": "null"
+    },
+    "description": "Nintendo Switch profile name.",
+    "example": {
+      "_type": "literalExpression",
+      "text": "\"pungkula\""
+    },
+    "loc": [
+      "pokenix",
+      "trainer",
+      "switchName"
+    ],
+    "readOnly": false,
+    "type": "null or string"
+  },
+  "pokenix.trainer.timezone": {
+    "declarations": [
+      "/nix/store/0r6azzmx2jx3xqcgv1sn0djjk05gjl4r-source/options.nix"
+    ],
+    "default": {
+      "_type": "literalExpression",
+      "text": "null"
+    },
+    "description": "IANA timezone — useful for scheduling trades.",
+    "example": {
+      "_type": "literalExpression",
+      "text": "\"Europe/Stockholm\""
+    },
+    "loc": [
+      "pokenix",
+      "trainer",
+      "timezone"
+    ],
+    "readOnly": false,
+    "type": "null or string"
+  },
+  "pokenix.trainer.trainerId": {
+    "declarations": [
+      "/nix/store/0r6azzmx2jx3xqcgv1sn0djjk05gjl4r-source/options.nix"
+    ],
+    "default": {
+      "_type": "literalExpression",
+      "text": "null"
+    },
+    "description": "In-game Trainer ID.",
+    "example": {
+      "_type": "literalExpression",
+      "text": "\"082409\""
+    },
+    "loc": [
+      "pokenix",
+      "trainer",
+      "trainerId"
+    ],
+    "readOnly": false,
+    "type": "null or string"
+  }
+}

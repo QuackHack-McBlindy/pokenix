@@ -1,0 +1,121 @@
+{ 
+  ...
+} : {
+  chespin            = { dex = 650; name = "Chespin";            slug = "chespin"; };
+  quilladin          = { dex = 651; name = "Quilladin";          slug = "quilladin"; };
+  chesnaught         = { dex = 652; name = "Chesnaught";         slug = "chesnaught"; };
+  fennekin           = { dex = 653; name = "Fennekin";           slug = "fennekin"; };
+  braixen            = { dex = 654; name = "Braixen";            slug = "braixen"; };
+  delphox            = { dex = 655; name = "Delphox";            slug = "delphox"; };
+  froakie            = { dex = 656; name = "Froakie";            slug = "froakie"; };
+  frogadier          = { dex = 657; name = "Frogadier";          slug = "frogadier"; };
+  greninja           = { dex = 658; name = "Greninja";           slug = "greninja"; };
+  bunnelby           = { dex = 659; name = "Bunnelby";           slug = "bunnelby"; };
+  diggersby          = { dex = 660; name = "Diggersby";          slug = "diggersby"; };
+  fletchling         = { dex = 661; name = "Fletchling";         slug = "fletchling"; };
+  fletchinder        = { dex = 662; name = "Fletchinder";        slug = "fletchinder"; };
+  talonflame         = { dex = 663; name = "Talonflame";         slug = "talonflame"; };
+  scatterbug         = { dex = 664; name = "Scatterbug";         slug = "scatterbug"; };
+  spewpa             = { dex = 665; name = "Spewpa";             slug = "spewpa"; };
+  # Vivillon — 18 patterns. "Meadow" is the PokeSprite base name.
+  vivillon-archipelago = { dex = 666; name = "Vivillon (Archipelago)"; slug = "vivillon-archipelago"; };
+  vivillon-continental = { dex = 666; name = "Vivillon (Continental)"; slug = "vivillon-continental"; };
+  vivillon-elegant     = { dex = 666; name = "Vivillon (Elegant)";     slug = "vivillon-elegant"; };
+  vivillon-garden      = { dex = 666; name = "Vivillon (Garden)";      slug = "vivillon-garden"; };
+  vivillon-high-plains = { dex = 666; name = "Vivillon (High Plains)"; slug = "vivillon-high-plains"; };
+  vivillon-icy-snow    = { dex = 666; name = "Vivillon (Icy Snow)";    slug = "vivillon-icy-snow"; };
+  vivillon-jungle      = { dex = 666; name = "Vivillon (Jungle)";      slug = "vivillon-jungle"; };
+  vivillon-marine      = { dex = 666; name = "Vivillon (Marine)";      slug = "vivillon-marine"; };
+  vivillon-meadow      = { dex = 666; name = "Vivillon (Meadow)";      slug = "vivillon"; };
+  vivillon-modern      = { dex = 666; name = "Vivillon (Modern)";      slug = "vivillon-modern"; };
+  vivillon-monsoon     = { dex = 666; name = "Vivillon (Monsoon)";     slug = "vivillon-monsoon"; };
+  vivillon-ocean       = { dex = 666; name = "Vivillon (Ocean)";       slug = "vivillon-ocean"; };
+  vivillon-polar       = { dex = 666; name = "Vivillon (Polar)";       slug = "vivillon-polar"; };
+  vivillon-river       = { dex = 666; name = "Vivillon (River)";       slug = "vivillon-river"; };
+  vivillon-sandstorm   = { dex = 666; name = "Vivillon (Sandstorm)";   slug = "vivillon-sandstorm"; };
+  vivillon-savanna     = { dex = 666; name = "Vivillon (Savanna)";     slug = "vivillon-savanna"; };
+  vivillon-sun         = { dex = 666; name = "Vivillon (Sun)";         slug = "vivillon-sun"; };
+  vivillon-tundra      = { dex = 666; name = "Vivillon (Tundra)";      slug = "vivillon-tundra"; };
+  litleo             = { dex = 667; name = "Litleo";             slug = "litleo"; };
+  pyroar-f           = { dex = 668; name = "Pyroar ♀";           slug = "pyroar"; gender = "f"; };
+  pyroar-m           = { dex = 668; name = "Pyroar ♂";           slug = "pyroar"; };
+  # Flabébé — 5 colors. Red is the PokeSprite base name.
+  flabebe-blue       = { dex = 669; name = "Flabébé (Blue)";     slug = "flabebe-blue"; };
+  flabebe-orange     = { dex = 669; name = "Flabébé (Orange)";   slug = "flabebe-orange"; };
+  flabebe-red        = { dex = 669; name = "Flabébé (Red)";      slug = "flabebe"; };
+  flabebe-white      = { dex = 669; name = "Flabébé (White)";    slug = "flabebe-white"; };
+  flabebe-yellow     = { dex = 669; name = "Flabébé (Yellow)";   slug = "flabebe-yellow"; };
+  # Floette — 5 colors + Eternal
+  floette-blue       = { dex = 670; name = "Floette (Blue)";     slug = "floette-blue"; };
+  floette-eternal    = { dex = 670; name = "Floette (Eternal)";  slug = "floette-eternal"; };
+  floette-orange     = { dex = 670; name = "Floette (Orange)";   slug = "floette-orange"; };
+  floette-red        = { dex = 670; name = "Floette (Red)";      slug = "floette"; };
+  floette-white      = { dex = 670; name = "Floette (White)";    slug = "floette-white"; };
+  floette-yellow     = { dex = 670; name = "Floette (Yellow)";   slug = "floette-yellow"; };
+  # Florges — 5 colors
+  florges-blue       = { dex = 671; name = "Florges (Blue)";     slug = "florges-blue"; };
+  florges-orange     = { dex = 671; name = "Florges (Orange)";   slug = "florges-orange"; };
+  florges-red        = { dex = 671; name = "Florges (Red)";      slug = "florges"; };
+  florges-white      = { dex = 671; name = "Florges (White)";    slug = "florges-white"; };
+  florges-yellow     = { dex = 671; name = "Florges (Yellow)";   slug = "florges-yellow"; };
+  skiddo             = { dex = 672; name = "Skiddo";             slug = "skiddo"; };
+  gogoat             = { dex = 673; name = "Gogoat";             slug = "gogoat"; };
+  pancham            = { dex = 674; name = "Pancham";            slug = "pancham"; };
+  pangoro            = { dex = 675; name = "Pangoro";            slug = "pangoro"; };
+  furfrou            = { dex = 676; name = "Furfrou";            slug = "furfrou"; };
+  espurr             = { dex = 677; name = "Espurr";             slug = "espurr"; };
+  meowstic-f         = { dex = 678; name = "Meowstic ♀";         slug = "meowstic"; gender = "f"; };
+  meowstic-m         = { dex = 678; name = "Meowstic ♂";         slug = "meowstic"; };
+  honedge            = { dex = 679; name = "Honedge";            slug = "honedge"; };
+  doublade           = { dex = 680; name = "Doublade";           slug = "doublade"; };
+  aegislash          = { dex = 681; name = "Aegislash";          slug = "aegislash"; };
+  spritzee           = { dex = 682; name = "Spritzee";           slug = "spritzee"; };
+  aromatisse         = { dex = 683; name = "Aromatisse";         slug = "aromatisse"; };
+  swirlix            = { dex = 684; name = "Swirlix";            slug = "swirlix"; };
+  slurpuff           = { dex = 685; name = "Slurpuff";           slug = "slurpuff"; };
+  inkay              = { dex = 686; name = "Inkay";              slug = "inkay"; };
+  malamar            = { dex = 687; name = "Malamar";            slug = "malamar"; };
+  binacle            = { dex = 688; name = "Binacle";            slug = "binacle"; };
+  barbaracle         = { dex = 689; name = "Barbaracle";         slug = "barbaracle"; };
+  skrelp             = { dex = 690; name = "Skrelp";             slug = "skrelp"; };
+  dragalge           = { dex = 691; name = "Dragalge";           slug = "dragalge"; };
+  clauncher          = { dex = 692; name = "Clauncher";          slug = "clauncher"; };
+  clawitzer          = { dex = 693; name = "Clawitzer";          slug = "clawitzer"; };
+  helioptile         = { dex = 694; name = "Helioptile";         slug = "helioptile"; };
+  heliolisk          = { dex = 695; name = "Heliolisk";          slug = "heliolisk"; };
+  tyrunt             = { dex = 696; name = "Tyrunt";             slug = "tyrunt"; };
+  tyrantrum          = { dex = 697; name = "Tyrantrum";          slug = "tyrantrum"; };
+  amaura             = { dex = 698; name = "Amaura";             slug = "amaura"; };
+  aurorus            = { dex = 699; name = "Aurorus";            slug = "aurorus"; };
+  sylveon            = { dex = 700; name = "Sylveon";            slug = "sylveon"; };
+  hawlucha           = { dex = 701; name = "Hawlucha";           slug = "hawlucha"; };
+  dedenne            = { dex = 702; name = "Dedenne";            slug = "dedenne"; };
+  carbink            = { dex = 703; name = "Carbink";            slug = "carbink"; };
+  goomy              = { dex = 704; name = "Goomy";              slug = "goomy"; };
+  sliggoo            = { dex = 705; name = "Sliggoo";            slug = "sliggoo"; };
+  goodra             = { dex = 706; name = "Goodra";             slug = "goodra"; };
+  klefki             = { dex = 707; name = "Klefki";             slug = "klefki"; };
+  phantump           = { dex = 708; name = "Phantump";           slug = "phantump"; };
+  trevenant          = { dex = 709; name = "Trevenant";          slug = "trevenant"; };
+  # Pumpkaboo — 4 sizes. Average is the PokeSprite base name.
+  pumpkaboo-small    = { dex = 710; name = "Pumpkaboo (Small)";   slug = "pumpkaboo-small"; };
+  pumpkaboo-average  = { dex = 710; name = "Pumpkaboo (Average)"; slug = "pumpkaboo"; };
+  pumpkaboo-large    = { dex = 710; name = "Pumpkaboo (Large)";   slug = "pumpkaboo-large"; };
+  pumpkaboo-super    = { dex = 710; name = "Pumpkaboo (Super)";   slug = "pumpkaboo-super"; };
+  # Gourgeist — 4 sizes
+  gourgeist-small    = { dex = 711; name = "Gourgeist (Small)";   slug = "gourgeist-small"; };
+  gourgeist-average  = { dex = 711; name = "Gourgeist (Average)"; slug = "gourgeist"; };
+  gourgeist-large    = { dex = 711; name = "Gourgeist (Large)";   slug = "gourgeist-large"; };
+  gourgeist-super    = { dex = 711; name = "Gourgeist (Super)";   slug = "gourgeist-super"; };
+  bergmite           = { dex = 712; name = "Bergmite";           slug = "bergmite"; };
+  avalugg            = { dex = 713; name = "Avalugg";            slug = "avalugg"; };
+  noibat             = { dex = 714; name = "Noibat";             slug = "noibat"; };
+  noivern            = { dex = 715; name = "Noivern";            slug = "noivern"; };
+  # Legendaries / mythicals
+  xerneas            = { dex = 716; name = "Xerneas";            slug = "xerneas"; eggable = false; };
+  yveltal            = { dex = 717; name = "Yveltal";            slug = "yveltal"; eggable = false; };
+  zygarde            = { dex = 718; name = "Zygarde";            slug = "zygarde"; eggable = false; };
+  diancie            = { dex = 719; name = "Diancie";            slug = "diancie"; eggable = false; };
+  hoopa              = { dex = 720; name = "Hoopa";              slug = "hoopa"; eggable = false; };
+  volcanion          = { dex = 721; name = "Volcanion";          slug = "volcanion"; eggable = false; };
+}

@@ -1,8 +1,17 @@
-{ spriteRoot ? "sprites" }:
-let
+{ 
+  spriteRoot
+  ?
+  "sprites"
+} : let
   sprite = name: "${spriteRoot}/hoenn/${name}.png";
-in
-{
+  
+  allBalls = [
+    "safari" "sport" "fast" "friend" "heavy" "level"
+    "love" "lure" "moon" "dream" "beast"
+  ];
+  without = exclude:
+    builtins.filter (b: !(builtins.elem b exclude)) allBalls;
+in {
   # HOENN — GENERATION 3 — 64 entries
 
   treecko    = { dex = 252; ha = "Unburden";          male = 87.5; female = 12.5; hatchCycles = 20; sprite = sprite "treecko"; };
@@ -69,4 +78,5 @@ in
   luvdisc    = { dex = 370; ha = "Hydration";         male = 25;   female = 75;   hatchCycles = 20; sprite = sprite "luvdisc"; };
   bagon      = { dex = 371; ha = "Sheer Force";       male = 50;   female = 50;   hatchCycles = 40; sprite = sprite "bagon"; };
   beldum     = { dex = 374; ha = "Light Metal";       genderless = true;            hatchCycles = 40; sprite = sprite "beldum"; };
+
 }

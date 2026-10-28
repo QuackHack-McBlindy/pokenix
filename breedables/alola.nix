@@ -1,8 +1,17 @@
-{ spriteRoot ? "sprites" }:
-let
+{ 
+  spriteRoot
+  ?
+  "sprites"
+} : let
   sprite = name: "${spriteRoot}/alola/${name}.png";
-in
-{
+
+  allBalls = [
+    "safari" "sport" "fast" "friend" "heavy" "level"
+    "love" "lure" "moon" "dream" "beast"
+  ];
+  without = exclude:
+    builtins.filter (b: !(builtins.elem b exclude)) allBalls;
+in {
   # ALOLA — GENERATION 7 — 44 entries
 
   # Note: Alolan Rattata, Diglett, Meowth, Geodude, Grimer,

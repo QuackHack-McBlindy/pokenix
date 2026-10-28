@@ -1,8 +1,17 @@
-{ spriteRoot ? "sprites" }:
-let
+{ 
+  spriteRoot
+  ?
+  "sprites"
+} : let
   sprite = name: "${spriteRoot}/kalos/${name}.png";
-in
-{
+  
+  allBalls = [
+    "safari" "sport" "fast" "friend" "heavy" "level"
+    "love" "lure" "moon" "dream" "beast"
+  ];
+  without = exclude:
+    builtins.filter (b: !(builtins.elem b exclude)) allBalls;
+in {
   # KALOS — GENERATION 6 — 38 entries
 
   chespin      = { dex = 650; ha = "Bulletproof";      male = 87.5; female = 12.5; hatchCycles = 20; sprite = sprite "chespin"; };
@@ -43,4 +52,5 @@ in
   pumpkaboo-super   = { dex = 710; ha = "Insomnia";  male = 50;   female = 50; hatchCycles = 20; sprite = sprite "pumpkaboo-super"; };
   bergmite     = { dex = 712; ha = "Sturdy";            male = 50;   female = 50;   hatchCycles = 20; sprite = sprite "bergmite"; };
   noibat       = { dex = 714; ha = "Telepathy";         male = 50;   female = 50;   hatchCycles = 20; sprite = sprite "noibat"; };
+
 }

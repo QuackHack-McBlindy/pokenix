@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
+<title>pokenix options</title>
+<style>
+
+:root {
+  --bg: #ffffff;
+  --fg: #1f2328;
+  --muted: #656d76;
+  --border: #d0d7de;
+  --code-bg: #f6f8fa;
+  --link: #0969da;
+  --sidebar-bg: #f6f8fa;
+  --hover: #eaeef2;
+}
+[data-theme="dark"] {
+  --bg: #0d1117;
+  --fg: #e6edf3;
+  --muted: #8b949e;
+  --border: #30363d;
+  --code-bg: #161b22;
+  --link: #58a6ff;
+  --sidebar-bg: #161b22;
+  --hover: #21262d;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow: hidden;
+  font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+  background: var(--bg);
+  color: var(--fg);
+  line-height: 1.5;
+}
+header {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: .8em;
+  padding: .6em 1.2em;
+  border-bottom: 1px solid var(--border);
+}
+header .logo { height: 2em; width: auto; display: block; }
+header h1 { margin: 0; font-size: 1.15em; font-weight: 600; }
+#theme-toggle {
+  margin-left: auto;
+  background: none;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: .35em .65em;
+  cursor: pointer;
+  font-size: 1em;
+  color: var(--fg);
+}
+#theme-toggle:hover { background: var(--hover); }
+
+.layout {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 300px 1fr;
+  min-height: 0;
+}
+
+#sidebar {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: var(--sidebar-bg);
+  border-right: 1px solid var(--border);
+}
+#sidebar-header {
+  flex-shrink: 0;
+  padding: .9em 1em .7em;
+  border-bottom: 1px solid var(--border);
+}
+.sidebar-title {
+  margin: 0 0 .6em;
+  font-size: .8em;
+  text-transform: uppercase;
+  letter-spacing: .07em;
+  color: var(--muted);
+  font-weight: 700;
+}
+#sidebar input {
+  width: 100%;
+  padding: .45em .7em;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--bg);
+  color: var(--fg);
+  font-size: .95em;
+}
+#sidebar-scroll {
+  flex: 1;
+  overflow-y: auto;
+  padding: .8em 1em 1em;
+}
+#sidebar-scroll ul { list-style: none; padding-left: .9em; margin: 0; }
+#sidebar-scroll > ul { padding-left: 0; }
+#sidebar-scroll ul li { margin: .1em 0; }
+#sidebar-scroll ul a {
+  display: inline-block;
+  padding: .15em .3em;
+  border-radius: 4px;
+  color: var(--fg);
+  text-decoration: none;
+  font-family: ui-monospace, SFMono-Regular, monospace;
+  font-size: .88em;
+}
+#sidebar-scroll ul a:hover { color: var(--link); background: var(--hover); }
+#sidebar-scroll ul details > summary {
+  cursor: pointer;
+  padding: .15em .3em;
+  border-radius: 4px;
+  list-style: none;
+  font-family: ui-monospace, SFMono-Regular, monospace;
+  font-size: .88em;
+  color: var(--link);
+  user-select: none;
+}
+#sidebar-scroll ul details > summary:hover { background: var(--hover); }
+#sidebar-scroll ul details > summary::-webkit-details-marker { display: none; }
+#sidebar-scroll ul details > summary::marker { content: ""; }
+#sidebar-scroll ul details > summary::before {
+  content: '▸';
+  display: inline-block;
+  width: 1em;
+  color: var(--muted);
+  transition: transform .15s;
+}
+#sidebar-scroll ul details[open] > summary::before { transform: rotate(90deg); }
+
+.screenshots-link {
+  display: inline-flex;
+  align-items: center;
+  gap: .35em;
+  padding: .3em .5em;
+  margin-bottom: .8em;
+  border-radius: 4px;
+  color: var(--link);
+  text-decoration: none;
+  font-size: .9em;
+  font-weight: 500;
+}
+.screenshots-link:hover { background: var(--hover); }
+.screenshots-link .screenshots-count {
+  color: var(--muted);
+  font-weight: 400;
+  font-family: ui-monospace, SFMono-Regular, monospace;
+  font-size: .9em;
+}
+
+.screenshots-link,
+.quickstart-link {
+  display: flex;
+  width: fit-content;
+  align-items: center;
+  gap: .35em;
+  padding: .3em .5em;
+  margin-bottom: .4em;          /* was .8em — each link now has its own row */
+  border-radius: 4px;
+  color: var(--link);
+  text-decoration: none;
+  font-size: .9em;
+  font-weight: 500;
+}
+.screenshots-link:hover,
+.quickstart-link:hover { background: var(--hover); }
+
+#sidebar-footer {
+  flex-shrink: 0;
+  padding: .8em 1em;
+  border-top: 1px solid var(--border);
+  font-size: .85em;
+  line-height: 1.5;
+  background: var(--sidebar-bg);
+}
+a.footer-project {
+  display: inline-block;
+  font-weight: 600;
+  color: var(--fg);
+  text-decoration: none;
+}
+a.footer-project:hover { color: var(--link); }
+.footer-coverage {
+  color: var(--muted);
+  font-size: .8em;
+  margin-bottom: .4em;
+}
+.footer-coverage .coverage-value {
+  color: var(--fg);
+  font-family: ui-monospace, SFMono-Regular, monospace;
+  font-weight: 600;
+}
+.footer-coverage.low .coverage-value { color: #cf222e; }
+[data-theme="dark"] .footer-coverage.low .coverage-value { color: #ff7b72; }
+.footer-link {
+  display: block;
+  color: var(--link);
+  text-decoration: none;
+  padding: .1em 0;
+  word-break: break-all;
+}
+.footer-link:hover { text-decoration: underline; }
+.footer-build {
+  color: var(--muted);
+  font-size: .72em;
+  margin-top: .5em;
+  font-family: ui-monospace, SFMono-Regular, monospace;
+}
+
+main {
+  overflow-y: auto;
+  padding: 1.5em 2em 4em;
+  scroll-behavior: smooth;
+}
+main > * { max-width: 900px; }
+
+.intro {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 1em 1.4em;
+  margin-bottom: 1.8em;
+  background: var(--sidebar-bg);
+  font-size: .97em;
+}
+.intro > p:first-child { margin-top: 0; }
+.intro > p:last-child  { margin-bottom: 0; }
+
+.quickstart-section { margin: 1.5em 0 2em; scroll-margin-top: 1em; }
+
+details.quickstart {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--sidebar-bg);
+  overflow: hidden;
+}
+details.quickstart > summary {
+  cursor: pointer;
+  padding: .7em 1em;
+  font-weight: 600;
+  user-select: none;
+  list-style: none;
+}
+details.quickstart > summary::-webkit-details-marker { display: none; }
+details.quickstart > summary::marker { content: ""; }
+details.quickstart > summary::before {
+  content: '▸';
+  display: inline-block;
+  width: 1em;
+  color: var(--muted);
+  transition: transform .15s;
+}
+details.quickstart[open] > summary::before { transform: rotate(90deg); }
+details.quickstart > summary:hover { background: var(--hover); }
+
+details.quickstart > pre {
+  margin: 0;
+  padding: 1em;
+  border-top: 1px solid var(--border);
+  background: var(--code-bg);
+  overflow-x: auto;
+  white-space: pre;          /* override the global pre-wrap */
+  word-break: normal;
+  border-radius: 0;
+}
+
+.screenshots-section,
+.options-section { margin: 1.5em 0 2em; scroll-margin-top: 1em; }
+.screenshots-section h2,
+.options-section h2 {
+  font-size: 1.1em;
+  margin: 0 0 .8em;
+  padding-bottom: .3em;
+  border-bottom: 1px solid var(--border);
+}
+
+.screenshots-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 1em;
+}
+.screenshot {
+  margin: 0;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  overflow: hidden;
+  background: var(--sidebar-bg);
+}
+.screenshot a { display: block; line-height: 0; }
+.screenshot img {
+  width: 100%;
+  height: 160px;
+  object-fit: cover;
+  display: block;
+  transition: transform .2s;
+}
+.screenshot:hover img { transform: scale(1.05); }
+.screenshot figcaption {
+  padding: .5em .7em;
+  font-size: .85em;
+  color: var(--muted);
+  text-align: center;
+  text-transform: capitalize;
+  border-top: 1px solid var(--border);
+}
+
+details.group { margin: .15em 0; }
+details.group > summary {
+  cursor: pointer;
+  padding: .4em .55em;
+  border-radius: 4px;
+  font-family: ui-monospace, SFMono-Regular, monospace;
+  font-weight: 600;
+  color: var(--link);
+  user-select: none;
+}
+details.group > summary:hover { background: var(--hover); }
+details.group > summary .count {
+  font-weight: 400;
+  color: var(--muted);
+  font-size: .85em;
+}
+details.group > .children {
+  margin-left: .5em;
+  padding-left: 1em;
+  border-left: 1px solid var(--border);
+}
+.option { margin: 1em 0; }
+.option > h3 {
+  font-family: ui-monospace, SFMono-Regular, monospace;
+  font-size: 1em;
+  margin: .2em 0 .4em;
+}
+dl {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  gap: .25em 1em;
+  margin: 0;
+}
+dt {
+  font-weight: 600;
+  font-size: .82em;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: .03em;
+  padding-top: .15em;
+}
+dd { margin: 0; min-width: 0; }
+dd.undocumented {
+  color: var(--muted);
+  font-style: italic;
+}
+code, pre {
+  background: var(--code-bg);
+  border-radius: 4px;
+  font-family: ui-monospace, SFMono-Regular, monospace;
+  font-size: .9em;
+}
+code { padding: .1em .35em; }
+pre {
+  padding: .5em .7em;
+  overflow-x: auto;
+  white-space: pre-wrap;
+  word-break: break-word;
+  margin: 0;
+}
+dd > p:first-child { margin-top: 0; }
+dd > p:last-child  { margin-bottom: 0; }
+.hidden { display: none !important; }
+#empty {
+  display: none;
+  color: var(--muted);
+  font-style: italic;
+  padding: 2em;
+  text-align: center;
+}
+.option, details.group { scroll-margin-top: 1em; }
+
+@media (max-width: 700px) {
+  body { height: auto; overflow: visible; }
+  .layout { grid-template-columns: 1fr; min-height: auto; }
+  #sidebar {
+    max-height: 45vh;
+    border-right: none;
+    border-bottom: 1px solid var(--border);
+  }
+  main { overflow: visible; padding: 1em; }
+}
+
+</style>
+</head>
+<body>
+<header>
+  <img src="images/logo.png" alt="" class="logo">
+  <h1>pokenix</h1>
+  <button id="theme-toggle" title="Toggle theme">🌙</button>
+</header>
+<div class="layout">
+  <aside id="sidebar">
+    <div id="sidebar-header">
+      <h2 class="sidebar-title">Options</h2>
+      <input id="search" type="search" placeholder="Filter options…" autofocus>
+    </div>
+    <div id="sidebar-scroll">
+      <a href="#quickstart" class="quickstart-link">Quick start</a>
+      
+      <ul><li><details class="sidebar-group"><summary>pokenix</summary><ul><li><details class="sidebar-group"><summary>events</summary><ul><li><details class="sidebar-group"><summary>&lt;name&gt;</summary><ul><li><a href="#pokenix.events.&lt;name&gt;.ball">ball</a></li><li><a href="#pokenix.events.&lt;name&gt;.dex">dex</a></li><li><a href="#pokenix.events.&lt;name&gt;.id">id</a></li><li><a href="#pokenix.events.&lt;name&gt;.moves">moves</a></li><li><a href="#pokenix.events.&lt;name&gt;.name">name</a></li><li><a href="#pokenix.events.&lt;name&gt;.notes">notes</a></li><li><a href="#pokenix.events.&lt;name&gt;.obtained">obtained</a></li><li><a href="#pokenix.events.&lt;name&gt;.ot">ot</a></li><li><a href="#pokenix.events.&lt;name&gt;.proof">proof</a></li><li><a href="#pokenix.events.&lt;name&gt;.region">region</a></li><li><a href="#pokenix.events.&lt;name&gt;.selfObtained">selfObtained</a></li><li><a href="#pokenix.events.&lt;name&gt;.shiny">shiny</a></li><li><a href="#pokenix.events.&lt;name&gt;.species">species</a></li><li><a href="#pokenix.events.&lt;name&gt;.sprite">sprite</a></li><li><a href="#pokenix.events.&lt;name&gt;.tradeHistory">tradeHistory</a></li><li><a href="#pokenix.events.&lt;name&gt;.year">year</a></li></ul></details></li></ul></details></li><li><details class="sidebar-group"><summary>specials</summary><ul><li><details class="sidebar-group"><summary>&lt;name&gt;</summary><ul><li><a href="#pokenix.specials.&lt;name&gt;.ability">ability</a></li><li><a href="#pokenix.specials.&lt;name&gt;.ball">ball</a></li><li><a href="#pokenix.specials.&lt;name&gt;.dex">dex</a></li><li><details class="sidebar-group"><summary>evs</summary><ul><li><a href="#pokenix.specials.&lt;name&gt;.evs.atk">atk</a></li><li><a href="#pokenix.specials.&lt;name&gt;.evs.def">def</a></li><li><a href="#pokenix.specials.&lt;name&gt;.evs.hp">hp</a></li><li><a href="#pokenix.specials.&lt;name&gt;.evs.spa">spa</a></li><li><a href="#pokenix.specials.&lt;name&gt;.evs.spd">spd</a></li><li><a href="#pokenix.specials.&lt;name&gt;.evs.spe">spe</a></li></ul></details></li><li><a href="#pokenix.specials.&lt;name&gt;.heldItem">heldItem</a></li><li><a href="#pokenix.specials.&lt;name&gt;.id">id</a></li><li><details class="sidebar-group"><summary>ivs</summary><ul><li><a href="#pokenix.specials.&lt;name&gt;.ivs.atk">atk</a></li><li><a href="#pokenix.specials.&lt;name&gt;.ivs.def">def</a></li><li><a href="#pokenix.specials.&lt;name&gt;.ivs.hp">hp</a></li><li><a href="#pokenix.specials.&lt;name&gt;.ivs.spa">spa</a></li><li><a href="#pokenix.specials.&lt;name&gt;.ivs.spd">spd</a></li><li><a href="#pokenix.specials.&lt;name&gt;.ivs.spe">spe</a></li></ul></details></li><li><a href="#pokenix.specials.&lt;name&gt;.level">level</a></li><li><a href="#pokenix.specials.&lt;name&gt;.marks">marks</a></li><li><a href="#pokenix.specials.&lt;name&gt;.moves">moves</a></li><li><a href="#pokenix.specials.&lt;name&gt;.name">name</a></li><li><a href="#pokenix.specials.&lt;name&gt;.nature">nature</a></li><li><a href="#pokenix.specials.&lt;name&gt;.notes">notes</a></li><li><a href="#pokenix.specials.&lt;name&gt;.obtained">obtained</a></li><li><a href="#pokenix.specials.&lt;name&gt;.ot">ot</a></li><li><a href="#pokenix.specials.&lt;name&gt;.proof">proof</a></li><li><a href="#pokenix.specials.&lt;name&gt;.region">region</a></li><li><a href="#pokenix.specials.&lt;name&gt;.ribbons">ribbons</a></li><li><a href="#pokenix.specials.&lt;name&gt;.selfObtained">selfObtained</a></li><li><a href="#pokenix.specials.&lt;name&gt;.shiny">shiny</a></li><li><a href="#pokenix.specials.&lt;name&gt;.species">species</a></li><li><a href="#pokenix.specials.&lt;name&gt;.sprite">sprite</a></li><li><a href="#pokenix.specials.&lt;name&gt;.teraType">teraType</a></li><li><a href="#pokenix.specials.&lt;name&gt;.tradeHistory">tradeHistory</a></li></ul></details></li></ul></details></li><li><details class="sidebar-group"><summary>stats</summary><ul><li><a href="#pokenix.stats.aprimonsOwned">aprimonsOwned</a></li><li><a href="#pokenix.stats.aprimonsTotal">aprimonsTotal</a></li><li><a href="#pokenix.stats.ballCaptures">ballCaptures</a></li><li><a href="#pokenix.stats.ballPossible">ballPossible</a></li><li><a href="#pokenix.stats.eventCount">eventCount</a></li><li><a href="#pokenix.stats.shinyOwned">shinyOwned</a></li><li><a href="#pokenix.stats.shinyTotal">shinyTotal</a></li><li><a href="#pokenix.stats.specialsCount">specialsCount</a></li><li><a href="#pokenix.stats.totalMons">totalMons</a></li></ul></details></li><li><details class="sidebar-group"><summary>trainer</summary><ul><li><a href="#pokenix.trainer.about">about</a></li><li><a href="#pokenix.trainer.contact">contact</a></li><li><a href="#pokenix.trainer.friendCode">friendCode</a></li><li><a href="#pokenix.trainer.name">name</a></li><li><a href="#pokenix.trainer.picture">picture</a></li><li><a href="#pokenix.trainer.region">region</a></li><li><a href="#pokenix.trainer.secretId">secretId</a></li><li><a href="#pokenix.trainer.switchName">switchName</a></li><li><a href="#pokenix.trainer.timezone">timezone</a></li><li><a href="#pokenix.trainer.trainerId">trainerId</a></li></ul></details></li></ul></details></li></ul>
+    </div>
+    <div id="sidebar-footer">
+      <a class="footer-project" href="https://github.com/quackhack-mcblindy/pokenix" target="_blank" rel="noopener">pokenix</a>
+      <div class="footer-coverage" title="74/74 options documented"><span class="coverage-value">100%</span> documented</div>
+      <a class="footer-link" href="https://github.com/quackhack-mcblindy/pokenix/blob/main/CHANGELOG.md" target="_blank" rel="noopener">Changelog</a>
+      <a class="footer-link" href="https://QuackHack-McBlindy.com" target="_blank" rel="noopener">QuackHack-McBlindy.com</a>
+      <div class="footer-build">built 2026-10-28 03:39:23 UTC</div>
+    </div>
+  </aside>
+  <main id="main">
+    <section class="intro"><p>
+  Welcome to the <strong>pokenix</strong> options page.<br>
+  The options on this website are automatically generated on every release.<br>
+</p>
+<p>
+  Use the <strong>search box</strong> on the left to filter options,<br>
+  or click any group to expand it and browse the tree.<br>
+</p>
+</section>
+    <section class="quickstart-section" id="quickstart"><details class="quickstart"><summary>Quick start configuration</summary><pre><code>pokenix = {
+    breedables = {
+
+    };
+  };</code></pre></details></section>
+    
+    <section class="options-section" id="options">
+      <h2>Options</h2>
+      <details class="group" id="pokenix"><summary>pokenix <span class="count">(69)</span></summary><div class="children"><details class="group" id="pokenix.events"><summary>events <span class="count">(16)</span></summary><div class="children"><dl><dt>Type</dt><dd><code>attribute set of (submodule)</code></dd><dt>Default</dt><dd><code>{ }</code></dd><dt>Example</dt><dd><pre>{
+  jirachi-2003-wishmkr = {
+    ball = &quot;cherish&quot;;
+    id = &quot;20043&quot;;
+    moves = [
+      &quot;Wish&quot;
+      &quot;Confusion&quot;
+      &quot;Rest&quot;
+      &quot;Doom Desire&quot;
+    ];
+    ot = &quot;WISHMKR&quot;;
+    region = &quot;ENG&quot;;
+    shiny = true;
+    species = &quot;jirachi&quot;;
+    year = &quot;2003&quot;;
+  };
+}</pre></dd><dt>Description</dt><dd>Tracked event Pokémon. Each entry is a distibuted event you've redeemed —
+GameStop/GAME/JP distributions, movie events, HOME gifts, etc. Appears on
+the **events** page.
+</dd></dl><details class="group" id="pokenix.events.&lt;name&gt;"><summary>&lt;name&gt; <span class="count">(16)</span></summary><div class="children"><div class="option" id="pokenix.events.&lt;name&gt;.ball"><h3>ball</h3><dl><dt>Type</dt><dd><code>null or string</code></dd><dt>Default</dt><dd><code>&quot;cherish&quot;</code></dd><dt>Example</dt><dd><pre>&quot;cherish&quot;</pre></dd><dt>Description</dt><dd>Ball sprite rendered next to the event. Matches `sprites/balls/<ball>.png` (`pokeball` maps to `poke.png`).</dd></dl></div><div class="option" id="pokenix.events.&lt;name&gt;.dex"><h3>dex</h3><dl><dt>Type</dt><dd><code>null or signed integer</code></dd><dt>Default</dt><dd><code>null</code></dd><dt>Example</dt><dd><pre>385</pre></dd><dt>Description</dt><dd>National Pokédex number. Auto-resolved from the breedables entry if unset; required for species not in the breedables list.</dd></dl></div><div class="option" id="pokenix.events.&lt;name&gt;.id"><h3>id</h3><dl><dt>Type</dt><dd><code>null or string</code></dd><dt>Default</dt><dd><code>null</code></dd><dt>Example</dt><dd><pre>&quot;20043&quot;</pre></dd><dt>Description</dt><dd>Trainer ID (5–6 digit string). Rendered in the expanded details.</dd></dl></div><div class="option" id="pokenix.events.&lt;name&gt;.moves"><h3>moves</h3><dl><dt>Type</dt><dd><code>list of string</code></dd><dt>Default</dt><dd><code>[ ]</code></dd><dt>Example</dt><dd><pre>[
+  &quot;Wish&quot;
+  &quot;Confusion&quot;
+  &quot;Rest&quot;
+  &quot;Doom Desire&quot;
+]</pre></dd><dt>Description</dt><dd>Moveset at the time of the event. Rendered joined with ` · ` in the expanded details.</dd></dl></div><div class="option" id="pokenix.events.&lt;name&gt;.name"><h3>name</h3><dl><dt>Type</dt><dd><code>null or string</code></dd><dt>Default</dt><dd><code>null</code></dd><dt>Example</dt><dd><pre>&quot;Jirachi&quot;</pre></dd><dt>Description</dt><dd>Display name shown in the events list. Falls back to the breedable's name or the raw species key.</dd></dl></div><div class="option" id="pokenix.events.&lt;name&gt;.notes"><h3>notes</h3><dl><dt>Type</dt><dd><code>null or string</code></dd><dt>Default</dt><dd><code>null</code></dd><dt>Example</dt><dd><pre>&quot;WiSHMKR GameCube distribution&quot;</pre></dd><dt>Description</dt><dd>Free-form event notes — distribution name, source, anything worth remembering.</dd></dl></div><div class="option" id="pokenix.events.&lt;name&gt;.obtained"><h3>obtained</h3><dl><dt>Type</dt><dd><code>null or string</code></dd><dt>Default</dt><dd><code>null</code></dd><dt>Example</dt><dd><pre>&quot;2021/02/16&quot;</pre></dd><dt>Description</dt><dd>Date obtained. Free-form, `YYYY/MM/DD` recommended.</dd></dl></div><div class="option" id="pokenix.events.&lt;name&gt;.ot"><h3>ot</h3><dl><dt>Type</dt><dd><code>null or string</code></dd><dt>Default</dt><dd><code>null</code></dd><dt>Example</dt><dd><pre>&quot;WISHMKR&quot;</pre></dd><dt>Description</dt><dd>Original Trainer name.</dd></dl></div><div class="option" id="pokenix.events.&lt;name&gt;.proof"><h3>proof</h3><dl><dt>Type</dt><dd><code>null or string</code></dd><dt>Default</dt><dd><code>null</code></dd><dt>Example</dt><dd><pre>&quot;WC photo in /proofs/jirachi-wishmkr.png&quot;</pre></dd><dt>Description</dt><dd>Proof of legitimacy — WC photo, video, trade receipt, etc.</dd></dl></div><div class="option" id="pokenix.events.&lt;name&gt;.region"><h3>region</h3><dl><dt>Type</dt><dd><code>null or string</code></dd><dt>Default</dt><dd><code>null</code></dd><dt>Example</dt><dd><pre>&quot;ENG&quot;</pre></dd><dt>Description</dt><dd>Region/language code — `ENG`, `JPN`, `GER`, `KOR`, `SPA`, `ITA`, `FRE`, `CHT`, `CHS`.</dd></dl></div><div class="option" id="pokenix.events.&lt;name&gt;.selfObtained"><h3>selfObtained</h3><dl><dt>Type</dt><dd><code>boolean</code></dd><dt>Default</dt><dd><code>false</code></dd><dt>Example</dt><dd><pre>false</pre></dd><dt>Description</dt><dd>True if you obtained this yourself; false for trades. Drives the ✓ column on the events page.</dd></dl></div><div class="option" id="pokenix.events.&lt;name&gt;.shiny"><h3>shiny</h3><dl><dt>Type</dt><dd><code>boolean</code></dd><dt>Default</dt><dd><code>false</code></dd><dt>Example</dt><dd><pre>true</pre></dd><dt>Description</dt><dd>Whether this event Pokémon is shiny. Affects sprite lookup (shiny/ vs regular/) and the ✨ column.</dd></dl></div><div class="option" id="pokenix.events.&lt;name&gt;.species"><h3>species</h3><dl><dt>Type</dt><dd><code>string</code></dd><dt>Example</dt><dd><pre>&quot;jirachi&quot;</pre></dd><dt>Description</dt><dd>Species identifier — a breedable key (`jirachi`) or free-form id for event-only Pokémon (`walking-wake`). Used to auto-resolve dex, sprite, and display name.</dd></dl></div><div class="option" id="pokenix.events.&lt;name&gt;.sprite"><h3>sprite</h3><dl><dt>Type</dt><dd><code>null or string</code></dd><dt>Default</dt><dd><code>null</code></dd><dt>Example</dt><dd><pre>&quot;sprites/pokemon-gen8/shiny/385.png&quot;</pre></dd><dt>Description</dt><dd>Custom sprite path (relative to module root). Leave unset to use the auto-resolved sprite.</dd></dl></div><div class="option" id="pokenix.events.&lt;name&gt;.tradeHistory"><h3>tradeHistory</h3><dl><dt>Type</dt><dd><code>null or string</code></dd><dt>Default</dt><dd><code>null</code></dd><dt>Example</dt><dd><pre>&quot;GoroMajimaIsMyIdol#8508 &gt; pungkula&quot;</pre></dd><dt>Description</dt><dd>Chain of trades that led to you owning this Pokémon.</dd></dl></div><div class="option" id="pokenix.events.&lt;name&gt;.year"><h3>year</h3><dl><dt>Type</dt><dd><code>null or string</code></dd><dt>Default</dt><dd><code>null</code></dd><dt>Example</dt><dd><pre>&quot;2003&quot;</pre></dd><dt>Description</dt><dd>Year of the distribution or event. Rendered in the Year column.</dd></dl></div></div></details></div></details><details class="group" id="pokenix.specials"><summary>specials <span class="count">(34)</span></summary><div class="children"><dl><dt>Type</dt><dd><code>attribute set of (submodule)</code></dd><dt>Default</dt><dd><code>{ }</code></dd><dt>Example</dt><dd><pre>{
+  mewtwo-ribbon-master = {
+    ability = &quot;Pressure&quot;;
+    ball = &quot;master&quot;;
+    evs = {
+      hp = 4;
+      spa = 252;
+      spe = 252;
+    };
+    ivs = {
+      atk = 0;
+      def = 31;
+      hp = 31;
+      spa = 31;
+      spd = 31;
+      spe = 31;
+    };
+    level = 100;
+    moves = [
+      &quot;Psystrike&quot;
+      &quot;Aura Sphere&quot;
+      &quot;Ice Beam&quot;
+      &quot;Calm Mind&quot;
+    ];
+    nature = &quot;Timid&quot;;
+    ribbons = [
+      &quot;Effort Ribbon&quot;
+      &quot;Master Rank Ribbon&quot;
+    ];
+    shiny = true;
+    species = &quot;mewtwo&quot;;
+  };
+}</pre></dd><dt>Description</dt><dd>Hand-curated special Pokémon — anything you want to document with full stats
+(level, nature, ability, EVs, IVs, marks, ribbons, moves, etc.). Appears on
+the specials page. Use this for competitive-ready mons, memory-keeping
+mons, or anything not covered by breeding/shiny/event tracking.
+</dd></dl><details class="group" id="pokenix.specials.&lt;name&gt;"><summary>&lt;name&gt; <span class="count">(34)</span></summary><div class="children"><div class="option" id="pokenix.specials.&lt;name&gt;.ability"><h3>ability</h3><dl><dt>Type</dt><dd><code>null or string</code></dd><dt>Default</dt><dd><code>null</code></dd><dt>Example</dt><dd><pre>&quot;Pressure&quot;</pre></dd><dt>Description</dt><dd>Ability name. Include `(Hidden)` suffix if the Hidden Ability.</dd></dl></div><div class="option" id="pokenix.specials.&lt;name&gt;.ball"><h3>ball</h3><dl><dt>Type</dt><dd><code>null or string</code></dd><dt>Default</dt><dd><code>null</code></dd><dt>Example</dt><dd><pre>&quot;master&quot;</pre></dd><dt>Description</dt><dd>Ball sprite rendered next to the Pokémon. Matches `sprites/balls/<ball>.png`.</dd></dl></div><div class="option" id="pokenix.specials.&lt;name&gt;.dex"><h3>dex</h3><dl><dt>Type</dt><dd><code>null or signed integer</code></dd><dt>Default</dt><dd><code>null</code></dd><dt>Example</dt><dd><pre>150</pre></dd><dt>Description</dt><dd>National Pokédex number. Auto-resolved from breedables if unset; required for paradox/PLA-only species.</dd></dl></div><details class="group" id="pokenix.specials.&lt;name&gt;.evs"><summary>evs <span class="count">(6)</span></summary><div class="children"><dl><dt>Type</dt><dd><code>submodule</code></dd><dt>Default</dt><dd><code>{ }</code></dd><dt>Example</dt><dd><pre>{
+  hp = 4;
+  spa = 252;
+  spe = 252;
+}</pre></dd><dt>Description</dt><dd>EV spread. Each stat 0–252, total ≤ 508. Leave unset for untrained.</dd></dl><div class="option" id="pokenix.specials.&lt;name&gt;.evs.atk"><h3>atk</h3><dl><dt>Type</dt><dd><code>null or signed integer</code></dd><dt>Default</dt><dd><code>null</code></dd><dt>Example</dt><dd><pre>0</pre></dd><dt>Description</dt><dd>Attack stat value (0–252 for EVs, 0–31 for IVs).</dd></dl></div><div class="option" id="pokenix.specials.&lt;name&gt;.evs.def"><h3>def</h3><dl><dt>Type</dt><dd><code>null or signed integer</code></dd><dt>Default</dt><dd><code>null</code></dd><dt>Example</dt><dd><pre>0</pre></dd><dt>Description</dt><dd>Defense stat value (0–252 for EVs, 0–31 for IVs).</dd></dl></div><div class="option" id="pokenix.specials.&lt;name&gt;.evs.hp"><h3>hp</h3><dl><dt>Type</dt><dd><code>null or signed integer</code></dd><dt>Default</dt><dd><code>null</code></dd><dt>Example</dt><dd><pre>4</pre></dd><dt>Description</dt><dd>HP stat value (0–252 for EVs, 0–31 for IVs).</dd></dl></div><div class="option" id="pokenix.specials.&lt;name&gt;.evs.spa"><h3>spa</h3><dl><dt>Type</dt><dd><code>null or signed integer</code></dd><dt>Default</dt><dd><code>null</code></dd><dt>Example</dt><dd><pre>252</pre></dd><dt>Description</dt><dd>Special Attack stat value (0–252 for EVs, 0–31 for IVs).</dd></dl></div><div class="option" id="pokenix.specials.&lt;name&gt;.evs.spd"><h3>spd</h3><dl><dt>Type</dt><dd><code>null or signed integer</code></dd><dt>Default</dt><dd><code>null</code></dd><dt>Example</dt><dd><pre>0</pre></dd><dt>Description</dt><dd>Special Defense stat value (0–252 for EVs, 0–31 for IVs).</dd></dl></div><div class="option" id="pokenix.specials.&lt;name&gt;.evs.spe"><h3>spe</h3><dl><dt>Type</dt><dd><code>null or signed integer</code></dd><dt>Default</dt><dd><code>null</code></dd><dt>Example</dt><dd><pre>252</pre></dd><dt>Description</dt><dd>Speed stat value (0–252 for EVs, 0–31 for IVs).</dd></dl></div></div></details><div class="option" id="pokenix.specials.&lt;name&gt;.heldItem"><h3>heldItem</h3><dl><dt>Type</dt><dd><code>null or string</code></dd><dt>Default</dt><dd><code>null</code></dd><dt>Example</dt><dd><pre>&quot;Life Orb&quot;</pre></dd><dt>Description</dt><dd>Item currently held.</dd></dl></div><div class="option" id="pokenix.specials.&lt;name&gt;.id"><h3>id</h3><dl><dt>Type</dt><dd><code>null or string</code></dd><dt>Default</dt><dd><code>null</code></dd><dt>Example</dt><dd><pre>&quot;082409&quot;</pre></dd><dt>Description</dt><dd>Trainer ID (5–6 digit string).</dd></dl></div><details class="group" id="pokenix.specials.&lt;name&gt;.ivs"><summary>ivs <span class="count">(6)</span></summary><div class="children"><dl><dt>Type</dt><dd><code>submodule</code></dd><dt>Default</dt><dd><code>{ }</code></dd><dt>Example</dt><dd><pre>{
+  atk = 0;
+  def = 31;
+  hp = 31;
+  spa = 31;
+  spd = 31;
+  spe = 31;
+}</pre></dd><dt>Description</dt><dd>IV spread. Each stat 0–31. Leave unset for unknown / not-recorded.</dd></dl><div class="option" id="pokenix.specials.&lt;name&gt;.ivs.atk"><h3>atk</h3><dl><dt>Type</dt><dd><code>null or signed integer</code></dd><dt>Default</dt><dd><code>null</code></dd><dt>Example</dt><dd><pre>0</pre></dd><dt>Description</dt><dd>Attack stat value (0–252 for EVs, 0–31 for IVs).</dd></dl></div><div class="option" id="pokenix.specials.&lt;name&gt;.ivs.def"><h3>def</h3><dl><dt>Type</dt><dd><code>null or signed integer</code></dd><dt>Default</dt><dd><code>null</code></dd><dt>Example</dt><dd><pre>0</pre></dd><dt>Description</dt><dd>Defense stat value (0–252 for EVs, 0–31 for IVs).</dd></dl></div><div class="option" id="pokenix.specials.&lt;name&gt;.ivs.hp"><h3>hp</h3><dl><dt>Type</dt><dd><code>null or signed integer</code></dd><dt>Default</dt><dd><code>null</code></dd><dt>Example</dt><dd><pre>4</pre></dd><dt>Description</dt><dd>HP stat value (0–252 for EVs, 0–31 for IVs).</dd></dl></div><div class="option" id="pokenix.specials.&lt;name&gt;.ivs.spa"><h3>spa</h3><dl><dt>Type</dt><dd><code>null or signed integer</code></dd><dt>Default</dt><dd><code>null</code></dd><dt>Example</dt><dd><pre>252</pre></dd><dt>Description</dt><dd>Special Attack stat value (0–252 for EVs, 0–31 for IVs).</dd></dl></div><div class="option" id="pokenix.specials.&lt;name&gt;.ivs.spd"><h3>spd</h3><dl><dt>Type</dt><dd><code>null or signed integer</code></dd><dt>Default</dt><dd><code>null</code></dd><dt>Example</dt><dd><pre>0</pre></dd><dt>Description</dt><dd>Special Defense stat value (0–252 for EVs, 0–31 for IVs).</dd></dl></div><div class="option" id="pokenix.specials.&lt;name&gt;.ivs.spe"><h3>spe</h3><dl><dt>Type</dt><dd><code>null or signed integer</code></dd><dt>Default</dt><dd><code>null</code></dd><dt>Example</dt><dd><pre>252</pre></dd><dt>Description</dt><dd>Speed stat value (0–252 for EVs, 0–31 for IVs).</dd></dl></div></div></details><div class="option" id="pokenix.specials.&lt;name&gt;.level"><h3>level</h3><dl><dt>Type</dt><dd><code>null or signed integer</code></dd><dt>Default</dt><dd><code>null</code></dd><dt>Example</dt><dd><pre>100</pre></dd><dt>Description</dt><dd>Current level (1–100). Rendered in the Level column.</dd></dl></div><div class="option" id="pokenix.specials.&lt;name&gt;.marks"><h3>marks</h3><dl><dt>Type</dt><dd><code>list of string</code></dd><dt>Default</dt><dd><code>[ ]</code></dd><dt>Example</dt><dd><pre>[
+  &quot;The Unrivaled&quot;
+  &quot;Itemfinder&quot;
+]</pre></dd><dt>Description</dt><dd>Marks earned (Gen 8+) — `The Unrivaled`, `The Recluse`, `Itemfinder`, etc.</dd></dl></div><div class="option" id="pokenix.specials.&lt;name&gt;.moves"><h3>moves</h3><dl><dt>Type</dt><dd><code>list of string</code></dd><dt>Default</dt><dd><code>[ ]</code></dd><dt>Example</dt><dd><pre>[
+  &quot;Psystrike&quot;
+  &quot;Aura Sphere&quot;
+  &quot;Ice Beam&quot;
+  &quot;Calm Mind&quot;
+]</pre></dd><dt>Description</dt><dd>Current moveset (up to 4 moves). Rendered joined with ` · `.</dd></dl></div><div class="option" id="pokenix.specials.&lt;name&gt;.name"><h3>name</h3><dl><dt>Type</dt><dd><code>null or string</code></dd><dt>Default</dt><dd><code>null</code></dd><dt>Example</dt><dd><pre>&quot;Mewtwo&quot;</pre></dd><dt>Description</dt><dd>Display name. Falls back to the breedable's name or the species key.</dd></dl></div><div class="option" id="pokenix.specials.&lt;name&gt;.nature"><h3>nature</h3><dl><dt>Type</dt><dd><code>null or string</code></dd><dt>Default</dt><dd><code>null</code></dd><dt>Example</dt><dd><pre>&quot;Timid&quot;</pre></dd><dt>Description</dt><dd>Nature — `Timid`, `Adamant`, `Jolly`, `Modest`, etc.</dd></dl></div><div class="option" id="pokenix.specials.&lt;name&gt;.notes"><h3>notes</h3><dl><dt>Type</dt><dd><code>null or string</code></dd><dt>Default</dt><dd><code>null</code></dd><dt>Example</dt><dd><pre>&quot;Soft-reset 3 days, Timid sync&quot;</pre></dd><dt>Description</dt><dd>Free-form notes — origin, what makes it special, etc.</dd></dl></div><div class="option" id="pokenix.specials.&lt;name&gt;.obtained"><h3>obtained</h3><dl><dt>Type</dt><dd><code>null or string</code></dd><dt>Default</dt><dd><code>null</code></dd><dt>Example</dt><dd><pre>&quot;2023/08/15&quot;</pre></dd><dt>Description</dt><dd>Date obtained. Free-form, `YYYY/MM/DD` recommended.</dd></dl></div><div class="option" id="pokenix.specials.&lt;name&gt;.ot"><h3>ot</h3><dl><dt>Type</dt><dd><code>null or string</code></dd><dt>Default</dt><dd><code>null</code></dd><dt>Example</dt><dd><pre>&quot;pungkula&quot;</pre></dd><dt>Description</dt><dd>Original Trainer name.</dd></dl></div><div class="option" id="pokenix.specials.&lt;name&gt;.proof"><h3>proof</h3><dl><dt>Type</dt><dd><code>null or string</code></dd><dt>Default</dt><dd><code>null</code></dd><dt>Example</dt><dd><pre>&quot;Video in /proofs/mewtwo.mp4&quot;</pre></dd><dt>Description</dt><dd>Proof of legitimacy — WC photo, video, screenshot, etc.</dd></dl></div><div class="option" id="pokenix.specials.&lt;name&gt;.region"><h3>region</h3><dl><dt>Type</dt><dd><code>null or string</code></dd><dt>Default</dt><dd><code>null</code></dd><dt>Example</dt><dd><pre>&quot;ENG&quot;</pre></dd><dt>Description</dt><dd>Region/language code — `ENG`, `JPN`, `GER`, `KOR`, `SPA`, `ITA`, etc.</dd></dl></div><div class="option" id="pokenix.specials.&lt;name&gt;.ribbons"><h3>ribbons</h3><dl><dt>Type</dt><dd><code>list of string</code></dd><dt>Default</dt><dd><code>[ ]</code></dd><dt>Example</dt><dd><pre>[
+  &quot;Effort Ribbon&quot;
+  &quot;Master Rank Ribbon&quot;
+]</pre></dd><dt>Description</dt><dd>Ribbons earned — `Effort Ribbon`, `Master Rank Ribbon`, `Best Friends Ribbon`, etc.</dd></dl></div><div class="option" id="pokenix.specials.&lt;name&gt;.selfObtained"><h3>selfObtained</h3><dl><dt>Type</dt><dd><code>boolean</code></dd><dt>Default</dt><dd><code>false</code></dd><dt>Example</dt><dd><pre>true</pre></dd><dt>Description</dt><dd>True if obtained yourself; false for trades.</dd></dl></div><div class="option" id="pokenix.specials.&lt;name&gt;.shiny"><h3>shiny</h3><dl><dt>Type</dt><dd><code>boolean</code></dd><dt>Default</dt><dd><code>false</code></dd><dt>Example</dt><dd><pre>true</pre></dd><dt>Description</dt><dd>Whether this Pokémon is shiny. Affects sprite lookup and the ✨ column.</dd></dl></div><div class="option" id="pokenix.specials.&lt;name&gt;.species"><h3>species</h3><dl><dt>Type</dt><dd><code>string</code></dd><dt>Example</dt><dd><pre>&quot;mewtwo&quot;</pre></dd><dt>Description</dt><dd>Species identifier — a breedable key (`mewtwo`) or free-form id for unique forms. Used to auto-resolve dex, sprite, and display name.</dd></dl></div><div class="option" id="pokenix.specials.&lt;name&gt;.sprite"><h3>sprite</h3><dl><dt>Type</dt><dd><code>null or string</code></dd><dt>Default</dt><dd><code>null</code></dd><dt>Example</dt><dd><pre>&quot;sprites/pokemon-gen8/shiny/150.png&quot;</pre></dd><dt>Description</dt><dd>Custom sprite path (relative to module root). Leave unset to use the auto-resolved sprite.</dd></dl></div><div class="option" id="pokenix.specials.&lt;name&gt;.teraType"><h3>teraType</h3><dl><dt>Type</dt><dd><code>null or string</code></dd><dt>Default</dt><dd><code>null</code></dd><dt>Example</dt><dd><pre>&quot;Psychic&quot;</pre></dd><dt>Description</dt><dd>Tera Type (Gen 9 only). One of the 18 types.</dd></dl></div><div class="option" id="pokenix.specials.&lt;name&gt;.tradeHistory"><h3>tradeHistory</h3><dl><dt>Type</dt><dd><code>null or string</code></dd><dt>Default</dt><dd><code>null</code></dd><dt>Example</dt><dd><pre>&quot;Alto#0457 &gt; pungkula&quot;</pre></dd><dt>Description</dt><dd>Chain of trades that led to you owning this Pokémon.</dd></dl></div></div></details></div></details><details class="group" id="pokenix.stats"><summary>stats <span class="count">(9)</span></summary><div class="children"><div class="option" id="pokenix.stats.aprimonsOwned"><h3>aprimonsOwned</h3><dl><dt>Type</dt><dd><code>signed integer</code></dd><dt>Default</dt><dd><code>0</code></dd><dt>Description</dt><dd>Breedable species with at least one ball marked as caught.</dd></dl></div><div class="option" id="pokenix.stats.aprimonsTotal"><h3>aprimonsTotal</h3><dl><dt>Type</dt><dd><code>signed integer</code></dd><dt>Default</dt><dd><code>0</code></dd><dt>Description</dt><dd>Total breedable species tracked.</dd></dl></div><div class="option" id="pokenix.stats.ballCaptures"><h3>ballCaptures</h3><dl><dt>Type</dt><dd><code>signed integer</code></dd><dt>Default</dt><dd><code>0</code></dd><dt>Description</dt><dd>Total (species × ball) captures across every breedable.</dd></dl></div><div class="option" id="pokenix.stats.ballPossible"><h3>ballPossible</h3><dl><dt>Type</dt><dd><code>signed integer</code></dd><dt>Default</dt><dd><code>0</code></dd><dt>Description</dt><dd>Total legal (species × ball) combinations across every breedable.</dd></dl></div><div class="option" id="pokenix.stats.eventCount"><h3>eventCount</h3><dl><dt>Type</dt><dd><code>signed integer</code></dd><dt>Default</dt><dd><code>0</code></dd><dt>Description</dt><dd>Number of event Pokémon recorded.</dd></dl></div><div class="option" id="pokenix.stats.shinyOwned"><h3>shinyOwned</h3><dl><dt>Type</dt><dd><code>signed integer</code></dd><dt>Default</dt><dd><code>0</code></dd><dt>Description</dt><dd>Number of shiny Pokémon marked as owned (ball ≠ null).</dd></dl></div><div class="option" id="pokenix.stats.shinyTotal"><h3>shinyTotal</h3><dl><dt>Type</dt><dd><code>signed integer</code></dd><dt>Default</dt><dd><code>0</code></dd><dt>Description</dt><dd>Total shiny Pokémon tracked in the living dex.</dd></dl></div><div class="option" id="pokenix.stats.specialsCount"><h3>specialsCount</h3><dl><dt>Type</dt><dd><code>signed integer</code></dd><dt>Default</dt><dd><code>0</code></dd><dt>Description</dt><dd>Number of special Pokémon recorded.</dd></dl></div><div class="option" id="pokenix.stats.totalMons"><h3>totalMons</h3><dl><dt>Type</dt><dd><code>signed integer</code></dd><dt>Default</dt><dd><code>0</code></dd><dt>Description</dt><dd>Sum of shinyOwned + eventCount + specialsCount + aprimonsOwned.</dd></dl></div></div></details><details class="group" id="pokenix.trainer"><summary>trainer <span class="count">(10)</span></summary><div class="children"><dl><dt>Type</dt><dd><code>submodule</code></dd><dt>Default</dt><dd><code>{ }</code></dd><dt>Example</dt><dd><pre>{
+  about = &quot;Shiny hunter&quot;;
+  contact = &quot;Discord pungkula#0001&quot;;
+  friendCode = &quot;SW-1234-5678-9012&quot;;
+  name = &quot;pungkula&quot;;
+  region = &quot;Sweden&quot;;
+  timezone = &quot;Europe/Stockholm&quot;;
+}</pre></dd><dt>Description</dt><dd>Trainer profile shown on the **trainer** page. Set `name` to override the
+**PokèNix** brand text in the header. All fields are optional; anything
+unset is silently omitted.
+</dd></dl><div class="option" id="pokenix.trainer.about"><h3>about</h3><dl><dt>Type</dt><dd><code>null or string</code></dd><dt>Default</dt><dd><code>null</code></dd><dt>Example</dt><dd><pre>&quot;Shiny hunter · gen 1–5 done&quot;</pre></dd><dt>Description</dt><dd>Short bio / one-liner shown under the name on the trainer card.</dd></dl></div><div class="option" id="pokenix.trainer.contact"><h3>contact</h3><dl><dt>Type</dt><dd><code>null or string</code></dd><dt>Default</dt><dd><code>null</code></dd><dt>Example</dt><dd><pre>&quot;Discord pungkula#0001&quot;</pre></dd><dt>Description</dt><dd>Contact info — Discord handle, email, social media, etc.</dd></dl></div><div class="option" id="pokenix.trainer.friendCode"><h3>friendCode</h3><dl><dt>Type</dt><dd><code>null or string</code></dd><dt>Default</dt><dd><code>null</code></dd><dt>Example</dt><dd><pre>&quot;SW-1234-5678-9012&quot;</pre></dd><dt>Description</dt><dd>Nintendo Switch friend code.</dd></dl></div><div class="option" id="pokenix.trainer.name"><h3>name</h3><dl><dt>Type</dt><dd><code>null or string</code></dd><dt>Default</dt><dd><code>null</code></dd><dt>Example</dt><dd><pre>&quot;pungkula&quot;</pre></dd><dt>Description</dt><dd>Trainer name. Replaces the `PokèNix` brand text in the sticky header on every page.</dd></dl></div><div class="option" id="pokenix.trainer.picture"><h3>picture</h3><dl><dt>Type</dt><dd><code>null or absolute path</code></dd><dt>Default</dt><dd><code>null</code></dd><dt>Example</dt><dd><pre>/nix/store/0r6azzmx2jx3xqcgv1sn0djjk05gjl4r-source/images/me.png</pre></dd><dt>Description</dt><dd>Avatar shown at the top of the trainer card. PNG/JPG/WEBP/GIF — mime detected from extension. Base64-embedded; no external asset needed.</dd></dl></div><div class="option" id="pokenix.trainer.region"><h3>region</h3><dl><dt>Type</dt><dd><code>null or string</code></dd><dt>Default</dt><dd><code>null</code></dd><dt>Example</dt><dd><pre>&quot;Sweden&quot;</pre></dd><dt>Description</dt><dd>Location or region, free-form.</dd></dl></div><div class="option" id="pokenix.trainer.secretId"><h3>secretId</h3><dl><dt>Type</dt><dd><code>null or string</code></dd><dt>Default</dt><dd><code>null</code></dd><dt>Example</dt><dd><pre>&quot;12345&quot;</pre></dd><dt>Description</dt><dd>In-game Secret ID (SID). Usually not shared publicly — remove from your config if privacy-sensitive.</dd></dl></div><div class="option" id="pokenix.trainer.switchName"><h3>switchName</h3><dl><dt>Type</dt><dd><code>null or string</code></dd><dt>Default</dt><dd><code>null</code></dd><dt>Example</dt><dd><pre>&quot;pungkula&quot;</pre></dd><dt>Description</dt><dd>Nintendo Switch profile name.</dd></dl></div><div class="option" id="pokenix.trainer.timezone"><h3>timezone</h3><dl><dt>Type</dt><dd><code>null or string</code></dd><dt>Default</dt><dd><code>null</code></dd><dt>Example</dt><dd><pre>&quot;Europe/Stockholm&quot;</pre></dd><dt>Description</dt><dd>IANA timezone — useful for scheduling trades.</dd></dl></div><div class="option" id="pokenix.trainer.trainerId"><h3>trainerId</h3><dl><dt>Type</dt><dd><code>null or string</code></dd><dt>Default</dt><dd><code>null</code></dd><dt>Example</dt><dd><pre>&quot;082409&quot;</pre></dd><dt>Description</dt><dd>In-game Trainer ID.</dd></dl></div></div></details></div></details>
+      <p id="empty">No matching options.</p>
+    </section>
+  </main>
+</div>
+<script>
+
+(function () {
+  const html = document.documentElement;
+  const toggle = document.getElementById('theme-toggle');
+
+  function applyTheme(t) {
+    html.dataset.theme = t;
+    toggle.textContent = t === 'dark' ? '☀️' : '🌙';
+    toggle.title = t === 'dark' ? 'Switch to light mode' : 'Switch to dark mode';
+    try { localStorage.setItem('zigduck-theme', t); } catch (e) {}
+  }
+  let saved = null;
+  try { saved = localStorage.getItem('zigduck-theme'); } catch (e) {}
+  if (saved === 'dark' || saved === 'light') applyTheme(saved);
+  else applyTheme(matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+  toggle.addEventListener('click', () => {
+    applyTheme(html.dataset.theme === 'dark' ? 'light' : 'dark');
+  });
+
+  const options = Array.from(document.querySelectorAll('main .option'));
+  const allDetails = Array.from(document.querySelectorAll('details'));
+  const sideLis = Array.from(document.querySelectorAll('#sidebar-scroll li'));
+  const search = document.getElementById('search');
+  const empty = document.getElementById('empty');
+  const main = document.getElementById('main');
+
+  const depth = el => { let d = 0; while (el.parentElement) { d++; el = el.parentElement; } return d; };
+  const detailsDesc = allDetails.slice().sort((a, b) => depth(b) - depth(a));
+  const sideLisDesc = sideLis.slice().sort((a, b) => depth(b) - depth(a));
+
+  const initialOpen = new Map();
+  allDetails.forEach(d => initialOpen.set(d, d.open));
+
+  function openAncestors(el) {
+    let p = el.parentElement;
+    while (p) {
+      if (p.tagName === 'DETAILS') p.open = true;
+      p = p.parentElement;
+    }
+  }
+
+  document.querySelectorAll('#sidebar a').forEach(a => {
+    a.addEventListener('click', (e) => {
+      const id = decodeURIComponent(a.getAttribute('href').slice(1));
+      const target = document.getElementById(id);
+      if (!target) return;
+      e.preventDefault();
+      openAncestors(target);
+      openAncestors(a);
+      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  });
+
+  search.addEventListener('input', () => {
+    const q = search.value.toLowerCase().trim();
+
+    options.forEach(el => el.classList.remove('hidden'));
+    allDetails.forEach(d => d.classList.remove('hidden'));
+    sideLis.forEach(li => li.classList.remove('hidden'));
+
+    if (!q) {
+      initialOpen.forEach((open, d) => { d.open = open; });
+      empty.style.display = 'none';
+      return;
+    }
+
+    options.forEach(el => {
+      if (!el.textContent.toLowerCase().includes(q)) el.classList.add('hidden');
+    });
+
+    detailsDesc.forEach(d => {
+      if (!d.classList.contains('group')) return;
+      const summary = d.querySelector(':scope > summary');
+      const summaryMatch = summary && summary.textContent.toLowerCase().includes(q);
+      if (summaryMatch) d.querySelectorAll('.hidden').forEach(x => x.classList.remove('hidden'));
+      const hasVisible = d.querySelector('.option:not(.hidden)');
+      if (summaryMatch || hasVisible) d.open = true;
+      else d.classList.add('hidden');
+    });
+
+    sideLisDesc.forEach(li => {
+      const own = li.querySelector(':scope > a, :scope > details > summary');
+      const ownMatch = own && own.textContent.toLowerCase().includes(q);
+      const det = li.querySelector(':scope > details');
+
+      if (ownMatch) {
+        li.querySelectorAll('li').forEach(x => x.classList.remove('hidden'));
+        li.querySelectorAll('details').forEach(x => x.open = true);
+      }
+
+      const childVisible = Array.from(li.querySelectorAll(':scope > details > ul > li'))
+        .some(c => !c.classList.contains('hidden'));
+
+      if (!ownMatch && !childVisible) li.classList.add('hidden');
+      else if (det) det.open = true;
+    });
+
+    empty.style.display = main.querySelector('.option:not(.hidden)') ? 'none' : 'block';
+  });
+
+  toggle.textContent = html.dataset.theme === 'dark' ? '☀️' : '🌙';
+})();
+
+</script>
+</body>
+</html>

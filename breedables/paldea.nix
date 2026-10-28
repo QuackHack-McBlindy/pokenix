@@ -1,5 +1,8 @@
-{ spriteRoot ? "sprites" }:
-let
+{ 
+  spriteRoot
+  ?
+  "sprites"
+} : let
   sprite = name: "${spriteRoot}/paldea/${name}.png";
 
   paldeaBalls = [

@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # hooks/get-options.sh
 # run before build-docs.sh
-# usage:
+# USAGE:
 # bash hooks/get-options.sh \
 #   --flake /path/to/your/flake \
 #   --hostname desktop
@@ -54,6 +54,28 @@ for option in config.get("options", {}).get("include", []):
 
 option1="${CONFIG_OPTIONS[0]:-}"
 OPTIONAL_ARG2="${CONFIG_OPTIONS[1]:-}"
+CONFIG_EXCLUDES_JSON=$(
+  python3 -c '
+import sys, tomllib, json
+
+with open(sys.argv[1], "rb") as f:
+    config = tomllib.load(f)
+
+print(json.dumps(config.get("options", {}).get("exclude_prefixes", [])))
+' "$PROJECT_TOML"
+)
+
+CONFIG_KEEP_JSON=$(
+  python3 -c '
+import sys, tomllib, json
+
+with open(sys.argv[1], "rb") as f:
+    config = tomllib.load(f)
+
+print(json.dumps(config.get("options", {}).get("keep_attrs", [])))
+' "$PROJECT_TOML"
+)
+
 
 while [[ $# -gt 0 ]]; do
   case "$1" in
@@ -142,11 +164,33 @@ build_doc() {
       --print-out-paths \
       --expr "
         let
-          flake = builtins.getFlake \"${FLAKE_REF}\";
-          pkgs = flake.inputs.nixpkgs.legacyPackages.x86_64-linux;
-          cfg = flake.nixosConfigurations.\"${HOSTNAME_ARG}\";
+          flake   = builtins.getFlake \"${FLAKE_REF}\";
+          pkgs    = flake.inputs.nixpkgs.legacyPackages.x86_64-linux;
+          lib     = pkgs.lib;
+          cfg     = flake.nixosConfigurations.\"${HOSTNAME_ARG}\";
+
+          optPath  = \"${opt_path}\";
+          excludes = builtins.fromJSON ''
+            ${CONFIG_EXCLUDES_JSON}
+          '';
+
+          keepName = name: _value:
+            let
+              fullName   = \"\${optPath}.\${name}\";
+              isExcluded = builtins.any
+                (p: fullName == p || lib.hasPrefix \"\${p}.\" fullName)
+                excludes;
+            in
+              !isExcluded;
+
+          rootOptions = lib.getAttrFromPath
+            (lib.splitString \".\" optPath)
+            cfg.options;
+
+          filtered = lib.filterAttrs keepName rootOptions;
+
           doc = pkgs.nixosOptionsDoc {
-            options = cfg.options.${opt_path};
+            options = filtered;
             warningsAreErrors = false;
           };
         in

@@ -1,8 +1,17 @@
-{ spriteRoot ? "sprites" }:
-let
+{ 
+  spriteRoot
+  ?
+  "sprites"
+} : let
   sprite = name: "${spriteRoot}/galar/${name}.png";
-in
-{
+
+  allBalls = [
+    "safari" "sport" "fast" "friend" "heavy" "level"
+    "love" "lure" "moon" "dream" "beast"
+  ];
+  without = exclude:
+    builtins.filter (b: !(builtins.elem b exclude)) allBalls;
+in {
   # GALAR — GENERATION 8 — 33 entries
 
   # Note: All Galarian forms (Meowth, Ponyta, Slowpoke, Farfetch'd,
@@ -42,4 +51,5 @@ in
   cufant      = { dex = 878; ha = "Heavy Metal";        male = 50;   female = 50;   hatchCycles = 25; sprite = sprite "cufant"; };
   duraludon   = { dex = 884; ha = "Stalwart";           male = 50;   female = 50;   hatchCycles = 30; sprite = sprite "duraludon"; };
   dreepy      = { dex = 885; ha = "Cursed Body";        male = 50;   female = 50;   hatchCycles = 40; sprite = sprite "dreepy"; };
+
 }

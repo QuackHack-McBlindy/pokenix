@@ -1,20 +1,29 @@
-{ spriteRoot ? "sprites" }:
-let
+{ 
+  spriteRoot
+  ?
+  "sprites"
+} : let
   sprite = name: "${spriteRoot}/kanto/${name}.png";
-in
-{
+
+  allBalls = [
+    "safari" "sport" "fast" "friend" "heavy" "level"
+    "love" "lure" "moon" "dream" "beast"
+  ];
+  without = exclude:
+    builtins.filter (b: !(builtins.elem b exclude)) allBalls;
+in {
   # KANTO — GENERATION 1 — 85 entries
 
   bulbasaur    = { dex =   1; ha = "Chlorophyll";      male = 87.5; female = 12.5; hatchCycles = 20; sprite = sprite "bulbasaur"; };
   charmander   = { dex =   4; ha = "Solar Power";      male = 87.5; female = 12.5; hatchCycles = 20; sprite = sprite "charmander"; };
   squirtle     = { dex =   7; ha = "Rain Dish";        male = 87.5; female = 12.5; hatchCycles = 20; sprite = sprite "squirtle"; };
   caterpie     = { dex =  10; ha = "Run Away";         male = 50;   female = 50;   hatchCycles = 15; sprite = sprite "caterpie"; };
-  weedle       = { dex =  13; ha = "Run Away";         male = 50;   female = 50;   hatchCycles = 15; sprite = sprite "weedle"; };
-  pidgey       = { dex =  16; ha = "Big Pecks";        male = 50;   female = 50;   hatchCycles = 15; sprite = sprite "pidgey"; };
-  rattata      = { dex =  19; ha = "Hustle";           male = 50;   female = 50;   hatchCycles = 15; sprite = sprite "rattata"; };
-  rattata-alola = { dex =  19; ha = "Thick Fat";     male = 50;   female = 50;                 sprite = sprite "rattata-alola"; };
-  spearow      = { dex =  21; ha = "Sniper";           male = 50;   female = 50;   hatchCycles = 15; sprite = sprite "spearow"; };
-  ekans        = { dex =  23; ha = "Unnerve";          male = 50;   female = 50;   hatchCycles = 20; sprite = sprite "ekans"; };
+  weedle       = { dex =  13; ha = "Run Away";         male = 50;   female = 50;   hatchCycles = 15; balls = without [ "safari" ]; sprite = sprite "weedle"; };
+  pidgey       = { dex =  16; ha = "Big Pecks";        male = 50;   female = 50;   hatchCycles = 15; balls = without [ "sport" ]; sprite = sprite "pidgey"; };
+  rattata      = { dex =  19; ha = "Hustle";           male = 50;   female = 50;   hatchCycles = 15; balls = without [ "sport" ]; sprite = sprite "rattata"; };
+  rattata-alola = { dex =  19; ha = "Thick Fat";     male = 50;   female = 50;   balls = without [ "sport" ]; sprite = sprite "rattata-alola"; };
+  spearow      = { dex =  21; ha = "Sniper";           male = 50;   female = 50;   hatchCycles = 15; balls = without [ "sport" ]; sprite = sprite "spearow"; };
+  ekans        = { dex =  23; ha = "Unnerve";          male = 50;   female = 50;   hatchCycles = 20; balls = without [ "safari" "sport" ]; sprite = sprite "ekans"; };
   pichu        = { dex = 172; ha = "Lightning Rod";    male = 50;   female = 50;   hatchCycles = 10; sprite = sprite "pichu"; };
   sandshrew    = { dex =  27; ha = "Sand Rush";        male = 50;   female = 50;   hatchCycles = 20; sprite = sprite "sandshrew"; };
   sandshrew-alola = { dex =  27; ha = "Slush Rush";  male = 50;  female = 50;  hatchCycles = 20; sprite = sprite "sandshrew-alola"; };
@@ -33,15 +42,15 @@ in
   meowth-alola = { dex =  52; ha = "Rattled";        male = 50;   female = 50;   hatchCycles = 20; sprite = sprite "meowth-alola"; };
   meowth-galar = { dex =  52; ha = "Unnerve";        male = 50;   female = 50;   hatchCycles = 20; sprite = sprite "meowth-galar"; };
   psyduck      = { dex =  54; ha = "Swift Swim";     male = 50;   female = 50;   hatchCycles = 20; sprite = sprite "psyduck"; };
-  mankey       = { dex =  56; ha = "Defiant";        male = 50;   female = 50;   hatchCycles = 20; sprite = sprite "mankey"; };
+  mankey       = { dex =  56; ha = "Defiant";        male = 50;   female = 50;   hatchCycles = 20; balls = without [ "safari" "sport" ]; sprite = sprite "mankey"; };
   growlithe    = { dex =  58; ha = "Justified";      male = 75;   female = 25;   hatchCycles = 20; sprite = sprite "growlithe"; };
   poliwag      = { dex =  60; ha = "Swift Swim";     male = 50;   female = 50;   hatchCycles = 20; sprite = sprite "poliwag"; };
   abra         = { dex =  63; ha = "Magic Guard";    male = 75;   female = 25;   hatchCycles = 20; sprite = sprite "abra"; };
   machop       = { dex =  66; ha = "Steadfast";      male = 75;   female = 25;   hatchCycles = 20; sprite = sprite "machop"; };
-  bellsprout   = { dex =  69; ha = "Gluttony";       male = 50;   female = 50;   hatchCycles = 20; sprite = sprite "bellsprout"; };
+  bellsprout   = { dex =  69; ha = "Gluttony";       male = 50;   female = 50;   hatchCycles = 20; balls = without [ "sport" ]; sprite = sprite "bellsprout"; };
   tentacool    = { dex =  72; ha = "Rain Dish";      male = 50;   female = 50;   hatchCycles = 20; sprite = sprite "tentacool"; };
-  geodude      = { dex =  74; ha = "Sand Veil";      male = 50;   female = 50;   hatchCycles = 15; sprite = sprite "geodude"; };
-  geodude-alola = { dex =  74; ha = "Galvanize";                                                sprite = sprite "geodude-alola"; };
+  geodude      = { dex =  74; ha = "Sand Veil";      male = 50;   female = 50;   hatchCycles = 15; balls = without [ "sport" ]; sprite = sprite "geodude"; };
+  geodude-alola = { dex =  74; ha = "Galvanize";                                                balls = without [ "sport" ]; sprite = sprite "geodude-alola"; };
   ponyta       = { dex =  77; ha = "Flame Body";     male = 50;   female = 50;   hatchCycles = 20; sprite = sprite "ponyta"; };
   ponyta-galar = { dex =  77; ha = "Anticipation";   male = 50;   female = 50;   hatchCycles = 20; sprite = sprite "ponyta-galar"; };
   slowpoke     = { dex =  79; ha = "Regenerator";    male = 50;   female = 50;   hatchCycles = 20; sprite = sprite "slowpoke"; };
@@ -49,16 +58,16 @@ in
   magnemite    = { dex =  81; ha = "Analytic";         genderless = true;            hatchCycles = 20; sprite = sprite "magnemite"; };
   farfetchd    = { dex =  83; ha = "Defiant";          male = 50;   female = 50;   hatchCycles = 20; sprite = sprite "farfetchd"; };
   farfetchd-galar = { dex =  83; ha = "Scrappy";   male = 50;   female = 50;   hatchCycles = 20; sprite = sprite "farfetchd-galar"; };
-  doduo        = { dex =  84; ha = "Tangled Feet";     male = 50;   female = 50;   hatchCycles = 20; sprite = sprite "doduo"; };
-  seel         = { dex =  86; ha = "Thick Fat";        male = 50;   female = 50;   hatchCycles = 20; sprite = sprite "seel"; };
-  grimer       = { dex =  88; ha = "Poison Touch";     male = 50;   female = 50;   hatchCycles = 20; sprite = sprite "grimer"; };
-  grimer-alola = { dex =  88; ha = "Power of Alchemy"; male = 50;  female = 50;                  sprite = sprite "grimer-alola"; };
+  doduo        = { dex =  84; ha = "Tangled Feet";     male = 50;   female = 50;   hatchCycles = 20; balls = without [ "sport" ]; sprite = sprite "doduo"; };
+  seel         = { dex =  86; ha = "Thick Fat";        male = 50;   female = 50;   hatchCycles = 20; balls = without [ "safari" "sport" ]; sprite = sprite "seel"; };
+  grimer       = { dex =  88; ha = "Poison Touch";     male = 50;   female = 50;   hatchCycles = 20; balls = without [ "sport" ]; sprite = sprite "grimer"; };
+  grimer-alola = { dex =  88; ha = "Power of Alchemy"; male = 50;  female = 50;                  balls = without [ "sport" ]; sprite = sprite "grimer-alola"; };
   shellder     = { dex =  90; ha = "Overcoat";         male = 50;   female = 50;   hatchCycles = 20; sprite = sprite "shellder"; };
   gastly       = { dex =  92; ha = "Levitate";         male = 50;   female = 50;   hatchCycles = 20; sprite = sprite "gastly"; };
   onix         = { dex =  95; ha = "Weak Armor";       male = 50;   female = 50;   hatchCycles = 25; sprite = sprite "onix"; };
-  drowzee      = { dex =  96; ha = "Inner Focus";      male = 50;   female = 50;   hatchCycles = 20; sprite = sprite "drowzee"; };
+  drowzee      = { dex =  96; ha = "Inner Focus";      male = 50;   female = 50;   hatchCycles = 20; balls = without [ "sport" ]; sprite = sprite "drowzee"; };
   krabby       = { dex =  98; ha = "Sheer Force";      male = 50;   female = 50;   hatchCycles = 20; sprite = sprite "krabby"; };
-  voltorb      = { dex = 100; ha = "Aftermath";        genderless = true;            hatchCycles = 20; sprite = sprite "voltorb"; };
+  voltorb      = { dex = 100; ha = "Aftermath";        genderless = true;            hatchCycles = 20; balls = without [ "sport" ]; sprite = sprite "voltorb"; };
   exeggcute    = { dex = 102; ha = "Harvest";          male = 50;   female = 50;   hatchCycles = 20; sprite = sprite "exeggcute"; };
   cubone       = { dex = 104; ha = "Battle Armor";     male = 50;   female = 50;   hatchCycles = 20; sprite = sprite "cubone"; };
   lickitung    = { dex = 108; ha = "Cloud Nine";       male = 50;   female = 50;   hatchCycles = 20; sprite = sprite "lickitung"; };
@@ -78,9 +87,9 @@ in
   magby        = { dex = 126; ha = "Vital Spirit";     male = 75;   female = 25;   hatchCycles = 25; sprite = sprite "magby"; };
   pinsir       = { dex = 127; ha = "Moxie";            male = 50;   female = 50;   hatchCycles = 25; sprite = sprite "pinsir"; };
   tauros       = { dex = 128; ha = "Sheer Force";      male = 100;  female = 0;    hatchCycles = 20; sprite = sprite "tauros"; };
-  tauros-paldea = { dex = 128; ha = "Cud Chew";  male = 100;  female = 0;  hatchCycles = 20; sprite = sprite "tauros-paldea"; };
-  tauros-blaze = { dex = 128; ha = "Cud Chew";   male = 100;  female = 0;  hatchCycles = 20; sprite = sprite "tauros-paldea-blaze"; };
-  tauros-aqua  = { dex = 128; ha = "Cud Chew";  male = 100;  female = 0;    hatchCycles = 20; sprite = sprite "tauros-paldea-aqua"; };
+  tauros-paldea = { dex = 128; ha = "Cud Chew";  male = 100;  female = 0;  hatchCycles = 20; balls = without [ "safari" "sport" ]; sprite = sprite "tauros-paldea"; };
+  tauros-paldea-blaze = { dex = 128; ha = "Cud Chew";   male = 100;  female = 0;  hatchCycles = 20; balls = without [ "safari" "sport" ]; sprite = sprite "tauros-paldea-blaze"; };
+  tauros-paldea-aqua = { dex = 128; ha = "Cud Chew"; male = 100; female = 0; hatchCycles = 20; balls = without [ "safari" "sport" ]; sprite = sprite "tauros-paldea-aqua"; };
   magikarp     = { dex = 129; ha = "Rattled";          male = 50;   female = 50;   hatchCycles =  5; sprite = sprite "magikarp"; };
   lapras       = { dex = 131; ha = "Hydration";        male = 50;   female = 50;   hatchCycles = 40; sprite = sprite "lapras"; };
   eevee        = { dex = 133; ha = "Anticipation";     male = 87.5; female = 12.5; hatchCycles = 35; sprite = sprite "eevee"; };
@@ -90,4 +99,5 @@ in
   aerodactyl   = { dex = 142; ha = "Unnerve";          male = 87.5; female = 12.5;                   sprite = sprite "aerodactyl"; };
   snorlax      = { dex = 143; ha = "Gluttony";         male = 87.5; female = 12.5; hatchCycles = 40; sprite = sprite "snorlax"; };
   dratini      = { dex = 147; ha = "Marvel Scales";    male = 50;   female = 50;                     sprite = sprite "dratini"; };
+
 }
