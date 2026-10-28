@@ -6,21 +6,33 @@
     let
       systems = [ "x86_64-linux" "aarch64-linux" "x86_64-darwin" "aarch64-darwin" ];
       forAll  = nixpkgs.lib.genAttrs systems;
+      lib     = nixpkgs.lib;
+      
+      userModule    = import ./my-pokemon.nix;
+      userEvaluated = userModule { inherit lib; };
+
+      trainerName =
+        let pk = userEvaluated.pokenix or { };
+            tr = pk.trainer or { };
+        in tr.name or "";
+
+      defaultNames  = [ "PokèNix" "PokéNix" ];
+      isDefaultUser = builtins.elem trainerName defaultNames;
+
+      chosenModule =
+        if isDefaultUser then import ./example.nix else userModule;
     in {
       packages = forAll (system:
         let
           pkgs = nixpkgs.legacyPackages.${system};
-          lib  = nixpkgs.lib;
-
-          userConfig = import ./my-pokemon.nix;
 
           eval = lib.evalModules {
             modules = [
               (import ./options.nix { inherit lib; })
-              { config.pokenix = userConfig; }
+              chosenModule
             ];
           };
-          
+
           build  = import ./build.nix { inherit lib pkgs; };
           result = build eval.config.pokenix;
         in {
@@ -31,17 +43,18 @@
       debug = forAll (system:
         let
           pkgs = nixpkgs.legacyPackages.${system};
-          lib  = nixpkgs.lib;
+
           eval = lib.evalModules {
             modules = [
               (import ./options.nix { inherit lib; })
-              { config.pokenix = import ./my-pokemon.nix; }
+              chosenModule
             ];
           };
-          build  = import ./build.nix { inherit lib pkgs; };
+
+          build = import ./build.nix { inherit lib pkgs; };
         in (build eval.config.pokenix).debug);
 
       nixosModules.default = import ./module.nix;
       nixosModules.pokenix = import ./module.nix;
-
-    };}
+    };
+}
