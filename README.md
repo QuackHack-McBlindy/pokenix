@@ -24,7 +24,7 @@
 <br>
 
 - [x] **Trainer** - Who's training these Pokémon?
-- [x] **Breedable Apriballs Pokémon** - Optimized for breeding/trading. Click your mons and CTRL + C them as a list.
+- [x] **Breedable Apriballs Pokémon** - Optimized for breeding/trading. Click #Dex link to serebii. Click your chosen balls and CTRL + C them as a list. Click any Pokémon to view all their egg moves. Hover for move info.  
 - [x] **Event Pokémon** - A collection worth Cherish*ishing*.
 - [x] **True** *(♀️♂️)* **Shiny Living Dex** - Watch your shiny progress grow in %. Easy toggle between caught/missing.
 - [x] **Specials** - Rare marks, ribbons or simply shared memories, any Pokémon belongs! Document anything! Enter IV/EV, nature and your Pokémon stats willl be auto-generated and displayed. 
@@ -181,3 +181,4 @@ This project is licensed under the terms of the MIT license.<br>
 See the `LICENSE` file in the repository for full details.<br>
 
 Contributions are welcomed.
+

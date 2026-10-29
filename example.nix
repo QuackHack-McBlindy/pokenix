@@ -907,225 +907,897 @@ in {
     # 🦆 ⮞ TRUE SHINY LIVING DEX ♀️/♂️  
     shiny = {
       # » GENERATION 1 - KANTO REGION
-      bulbasaur       = { ball = "friend";  ot = true; style = "star";   egg = false; notes = ""; };
-      ivysaur         = { ball = "friend";  ot = true; style = "star";   egg = false; notes = ""; };
-      venusaur-f      = { ball = "ultra";   ot = true; style = "star";   egg = false; notes = ""; };
-      venusaur-m      = { ball = "beast";   ot = true; style = "star";   egg = false; notes = ""; };
-      venusaur-gmax   = { ball = "safari";   ot = true; style = "star";   egg = false; notes = ""; };
-      charmander      = { ball = "ultra";   ot = true; style = "star";   egg = false; notes = ""; };
-      charmeleon      = { ball = "ultra";   ot = true; style = "star";   egg = false; notes = ""; };
-      charizard       = { ball = "sport";   ot = true; style = "star";   egg = false; notes = ""; };
-      charizard-gmax  = { ball = "sport";   ot = true; style = "star";   egg = false; notes = ""; };
-      squirtle        = { ball = "net";     ot = true; style = "star";   egg = false; notes = ""; };
-      wartortle       = { ball = "moon";    ot = true; style = "star";   egg = false; notes = ""; };
-      blastoise       = { ball = "safari";   ot = true; style = "star";   egg = false; notes = ""; };
-      blastoise-gmax  = { ball = "master";  ot = true; style = "star";   egg = false; notes = ""; };
-      caterpie        = { ball = "luxury";     ot = true; style = "star";   egg = false; notes = ""; };
-      metapod         = { ball = "poke";    ot = true; style = "star";   egg = false; notes = ""; };
-      butterfree-f    = { ball = "beast";   ot = true; style = "star";   egg = false; notes = ""; };
-      butterfree-m    = { ball = "luxury";     ot = true; style = "square"; egg = true;  notes = "egg hatch"; };
-      butterfree-gmax = { ball = "luxury";     ot = true; style = "square"; egg = true;  notes = "Egg hatch"; };
-      weedle          = { ball = "poke";    ot = true; style = "star";   egg = false; notes = ""; };
-      kakuna          = { ball = "poke";    ot = true; style = "star";   egg = false; notes = ""; };
-      beedrill        = { ball = "ultra";   ot = true; style = "star";   egg = false; notes = ""; };
-      pidgey          = { ball = "fast";    ot = true; style = "star";   egg = false; notes = ""; };
-      pidgeotto       = { ball = "great";   ot = true; style = "star";   egg = false; notes = ""; };
-      pidgeot         = { ball = "ultra";   ot = true; style = "star";   egg = false; notes = ""; };
-      rattata-f       = { ball = "poke";    ot = true; style = "star";   egg = false; notes = ""; };
-      rattata-m       = { ball = "ultra";   ot = true; style = "star";   egg = false; notes = ""; };
-      rattata-alola   = { ball = "poke";    ot = true; style = "star";   egg = false; notes = ""; };
-      raticate-f      = { ball = "poke";    ot = true; style = "star";   egg = false; notes = ""; };
-      raticate-m      = { ball = "poke";    ot = true; style = "star";   egg = false; notes = ""; };
-      raticate-alola  = { ball = "poke";    ot = true; style = "star";   egg = false; notes = ""; };
-      spearow         = { ball = "great";   ot = true; style = "star";   egg = false; notes = ""; };
-      fearow          = { ball = "ultra";   ot = true; style = "star";   egg = false; notes = ""; };
-      ekans           = { ball = "poke";    ot = true; style = "star";   egg = false; notes = ""; };
-      arbok           = { ball = "poke";    ot = true; style = "star";   egg = false; notes = ""; };
-      pikachu-f       = { ball = "luxury";     ot = true; style = "star";   egg = false; notes = ""; };
-      pikachu-m       = { ball = "luxury";     ot = true; style = "star";   egg = false; notes = ""; };
-      pikachu-gmax    = { ball = "luxury";     ot = true; style = "star";   egg = false; notes = ""; };
-      raichu-f        = { ball = "moon";    ot = true; style = "star";   egg = false; notes = ""; };
-      raichu-m        = { ball = "luxury";     ot = true; style = "star";   egg = false; notes = ""; };
-      raichu-alola    = { ball = "beast";   ot = true; style = "star";   egg = false; notes = ""; };
-      sandshrew       = { ball = "luxury";     ot = true; style = "star";   egg = false; notes = ""; };
-      sandshrew-alola = { ball = "beast";   ot = true; style = "star";   egg = false; notes = ""; };
-      sandslash       = { ball = "luxury";     ot = true; style = "star";   egg = false; notes = ""; };
-      sandslash-alola = { ball = "beast";   ot = true; style = "star";   egg = false; notes = ""; };
-      nidoran-f       = { ball = "luxury";     ot = true; style = "star";   egg = false; notes = ""; };
-      nidorina        = { ball = "luxury";     ot = true; style = "star";   egg = false; notes = ""; };
-      nidoqueen       = { ball = "luxury";     ot = true; style = "star";   egg = false; notes = ""; };
-      nidoran-m       = { ball = "luxury";     ot = true; style = "star";   egg = false; notes = ""; };
-      nidorino        = { ball = "luxury";     ot = true; style = "star";   egg = false; notes = ""; };
-      nidoking        = { ball = "luxury";     ot = true; style = "star";   egg = false; notes = ""; };
-      clefairy        = { ball = "safari";   ot = true; style = "star";   egg = false; notes = ""; };
-      clefable        = { ball = "heavy";   ot = true; style = "star";   egg = false; notes = ""; };
-      vulpix          = { ball = "safari";   ot = true; style = "star";   egg = false; notes = ""; };
-      vulpix-alola    = { ball = "safari";   ot = true; style = "star";   egg = false; notes = ""; };
-      ninetales       = { ball = "safari";   ot = true; style = "star";   egg = false; notes = ""; };
-      ninetales-alola = { ball = "sport";   ot = true; style = "star";   egg = false; notes = ""; };
-      jigglypuff      = { ball = "luxury";     ot = true; style = "star";   egg = false; notes = ""; };
-      wigglytuff      = { ball = "safari";   ot = true; style = "star";   egg = false; notes = ""; };
-      zubat-f         = { ball = "safari";   ot = true; style = "star";   egg = false; notes = ""; };
-      zubat-m         = { ball = "premier"; ot = true; style = "star";   egg = false; notes = ""; };
-      golbat-f        = { ball = "safari";   ot = true; style = "star";   egg = false; notes = ""; };
-      golbat-m        = { ball = "fast";    ot = true; style = "star";   egg = false; notes = ""; };
-      oddish          = { ball = "luxury";     ot = true; style = "star";   egg = false; notes = ""; };
-      gloom-f         = { ball = "friend";  ot = true; style = "star";   egg = false; notes = ""; };
-      gloom-m         = { ball = "luxury";     ot = true; style = "star";   egg = false; notes = ""; };
-      vileplume-f     = { ball = "ultra";   ot = true; style = "star";   egg = false; notes = ""; };
-      vileplume-m     = { ball = "luxury";     ot = true; style = "star";   egg = false; notes = ""; };
-      paras           = { ball = "sport";   ot = true; style = "star";   egg = false; notes = ""; };
-      parasect        = { ball = "ultra";   ot = true; style = "star";   egg = false; notes = ""; };
-      venonat         = { ball = "premier"; ot = true; style = "star";   egg = false; notes = ""; };
-      venomoth        = { ball = "quick";   ot = true; style = "star";   egg = false; notes = ""; };
-      diglett         = { ball = "luxury";     ot = true; style = "star";   egg = false; notes = ""; };
-      diglett-alola   = { ball = "beast";   ot = true; style = "star";   egg = false; notes = ""; };
-      dugtrio         = { ball = "luxury";     ot = true; style = "star";   egg = false; notes = ""; };
-      dugtrio-alola   = { ball = "beast";   ot = true; style = "star";   egg = false; notes = ""; };
-      meowth          = { ball = "safari";   ot = true; style = "star";   egg = false; notes = ""; };
-      meowth-alola    = { ball = "safari";   ot = true; style = "star";   egg = false; notes = ""; };
-      meowth-galar    = { ball = "safari";   ot = true; style = "star";   egg = false; notes = ""; };
-      meowth-gmax     = { ball = "safari";   ot = true; style = "star";   egg = false; notes = ""; };
-      persian         = { ball = "safari";   ot = true; style = "star";   egg = false; notes = ""; };
-      persian-alola   = { ball = "safari";   ot = true; style = "star";   egg = false; notes = ""; };
-      psyduck         = { ball = "luxury";     ot = true; style = "star";   egg = false; notes = ""; };
-      golduck         = { ball = "luxury";     ot = true; style = "star";   egg = false; notes = ""; };
-      mankey          = { ball = "luxury";     ot = true; style = "star";   egg = false; notes = ""; };
-      primeape        = { ball = "luxury";     ot = true; style = "star";   egg = false; notes = ""; };
-      growlithe       = { ball = "safari";   ot = true; style = "star";   egg = false; notes = ""; };
-      arcanine        = { ball = "repeat";  ot = true; style = "star";   egg = false; notes = ""; };
-      poliwag         = { ball = "luxury";     ot = true; style = "star";   egg = false; notes = ""; };
-      poliwhirl       = { ball = "heavy";   ot = true; style = "star";   egg = false; notes = ""; };
-      poliwrath       = { ball = "love";    ot = true; style = "star";   egg = false; notes = ""; };
-      abra            = { ball = "poke";    ot = true; style = "star";   egg = false; notes = ""; };
-      kadabra-f       = { ball = "safari";   ot = true; style = "star";   egg = false; notes = ""; };
-      kadabra-m       = { ball = "poke";    ot = true; style = "star";   egg = false; notes = ""; };
-      alakazam-f      = { ball = "master";  ot = true; style = "star";   egg = false; notes = ""; };
-      alakazam-m      = { ball = "heavy";   ot = true; style = "star";   egg = false; notes = ""; };
-      machop          = { ball = "safari";   ot = true; style = "star";   egg = false; notes = ""; };
-      machoke         = { ball = "luxury";     ot = true; style = "star";   egg = false; notes = ""; };
-      machamp         = { ball = "luxury";     ot = true; style = "star";   egg = false; notes = ""; };
-      machamp-gmax    = { ball = "luxury";  ot = true; style = "star";   egg = false; notes = ""; };
-      bellsprout      = { ball = "great";   ot = true; style = "star";   egg = false; notes = ""; };
-      weepinbell      = { ball = "sport";   ot = true; style = "star";   egg = false; notes = ""; };
-      victreebel      = { ball = "luxury";     ot = true; style = "star";   egg = false; notes = ""; };
-      tentacool       = { ball = "lure";    ot = true; style = "star";   egg = false; notes = ""; };
-      tentacruel      = { ball = "safari";   ot = true; style = "star";   egg = false; notes = ""; };
-      geodude         = { ball = "ultra";   ot = true; style = "star";   egg = false; notes = ""; };
-      geodude-alola   = { ball = "sport";   ot = true; style = "star";   egg = false; notes = ""; };
-      graveler        = { ball = "ultra";   ot = true; style = "star";   egg = false; notes = ""; };
-      graveler-alola  = { ball = "sport";   ot = true; style = "star";   egg = false; notes = ""; };
-      golem           = { ball = "great";   ot = true; style = "star";   egg = false; notes = ""; };
-      golem-alola     = { ball = "sport";   ot = true; style = "star";   egg = false; notes = ""; };
-      ponyta          = { ball = "safari";   ot = true; style = "star";   egg = false; notes = ""; };
-      ponyta-galar    = { ball = "premier"; ot = true; style = "star";   egg = false; notes = ""; };
-      rapidash        = { ball = "sport";   ot = true; style = "star";   egg = false; notes = ""; };
-      rapidash-galar  = { ball = "repeat";  ot = true; style = "star";   egg = false; notes = ""; };
-      slowpoke        = { ball = "luxury";     ot = true; style = "star";   egg = false; notes = ""; };
-      slowpoke-galar  = { ball = "safari";  ot = true; style = "star";   egg = false; notes = ""; };
-      slowbro         = { ball = "luxury";     ot = true; style = "star";   egg = false; notes = ""; };
-      slowbro-galar   = { ball = "sport";   ot = true; style = "star";   egg = false; notes = ""; };
-      magnemite       = { ball = "premier"; ot = true; style = "star";   egg = false; notes = ""; };
-      magneton        = { ball = "luxury";     ot = true; style = "star";   egg = false; notes = ""; };
-      farfetchd       = { ball = "love";    ot = true; style = "star";   egg = false; notes = ""; };
-      farfetchd-galar = { ball = "safari";  ot = true; style = "star";   egg = false; notes = ""; };
-      doduo-f         = { ball = "sport";   ot = true; style = "star";   egg = false; notes = ""; };
-      doduo-m         = { ball = "sport";   ot = true; style = "star";   egg = false; notes = ""; };
-      dodrio-f        = { ball = "sport";   ot = true; style = "star";   egg = false; notes = ""; };
-      dodrio-m        = { ball = "poke";    ot = true; style = "star";   egg = false; notes = ""; };
-      seel            = { ball = "sport";   ot = true; style = "star";   egg = false; notes = ""; };
-      dewgong         = { ball = "poke";    ot = true; style = "star";   egg = false; notes = ""; };
-      grimer          = { ball = "great";   ot = true; style = "star";   egg = false; notes = ""; };
-      grimer-alola    = { ball = "sport";   ot = true; style = "star";   egg = false; notes = ""; };
-      muk             = { ball = "great";   ot = true; style = "star";   egg = false; notes = ""; };
-      muk-alola       = { ball = "sport";   ot = true; style = "star";   egg = false; notes = ""; };
-      shellder        = { ball = "lure";    ot = true; style = "star";   egg = false; notes = ""; };
-      cloyster        = { ball = "dive";    ot = true; style = "star";   egg = false; notes = ""; };
-      gastly          = { ball = "moon";    ot = true; style = "star";   egg = false; notes = ""; };
-      haunter         = { ball = "premier"; ot = true; style = "star";   egg = false; notes = ""; };
-      gengar          = { ball = "master";  ot = true; style = "star";   egg = false; notes = ""; };
-      gengar-gmax     = { ball = "master";  ot = true; style = "star";   egg = false; notes = ""; };
-      onix            = { ball = "luxury";     ot = true; style = "star";   egg = false; notes = ""; };
-      drowzee         = { ball = "heal";    ot = true; style = "star";   egg = false; notes = ""; };
-      hypno-f         = { ball = "quick";   ot = true; style = "star";   egg = false; notes = ""; };
-      hypno-m         = { ball = "ultra";   ot = true; style = "star";   egg = false; notes = ""; };
-      krabby          = { ball = "net";     ot = true; style = "star";   egg = false; notes = ""; };
-      kingler         = { ball = "beast";   ot = true; style = "star";   egg = false; notes = ""; };
-      kingler-gmax    = { ball = "beast";   ot = true; style = "star";   egg = false; notes = ""; };
-      voltorb         = { ball = "great";   ot = true; style = "star";   egg = false; notes = ""; };
-      electrode       = { ball = "poke";    ot = true; style = "star";   egg = false; notes = ""; };
-      exeggcute       = { ball = "premier"; ot = true; style = "star";   egg = false; notes = ""; };
-      exeggutor       = { ball = "luxury";     ot = true; style = "star";   egg = false; notes = ""; };
-      exeggutor-alola = { ball = "ultra";   ot = true; style = "star";   egg = false; notes = ""; };
-      cubone          = { ball = "luxury";     ot = true; style = "star";   egg = false; notes = ""; };
-      marowak         = { ball = "luxury";     ot = true; style = "star";   egg = false; notes = ""; };
-      marowak-alola   = { ball = "luxury";  ot = true; style = "star";   egg = false; notes = ""; };
-      hitmonlee       = { ball = "luxury";     ot = true; style = "star";   egg = false; notes = ""; };
-      hitmonchan      = { ball = "luxury";     ot = true; style = "star";   egg = false; notes = ""; };
-      lickitung       = { ball = "beast";   ot = true; style = "star";   egg = false; notes = ""; };
-      koffing         = { ball = "poke";    ot = true; style = "star";   egg = false; notes = ""; };
-      weezing         = { ball = "poke";    ot = true; style = "star";   egg = false; notes = ""; };
-      weezing-galar   = { ball = "master";  ot = true; style = "star";   egg = false; notes = ""; };
-      rhyhorn-f       = { ball = "premier"; ot = true; style = "star";   egg = false; notes = ""; };
-      rhyhorn-m       = { ball = "safari";   ot = true; style = "star";   egg = false; notes = ""; };
-      rhydon-f        = { ball = "luxury";     ot = true; style = "star";   egg = false; notes = ""; };
-      rhydon-m        = { ball = "great";   ot = true; style = "star";   egg = false; notes = ""; };
-      chansey         = { ball = "poke";    ot = true; style = "star";   egg = false; notes = ""; };
-      tangela         = { ball = "safari";   ot = true; style = "star";   egg = false; notes = ""; };
-      kangaskhan      = { ball = "dusk";    ot = true; style = "star";   egg = false; notes = ""; };
-      horsea          = { ball = "lure";    ot = true; style = "star";   egg = false; notes = ""; };
-      seadra          = { ball = "lure";    ot = true; style = "star";   egg = false; notes = ""; };
-      goldeen-f       = { ball = "friend";  ot = true; style = "star";   egg = false; notes = ""; };
-      goldeen-m       = { ball = "lure";    ot = true; style = "star";   egg = false; notes = ""; };
-      seaking-f       = { ball = "beast";   ot = true; style = "star";   egg = false; notes = ""; };
-      seaking-m       = { ball = "master";  ot = true; style = "star";   egg = false; notes = ""; };
-      staryu          = { ball = "premier"; ot = true; style = "star";   egg = false; notes = ""; };
-      starmie         = { ball = "sport";   ot = true; style = "star";   egg = false; notes = ""; };
-      mr-mime         = { ball = "safari";   ot = true; style = "star";   egg = false; notes = ""; };
-      mr-mime-galar   = { ball = "safari";   ot = true; style = "star";   egg = false; notes = ""; };
-      scyther-f       = { ball = "ultra";   ot = true; style = "star";   egg = false; notes = ""; };
-      scyther-m       = { ball = "premier"; ot = true; style = "star";   egg = false; notes = ""; };
-      jynx            = { ball = "sport";   ot = true; style = "star";   egg = false; notes = ""; };
-      electabuzz      = { ball = "master";  ot = true; style = "star";   egg = false; notes = ""; };
-      magmar          = { ball = "sport";   ot = true; style = "star";   egg = false; notes = ""; };
-      pinsir          = { ball = "poke";    ot = true; style = "star";   egg = false; notes = ""; };
-      tauros          = { ball = "level";   ot = true; style = "star";   egg = false; notes = ""; };
-      tauros-paldea   = { ball = "luxury";     ot = true; style = "star";   egg = false; notes = ""; };
-      tauros-blaze    = { ball = "luxury";     ot = true; style = "star";   egg = false; notes = ""; };
-      tauros-aqua     = { ball = "heavy";   ot = true; style = "star";   egg = false; notes = ""; };
-      magikarp-f      = { ball = "friend";  ot = true; style = "star";   egg = false; notes = ""; };
-      magikarp-m      = { ball = "great";   ot = true; style = "star";   egg = false; notes = ""; };
-      gyarados-f      = { ball = "dive";    ot = true; style = "star";   egg = false; notes = ""; };
-      gyarados-m      = { ball = "dive";    ot = true; style = "star";   egg = false; notes = ""; };
-      lapras          = { ball = "master";  ot = true; style = "star";   egg = false; notes = ""; };
-      lapras-gmax     = { ball = "master";  ot = true; style = "star";   egg = false; notes = ""; };
-      ditto           = { ball = "master";  ot = true; style = "star";   egg = false; notes = ""; };
-      eevee-f         = { ball = "safari";   ot = true; style = "star";   egg = false; notes = ""; };
-      eevee-m         = { ball = "luxury";     ot = true; style = "star";   egg = false; notes = ""; };
-      eevee-gmax      = { ball = "luxury";     ot = true; style = "star";   egg = false; notes = ""; };
-      vaporeon        = { ball = "love";    ot = true; style = "star";   egg = false; notes = ""; };
-      jolteon         = { ball = "fast";    ot = true; style = "star";   egg = false; notes = ""; };
-      flareon         = { ball = "sport";   ot = true; style = "star";   egg = false; notes = ""; };
-      porygon         = { ball = "poke";    ot = true; style = "star";   egg = false; notes = ""; };
-      omanyte         = { ball = "ultra";   ot = true; style = "star";   egg = false; notes = ""; };
-      omastar         = { ball = "dream";   ot = true; style = "star";   egg = false; notes = ""; };
-      kabuto          = { ball = "safari";  ot = true; style = "star";   egg = false; notes = ""; };
-      kabutops        = { ball = "friend";  ot = true; style = "star";   egg = false; notes = ""; };
-      aerodactyl      = { ball = "safari";   ot = true; style = "star";   egg = false; notes = ""; };
-      snorlax         = { ball = "dusk";    ot = true; style = "star";   egg = false; notes = ""; };
-      snorlax-gmax    = { ball = "dusk";    ot = true; style = "star";   egg = false; notes = ""; };
-      articuno        = { ball = "moon";    ot = true; style = "star";   egg = false; notes = ""; };
-      articuno-galar  = { ball = "cherish"; ot = true; style = "star";   egg = false; notes = ""; };
-      zapdos          = { ball = "luxury";  ot = true; style = "star";   egg = false; notes = ""; };
-      # zapdos-galar    = { ball = "luxury"; ot = true; style = "star"; egg = false; notes = ""; };
-      moltres         = { ball = "beast";   ot = true; style = "star";   egg = false; notes = ""; };
-      moltres-galar   = { ball = "cherish"; ot = true; style = "star";   egg = false; notes = ""; };
-      dratini         = { ball = "level";   ot = true; style = "star";   egg = false; notes = ""; };
-      dragonair       = { ball = "level";   ot = true; style = "star";   egg = false; notes = ""; };
-      dragonite       = { ball = "level";   ot = true; style = "star";   egg = false; notes = ""; };
-      mewtwo          = { ball = "cherish"; ot = true; style = "star";   egg = false; notes = ""; };
-      mew             = { ball = "poke";    ot = true; style = "star";   egg = false; notes = ""; };
 
+      bulbasaur = { ball = "friend"; ot = true; selfObtained = true; level = 100; nature = "Modest"; ability = "Chlorophyll"; teraType = "Grass"; };
+      ivysaur   = { ball = "friend"; ot = true; selfObtained = true; level = 100; nature = "Modest"; ability = "Chlorophyll"; teraType = "Grass"; };
+      venusaur-f = {
+        ball = "ultra"; ot = true; selfObtained = true; level = 100;
+        nature = "Modest"; ability = "Chlorophyll"; teraType = "Grass";
+        heldItem = "Life Orb";
+        evs = { hp = 4; spa = 252; spe = 252; };
+        ivs = { hp = 31; atk = 0; def = 31; spa = 31; spd = 31; spe = 31; };
+        moves = [ "Giga Drain" "Sludge Bomb" "Earth Power" "Growth" ];
+      };
+      venusaur-m = {
+        ball = "beast"; ot = true; selfObtained = true; level = 100;
+        nature = "Modest"; ability = "Chlorophyll"; teraType = "Grass";
+        heldItem = "Focus Sash";
+        evs = { hp = 4; spa = 252; spe = 252; };
+        ivs = { hp = 31; atk = 0; def = 31; spa = 31; spd = 31; spe = 31; };
+        moves = [ "Sleep Powder" "Growth" "Giga Drain" "Sludge Bomb" ];
+      };
+      venusaur-gmax = {
+        ball = "safari"; ot = true; selfObtained = true; level = 100;
+        nature = "Modest"; ability = "Chlorophyll"; teraType = "Grass";
+        heldItem = "Life Orb";
+        evs = { hp = 4; spa = 252; spe = 252; };
+        moves = [ "Giga Drain" "Sludge Bomb" "Earth Power" "Growth" ];
+      };
+
+      charmander = { ball = "ultra"; ot = true; selfObtained = true; level = 100; nature = "Jolly"; ability = "Blaze"; teraType = "Fire"; };
+      charmeleon = { ball = "ultra"; ot = true; selfObtained = true; level = 100; nature = "Jolly"; ability = "Blaze"; teraType = "Fire"; };
+      charizard = {
+        ball = "sport"; ot = true; selfObtained = true; level = 100;
+        nature = "Adamant"; ability = "Blaze"; teraType = "Fire";
+        heldItem = "Heavy-Duty Boots";
+        evs = { hp = 4; atk = 252; spe = 252; };
+        ivs = { hp = 31; atk = 31; def = 31; spa = 0; spd = 31; spe = 31; };
+        moves = [ "Dragon Dance" "Flare Blitz" "Earthquake" "Roost" ];
+      };
+      charizard-gmax = {
+        ball = "sport"; ot = true; selfObtained = true; level = 100;
+        nature = "Adamant"; ability = "Blaze"; teraType = "Fire";
+        heldItem = "Heavy-Duty Boots";
+        evs = { hp = 4; atk = 252; spe = 252; };
+        moves = [ "Dragon Dance" "Flare Blitz" "Earthquake" "Roost" ];
+      };
+
+      squirtle = { ball = "net"; ot = true; selfObtained = true; level = 100; nature = "Modest"; ability = "Torrent"; teraType = "Water"; };
+      wartortle = { ball = "moon"; ot = true; selfObtained = true; level = 100; nature = "Modest"; ability = "Torrent"; teraType = "Water"; };
+      blastoise = {
+        ball = "safari"; ot = true; selfObtained = true; level = 100;
+        nature = "Modest"; ability = "Rain Dish"; teraType = "Water";
+        heldItem = "Leftovers";
+        evs = { hp = 252; spa = 4; spd = 252; };
+        moves = [ "Rapid Spin" "Scald" "Ice Beam" "Roost" ];
+      };
+      blastoise-gmax = {
+        ball = "master"; ot = true; selfObtained = true; level = 100;
+        nature = "Modest"; ability = "Rain Dish"; teraType = "Water";
+        heldItem = "Leftovers";
+        evs = { hp = 252; spa = 4; spd = 252; };
+        moves = [ "Rapid Spin" "Scald" "Ice Beam" "Roost" ];
+      };
+
+      caterpie = { ball = "luxury"; ot = true; selfObtained = true; level = 100; nature = "Jolly"; ability = "Shield Dust"; teraType = "Bug"; };
+      metapod  = { ball = "poke"; ot = true; selfObtained = true; level = 100; nature = "Bold"; ability = "Shed Skin"; teraType = "Bug"; };
+      butterfree-f = {
+        ball = "beast"; ot = true; selfObtained = true; level = 100;
+        nature = "Timid"; ability = "Compound Eyes"; teraType = "Bug";
+        heldItem = "Focus Sash";
+        evs = { hp = 4; spa = 252; spe = 252; };
+        ivs = { hp = 31; atk = 0; def = 31; spa = 31; spd = 31; spe = 31; };
+        moves = [ "Sleep Powder" "Quiver Dance" "Bug Buzz" "Hurricane" ];
+      };
+      butterfree-m = {
+        ball = "luxury"; ot = true; selfObtained = true; level = 100;
+        nature = "Timid"; ability = "Compound Eyes"; teraType = "Bug";
+        heldItem = "Focus Sash";
+        evs = { hp = 4; spa = 252; spe = 252; };
+        moves = [ "Sleep Powder" "Quiver Dance" "Bug Buzz" "Hurricane" ];
+        style = "square"; egg = true; notes = "egg hatch";
+      };
+      butterfree-gmax = {
+        ball = "luxury"; ot = true; selfObtained = true; level = 100;
+        nature = "Timid"; ability = "Compound Eyes"; teraType = "Bug";
+        heldItem = "Focus Sash";
+        evs = { hp = 4; spa = 252; spe = 252; };
+        moves = [ "Sleep Powder" "Quiver Dance" "Bug Buzz" "Hurricane" ];
+        style = "square"; egg = true; notes = "Egg hatch";
+      };
+
+      weedle   = { ball = "poke"; ot = true; selfObtained = true; level = 100; nature = "Jolly"; ability = "Shield Dust"; teraType = "Bug"; };
+      kakuna   = { ball = "poke"; ot = true; selfObtained = true; level = 100; nature = "Bold"; ability = "Shed Skin"; teraType = "Bug"; };
+      beedrill = {
+        ball = "ultra"; ot = true; selfObtained = true; level = 100;
+        nature = "Jolly"; ability = "Swarm"; teraType = "Bug";
+        heldItem = "Focus Sash";
+        evs = { hp = 4; atk = 252; spe = 252; };
+        ivs = { hp = 31; atk = 31; def = 31; spa = 0; spd = 31; spe = 31; };
+        moves = [ "Swords Dance" "U-turn" "Poison Jab" "Drill Run" ];
+      };
+
+      pidgey    = { ball = "fast"; ot = true; selfObtained = true; level = 100; nature = "Jolly"; ability = "Keen Eye"; teraType = "Normal"; };
+      pidgeotto = { ball = "great"; ot = true; selfObtained = true; level = 100; nature = "Jolly"; ability = "Keen Eye"; teraType = "Normal"; };
+      pidgeot   = {
+        ball = "ultra"; ot = true; selfObtained = true; level = 100;
+        nature = "Jolly"; ability = "Tangled Feet"; teraType = "Normal";
+        heldItem = "Focus Sash";
+        evs = { hp = 4; atk = 252; spe = 252; };
+        moves = [ "Brave Bird" "U-turn" "Return" "Roost" ];
+      };
+
+      rattata-f      = { ball = "poke"; ot = true; selfObtained = true; level = 100; nature = "Jolly"; ability = "Guts"; teraType = "Normal"; };
+      rattata-m      = { ball = "ultra"; ot = true; selfObtained = true; level = 100; nature = "Jolly"; ability = "Guts"; teraType = "Normal"; };
+      rattata-alola  = { ball = "poke"; ot = true; selfObtained = true; level = 100; nature = "Jolly"; ability = "Hustle"; teraType = "Dark"; };
+      raticate-f     = { ball = "poke"; ot = true; selfObtained = true; level = 100; nature = "Jolly"; ability = "Guts"; teraType = "Normal"; };
+      raticate-m     = { ball = "poke"; ot = true; selfObtained = true; level = 100; nature = "Jolly"; ability = "Guts"; teraType = "Normal"; };
+      raticate-alola = { ball = "poke"; ot = true; selfObtained = true; level = 100; nature = "Jolly"; ability = "Hustle"; teraType = "Dark"; };
+
+      spearow = { ball = "great"; ot = true; selfObtained = true; level = 100; nature = "Jolly"; ability = "Keen Eye"; teraType = "Normal"; };
+      fearow  = {
+        ball = "ultra"; ot = true; selfObtained = true; level = 100;
+        nature = "Jolly"; ability = "Sniper"; teraType = "Normal";
+        heldItem = "Focus Sash";
+        evs = { hp = 4; atk = 252; spe = 252; };
+        moves = [ "Drill Run" "Drill Peck" "U-turn" "Roost" ];
+      };
+
+      ekans = { ball = "poke"; ot = true; selfObtained = true; level = 100; nature = "Jolly"; ability = "Intimidate"; teraType = "Poison"; };
+      arbok = {
+        ball = "poke"; ot = true; selfObtained = true; level = 100;
+        nature = "Jolly"; ability = "Intimidate"; teraType = "Poison";
+        heldItem = "Black Sludge";
+        evs = { hp = 4; atk = 252; spe = 252; };
+        moves = [ "Coil" "Gunk Shot" "Earthquake" "Sucker Punch" ];
+      };
+
+      pikachu-f = {
+        ball = "luxury"; ot = true; selfObtained = true; level = 100;
+        nature = "Jolly"; ability = "Static"; teraType = "Electric";
+        heldItem = "Light Ball";
+        evs = { hp = 4; atk = 252; spe = 252; };
+        moves = [ "Fake Out" "Volt Tackle" "Surf" "Knock Off" ];
+      };
+      pikachu-m = {
+        ball = "luxury"; ot = true; selfObtained = true; level = 100;
+        nature = "Jolly"; ability = "Static"; teraType = "Electric";
+        heldItem = "Light Ball";
+        evs = { hp = 4; atk = 252; spe = 252; };
+        moves = [ "Fake Out" "Volt Tackle" "Surf" "Knock Off" ];
+      };
+      pikachu-gmax = {
+        ball = "luxury"; ot = true; selfObtained = true; level = 100;
+        nature = "Jolly"; ability = "Static"; teraType = "Electric";
+        heldItem = "Light Ball";
+        evs = { hp = 4; atk = 252; spe = 252; };
+        moves = [ "Fake Out" "Volt Tackle" "Surf" "Knock Off" ];
+      };
+      raichu-f = {
+        ball = "moon"; ot = true; selfObtained = true; level = 100;
+        nature = "Timid"; ability = "Static"; teraType = "Electric";
+        heldItem = "Choice Specs";
+        evs = { hp = 4; spa = 252; spe = 252; };
+        moves = [ "Thunderbolt" "Volt Switch" "Surf" "Focus Blast" ];
+      };
+      raichu-m = {
+        ball = "luxury"; ot = true; selfObtained = true; level = 100;
+        nature = "Timid"; ability = "Static"; teraType = "Electric";
+        heldItem = "Choice Specs";
+        evs = { hp = 4; spa = 252; spe = 252; };
+        moves = [ "Thunderbolt" "Volt Switch" "Surf" "Focus Blast" ];
+      };
+      raichu-alola = {
+        ball = "beast"; ot = true; selfObtained = true; level = 100;
+        nature = "Timid"; ability = "Surge Surfer"; teraType = "Electric";
+        heldItem = "Life Orb";
+        evs = { hp = 4; spa = 252; spe = 252; };
+        moves = [ "Thunderbolt" "Psychic" "Grass Knot" "Volt Switch" ];
+      };
+
+      sandshrew       = { ball = "luxury"; ot = true; selfObtained = true; level = 100; nature = "Jolly"; ability = "Sand Veil"; teraType = "Ground"; };
+      sandshrew-alola = { ball = "beast"; ot = true; selfObtained = true; level = 100; nature = "Jolly"; ability = "Slush Rush"; teraType = "Ice"; };
+      sandslash = {
+        ball = "luxury"; ot = true; selfObtained = true; level = 100;
+        nature = "Jolly"; ability = "Sand Rush"; teraType = "Ground";
+        heldItem = "Life Orb";
+        evs = { hp = 4; atk = 252; spe = 252; };
+        moves = [ "Swords Dance" "Earthquake" "Iron Head" "Rapid Spin" ];
+      };
+      sandslash-alola = {
+        ball = "beast"; ot = true; selfObtained = true; level = 100;
+        nature = "Jolly"; ability = "Slush Rush"; teraType = "Ice";
+        heldItem = "Life Orb";
+        evs = { hp = 4; atk = 252; spe = 252; };
+        moves = [ "Icicle Crash" "Triple Axel" "Iron Head" "Rapid Spin" ];
+      };
+
+      nidoran-f  = { ball = "luxury"; ot = true; selfObtained = true; level = 100; nature = "Modest"; ability = "Poison Point"; teraType = "Poison"; };
+      nidorina   = { ball = "luxury"; ot = true; selfObtained = true; level = 100; nature = "Modest"; ability = "Poison Point"; teraType = "Poison"; };
+      nidoqueen  = {
+        ball = "luxury"; ot = true; selfObtained = true; level = 100;
+        nature = "Bold"; ability = "Sheer Force"; teraType = "Ground";
+        heldItem = "Life Orb";
+        evs = { hp = 252; spa = 252; spd = 4; };
+        moves = [ "Stealth Rock" "Earth Power" "Sludge Wave" "Ice Beam" ];
+      };
+      nidoran-m  = { ball = "luxury"; ot = true; selfObtained = true; level = 100; nature = "Jolly"; ability = "Poison Point"; teraType = "Poison"; };
+      nidorino   = { ball = "luxury"; ot = true; selfObtained = true; level = 100; nature = "Jolly"; ability = "Poison Point"; teraType = "Poison"; };
+      nidoking   = {
+        ball = "luxury"; ot = true; selfObtained = true; level = 100;
+        nature = "Timid"; ability = "Sheer Force"; teraType = "Ground";
+        heldItem = "Life Orb";
+        evs = { hp = 4; spa = 252; spe = 252; };
+        moves = [ "Earth Power" "Sludge Wave" "Ice Beam" "Flamethrower" ];
+      };
+
+      clefairy = { ball = "safari"; ot = true; selfObtained = true; level = 100; nature = "Bold"; ability = "Magic Guard"; teraType = "Fairy"; };
+      clefable = {
+        ball = "heavy"; ot = true; selfObtained = true; level = 100;
+        nature = "Bold"; ability = "Magic Guard"; teraType = "Fairy";
+        heldItem = "Leftovers";
+        evs = { hp = 252; def = 252; spd = 4; };
+        moves = [ "Moonblast" "Soft-Boiled" "Stealth Rock" "Knock Off" ];
+      };
+
+      vulpix        = { ball = "safari"; ot = true; selfObtained = true; level = 100; nature = "Timid"; ability = "Flash Fire"; teraType = "Fire"; };
+      vulpix-alola  = { ball = "safari"; ot = true; selfObtained = true; level = 100; nature = "Timid"; ability = "Snow Warning"; teraType = "Ice"; };
+      ninetales = {
+        ball = "safari"; ot = true; selfObtained = true; level = 100;
+        nature = "Timid"; ability = "Drought"; teraType = "Fire";
+        heldItem = "Heavy-Duty Boots";
+        evs = { hp = 4; spa = 252; spe = 252; };
+        moves = [ "Nasty Plot" "Fire Blast" "Solar Beam" "Psyshock" ];
+      };
+      ninetales-alola = {
+        ball = "sport"; ot = true; selfObtained = true; level = 100;
+        nature = "Timid"; ability = "Snow Warning"; teraType = "Fairy";
+        heldItem = "Light Clay";
+        evs = { hp = 4; spa = 252; spe = 252; };
+        moves = [ "Aurora Veil" "Freeze-Dry" "Moonblast" "Hypnosis" ];
+      };
+
+      jigglypuff = { ball = "luxury"; ot = true; selfObtained = true; level = 100; nature = "Bold"; ability = "Cute Charm"; teraType = "Normal"; };
+      wigglytuff = {
+        ball = "safari"; ot = true; selfObtained = true; level = 100;
+        nature = "Bold"; ability = "Competitive"; teraType = "Normal";
+        heldItem = "Leftovers";
+        evs = { hp = 252; def = 252; spd = 4; };
+        moves = [ "Wish" "Protect" "Dazzling Gleam" "Body Slam" ];
+      };
+
+      zubat-f  = { ball = "safari"; ot = true; selfObtained = true; level = 100; nature = "Jolly"; ability = "Inner Focus"; teraType = "Poison"; };
+      zubat-m  = { ball = "premier"; ot = true; selfObtained = true; level = 100; nature = "Jolly"; ability = "Inner Focus"; teraType = "Poison"; };
+      golbat-f = { ball = "safari"; ot = true; selfObtained = true; level = 100; nature = "Jolly"; ability = "Inner Focus"; teraType = "Poison"; };
+      golbat-m = { ball = "fast"; ot = true; selfObtained = true; level = 100; nature = "Jolly"; ability = "Inner Focus"; teraType = "Poison"; };
+
+      oddish      = { ball = "luxury"; ot = true; selfObtained = true; level = 100; nature = "Modest"; ability = "Chlorophyll"; teraType = "Grass"; };
+      gloom-f     = { ball = "friend"; ot = true; selfObtained = true; level = 100; nature = "Modest"; ability = "Chlorophyll"; teraType = "Grass"; };
+      gloom-m     = { ball = "luxury"; ot = true; selfObtained = true; level = 100; nature = "Modest"; ability = "Chlorophyll"; teraType = "Grass"; };
+      vileplume-f = {
+        ball = "ultra"; ot = true; selfObtained = true; level = 100;
+        nature = "Modest"; ability = "Chlorophyll"; teraType = "Grass";
+        heldItem = "Life Orb";
+        evs = { hp = 4; spa = 252; spe = 252; };
+        moves = [ "Sleep Powder" "Growth" "Giga Drain" "Sludge Bomb" ];
+      };
+      vileplume-m = {
+        ball = "luxury"; ot = true; selfObtained = true; level = 100;
+        nature = "Modest"; ability = "Chlorophyll"; teraType = "Grass";
+        heldItem = "Life Orb";
+        evs = { hp = 4; spa = 252; spe = 252; };
+        moves = [ "Sleep Powder" "Growth" "Giga Drain" "Sludge Bomb" ];
+      };
+
+      paras    = { ball = "sport"; ot = true; selfObtained = true; level = 100; nature = "Adamant"; ability = "Effect Spore"; teraType = "Bug"; };
+      parasect = {
+        ball = "ultra"; ot = true; selfObtained = true; level = 100;
+        nature = "Adamant"; ability = "Dry Skin"; teraType = "Bug";
+        heldItem = "Focus Sash";
+        evs = { hp = 4; atk = 252; spe = 252; };
+        moves = [ "Spore" "Swords Dance" "Leech Life" "Seed Bomb" ];
+      };
+
+      venonat  = { ball = "premier"; ot = true; selfObtained = true; level = 100; nature = "Timid"; ability = "Compound Eyes"; teraType = "Bug"; };
+      venomoth = {
+        ball = "quick"; ot = true; selfObtained = true; level = 100;
+        nature = "Timid"; ability = "Tinted Lens"; teraType = "Bug";
+        heldItem = "Focus Sash";
+        evs = { hp = 4; spa = 252; spe = 252; };
+        moves = [ "Quiver Dance" "Sleep Powder" "Bug Buzz" "Sludge Bomb" ];
+      };
+
+      diglett       = { ball = "luxury"; ot = true; selfObtained = true; level = 100; nature = "Jolly"; ability = "Sand Veil"; teraType = "Ground"; };
+      diglett-alola = { ball = "beast"; ot = true; selfObtained = true; level = 100; nature = "Jolly"; ability = "Tangling Hair"; teraType = "Steel"; };
+      dugtrio = {
+        ball = "luxury"; ot = true; selfObtained = true; level = 100;
+        nature = "Jolly"; ability = "Sand Force"; teraType = "Ground";
+        heldItem = "Focus Sash";
+        evs = { hp = 4; atk = 252; spe = 252; };
+        moves = [ "Earthquake" "Sucker Punch" "Stone Edge" "Memento" ];
+      };
+      dugtrio-alola = {
+        ball = "beast"; ot = true; selfObtained = true; level = 100;
+        nature = "Jolly"; ability = "Tangling Hair"; teraType = "Steel";
+        heldItem = "Focus Sash";
+        evs = { hp = 4; atk = 252; spe = 252; };
+        moves = [ "Earthquake" "Iron Head" "Sucker Punch" "Memento" ];
+      };
+
+      meowth        = { ball = "safari"; ot = true; selfObtained = true; level = 100; nature = "Jolly"; ability = "Pickup"; teraType = "Normal"; };
+      meowth-alola  = { ball = "safari"; ot = true; selfObtained = true; level = 100; nature = "Jolly"; ability = "Pickup"; teraType = "Dark"; };
+      meowth-galar  = { ball = "safari"; ot = true; selfObtained = true; level = 100; nature = "Adamant"; ability = "Pickup"; teraType = "Steel"; };
+      meowth-gmax   = { ball = "safari"; ot = true; selfObtained = true; level = 100; nature = "Jolly"; ability = "Pickup"; teraType = "Normal"; };
+      persian       = { ball = "safari"; ot = true; selfObtained = true; level = 100; nature = "Jolly"; ability = "Technician"; teraType = "Normal"; };
+      persian-alola = { ball = "safari"; ot = true; selfObtained = true; level = 100; nature = "Jolly"; ability = "Fur Coat"; teraType = "Dark"; };
+
+      psyduck = { ball = "luxury"; ot = true; selfObtained = true; level = 100; nature = "Timid"; ability = "Cloud Nine"; teraType = "Water"; };
+      golduck = {
+        ball = "luxury"; ot = true; selfObtained = true; level = 100;
+        nature = "Timid"; ability = "Swift Swim"; teraType = "Water";
+        heldItem = "Life Orb";
+        evs = { hp = 4; spa = 252; spe = 252; };
+        moves = [ "Nasty Plot" "Hydro Pump" "Ice Beam" "Psyshock" ];
+      };
+
+      mankey   = { ball = "luxury"; ot = true; selfObtained = true; level = 100; nature = "Jolly"; ability = "Vital Spirit"; teraType = "Fighting"; };
+      primeape = {
+        ball = "luxury"; ot = true; selfObtained = true; level = 100;
+        nature = "Jolly"; ability = "Defiant"; teraType = "Fighting";
+        heldItem = "Choice Band";
+        evs = { hp = 4; atk = 252; spe = 252; };
+        moves = [ "Close Combat" "U-turn" "Stone Edge" "Ice Punch" ];
+      };
+
+      growlithe = { ball = "safari"; ot = true; selfObtained = true; level = 100; nature = "Jolly"; ability = "Intimidate"; teraType = "Fire"; };
+      arcanine = {
+        ball = "repeat"; ot = true; selfObtained = true; level = 100;
+        nature = "Jolly"; ability = "Intimidate"; teraType = "Fire";
+        heldItem = "Heavy-Duty Boots";
+        evs = { hp = 4; atk = 252; spe = 252; };
+        moves = [ "Flare Blitz" "Extreme Speed" "Wild Charge" "Morning Sun" ];
+      };
+
+      poliwag   = { ball = "luxury"; ot = true; selfObtained = true; level = 100; nature = "Modest"; ability = "Swift Swim"; teraType = "Water"; };
+      poliwhirl = { ball = "heavy"; ot = true; selfObtained = true; level = 100; nature = "Modest"; ability = "Swift Swim"; teraType = "Water"; };
+      poliwrath = {
+        ball = "love"; ot = true; selfObtained = true; level = 100;
+        nature = "Adamant"; ability = "Water Absorb"; teraType = "Water";
+        heldItem = "Leftovers";
+        evs = { hp = 252; atk = 252; spd = 4; };
+        moves = [ "Bulk Up" "Drain Punch" "Waterfall" "Ice Punch" ];
+      };
+
+      abra       = { ball = "poke"; ot = true; selfObtained = true; level = 100; nature = "Timid"; ability = "Magic Guard"; teraType = "Psychic"; };
+      kadabra-f  = { ball = "safari"; ot = true; selfObtained = true; level = 100; nature = "Timid"; ability = "Magic Guard"; teraType = "Psychic"; };
+      kadabra-m  = { ball = "poke"; ot = true; selfObtained = true; level = 100; nature = "Timid"; ability = "Magic Guard"; teraType = "Psychic"; };
+      alakazam-f = {
+        ball = "master"; ot = true; selfObtained = true; level = 100;
+        nature = "Timid"; ability = "Magic Guard"; teraType = "Psychic";
+        heldItem = "Focus Sash";
+        evs = { hp = 4; spa = 252; spe = 252; };
+        moves = [ "Nasty Plot" "Psychic" "Focus Blast" "Shadow Ball" ];
+      };
+      alakazam-m = {
+        ball = "heavy"; ot = true; selfObtained = true; level = 100;
+        nature = "Timid"; ability = "Magic Guard"; teraType = "Psychic";
+        heldItem = "Focus Sash";
+        evs = { hp = 4; spa = 252; spe = 252; };
+        moves = [ "Nasty Plot" "Psychic" "Focus Blast" "Shadow Ball" ];
+      };
+
+      machop  = { ball = "safari"; ot = true; selfObtained = true; level = 100; nature = "Adamant"; ability = "Guts"; teraType = "Fighting"; };
+      machoke = { ball = "luxury"; ot = true; selfObtained = true; level = 100; nature = "Adamant"; ability = "Guts"; teraType = "Fighting"; };
+      machamp = {
+        ball = "luxury"; ot = true; selfObtained = true; level = 100;
+        nature = "Adamant"; ability = "No Guard"; teraType = "Fighting";
+        heldItem = "Assault Vest";
+        evs = { hp = 252; atk = 252; spd = 4; };
+        moves = [ "Dynamic Punch" "Knock Off" "Stone Edge" "Bullet Punch" ];
+      };
+      machamp-gmax = {
+        ball = "luxury"; ot = true; selfObtained = true; level = 100;
+        nature = "Adamant"; ability = "No Guard"; teraType = "Fighting";
+        heldItem = "Assault Vest";
+        evs = { hp = 252; atk = 252; spd = 4; };
+        moves = [ "Dynamic Punch" "Knock Off" "Stone Edge" "Bullet Punch" ];
+      };
+
+      bellsprout = { ball = "great"; ot = true; selfObtained = true; level = 100; nature = "Modest"; ability = "Chlorophyll"; teraType = "Grass"; };
+      weepinbell = { ball = "sport"; ot = true; selfObtained = true; level = 100; nature = "Modest"; ability = "Chlorophyll"; teraType = "Grass"; };
+      victreebel = {
+        ball = "luxury"; ot = true; selfObtained = true; level = 100;
+        nature = "Adamant"; ability = "Chlorophyll"; teraType = "Grass";
+        heldItem = "Life Orb";
+        evs = { hp = 4; atk = 252; spe = 252; };
+        moves = [ "Swords Dance" "Leaf Blade" "Poison Jab" "Sucker Punch" ];
+      };
+
+      tentacool = { ball = "lure"; ot = true; selfObtained = true; level = 100; nature = "Timid"; ability = "Liquid Ooze"; teraType = "Water"; };
+      tentacruel = {
+        ball = "safari"; ot = true; selfObtained = true; level = 100;
+        nature = "Timid"; ability = "Liquid Ooze"; teraType = "Water";
+        heldItem = "Black Sludge";
+        evs = { hp = 252; spa = 4; spe = 252; };
+        moves = [ "Rapid Spin" "Scald" "Sludge Bomb" "Knock Off" ];
+      };
+
+      geodude        = { ball = "ultra"; ot = true; selfObtained = true; level = 100; nature = "Adamant"; ability = "Rock Head"; teraType = "Rock"; };
+      geodude-alola  = { ball = "sport"; ot = true; selfObtained = true; level = 100; nature = "Adamant"; ability = "Magnet Pull"; teraType = "Rock"; };
+      graveler       = { ball = "ultra"; ot = true; selfObtained = true; level = 100; nature = "Adamant"; ability = "Rock Head"; teraType = "Rock"; };
+      graveler-alola = { ball = "sport"; ot = true; selfObtained = true; level = 100; nature = "Adamant"; ability = "Magnet Pull"; teraType = "Rock"; };
+      golem = {
+        ball = "great"; ot = true; selfObtained = true; level = 100;
+        nature = "Adamant"; ability = "Rock Head"; teraType = "Ground";
+        heldItem = "Leftovers";
+        evs = { hp = 252; atk = 252; spd = 4; };
+        moves = [ "Stealth Rock" "Earthquake" "Stone Edge" "Explosion" ];
+      };
+      golem-alola = {
+        ball = "sport"; ot = true; selfObtained = true; level = 100;
+        nature = "Adamant"; ability = "Galvanize"; teraType = "Electric";
+        heldItem = "Life Orb";
+        evs = { hp = 4; atk = 252; spe = 252; };
+        moves = [ "Stealth Rock" "Wild Charge" "Stone Edge" "Explosion" ];
+      };
+
+      ponyta       = { ball = "safari"; ot = true; selfObtained = true; level = 100; nature = "Jolly"; ability = "Flash Fire"; teraType = "Fire"; };
+      ponyta-galar = { ball = "premier"; ot = true; selfObtained = true; level = 100; nature = "Jolly"; ability = "Pastel Veil"; teraType = "Psychic"; };
+      rapidash = {
+        ball = "sport"; ot = true; selfObtained = true; level = 100;
+        nature = "Jolly"; ability = "Flash Fire"; teraType = "Fire";
+        heldItem = "Focus Sash";
+        evs = { hp = 4; atk = 252; spe = 252; };
+        moves = [ "Swords Dance" "Flare Blitz" "High Horsepower" "Wild Charge" ];
+      };
+      rapidash-galar = {
+        ball = "repeat"; ot = true; selfObtained = true; level = 100;
+        nature = "Jolly"; ability = "Pastel Veil"; teraType = "Fairy";
+        heldItem = "Life Orb";
+        evs = { hp = 4; atk = 252; spe = 252; };
+        moves = [ "Swords Dance" "Play Rough" "High Horsepower" "Zen Headbutt" ];
+      };
+
+      slowpoke       = { ball = "luxury"; ot = true; selfObtained = true; level = 100; nature = "Bold"; ability = "Regenerator"; teraType = "Water"; };
+      slowpoke-galar = { ball = "safari"; ot = true; selfObtained = true; level = 100; nature = "Bold"; ability = "Quick Draw"; teraType = "Psychic"; };
+      slowbro = {
+        ball = "luxury"; ot = true; selfObtained = true; level = 100;
+        nature = "Bold"; ability = "Regenerator"; teraType = "Water";
+        heldItem = "Heavy-Duty Boots";
+        evs = { hp = 252; def = 252; spa = 4; };
+        moves = [ "Scald" "Slack Off" "Future Sight" "Ice Beam" ];
+      };
+      slowbro-galar = {
+        ball = "sport"; ot = true; selfObtained = true; level = 100;
+        nature = "Modest"; ability = "Regenerator"; teraType = "Poison";
+        heldItem = "Assault Vest";
+        evs = { hp = 252; spa = 252; spd = 4; };
+        moves = [ "Sludge Bomb" "Psyshock" "Fire Blast" "Ice Beam" ];
+      };
+
+      magnemite = { ball = "premier"; ot = true; selfObtained = true; level = 100; nature = "Modest"; ability = "Magnet Pull"; teraType = "Electric"; };
+      magneton  = { ball = "luxury"; ot = true; selfObtained = true; level = 100; nature = "Modest"; ability = "Magnet Pull"; teraType = "Electric"; };
+
+      farfetchd       = { ball = "love"; ot = true; selfObtained = true; level = 100; nature = "Adamant"; ability = "Defiant"; teraType = "Normal"; };
+      farfetchd-galar = { ball = "safari"; ot = true; selfObtained = true; level = 100; nature = "Adamant"; ability = "Scrappy"; teraType = "Fighting"; };
+
+      doduo-f  = { ball = "sport"; ot = true; selfObtained = true; level = 100; nature = "Jolly"; ability = "Early Bird"; teraType = "Normal"; };
+      doduo-m  = { ball = "sport"; ot = true; selfObtained = true; level = 100; nature = "Jolly"; ability = "Early Bird"; teraType = "Normal"; };
+      dodrio-f = {
+        ball = "sport"; ot = true; selfObtained = true; level = 100;
+        nature = "Jolly"; ability = "Early Bird"; teraType = "Normal";
+        heldItem = "Choice Band";
+        evs = { hp = 4; atk = 252; spe = 252; };
+        moves = [ "Brave Bird" "Drill Peck" "Quick Attack" "Knock Off" ];
+      };
+      dodrio-m = {
+        ball = "poke"; ot = true; selfObtained = true; level = 100;
+        nature = "Jolly"; ability = "Early Bird"; teraType = "Normal";
+        heldItem = "Choice Band";
+        evs = { hp = 4; atk = 252; spe = 252; };
+        moves = [ "Brave Bird" "Drill Peck" "Quick Attack" "Knock Off" ];
+      };
+
+      seel    = { ball = "sport"; ot = true; selfObtained = true; level = 100; nature = "Calm"; ability = "Thick Fat"; teraType = "Water"; };
+      dewgong = {
+        ball = "poke"; ot = true; selfObtained = true; level = 100;
+        nature = "Calm"; ability = "Thick Fat"; teraType = "Water";
+        heldItem = "Leftovers";
+        evs = { hp = 252; def = 252; spd = 4; };
+        moves = [ "Toxic" "Protect" "Surf" "Ice Beam" ];
+      };
+
+      grimer       = { ball = "great"; ot = true; selfObtained = true; level = 100; nature = "Adamant"; ability = "Poison Touch"; teraType = "Poison"; };
+      grimer-alola = { ball = "sport"; ot = true; selfObtained = true; level = 100; nature = "Adamant"; ability = "Poison Touch"; teraType = "Poison"; };
+      muk = {
+        ball = "great"; ot = true; selfObtained = true; level = 100;
+        nature = "Adamant"; ability = "Poison Touch"; teraType = "Poison";
+        heldItem = "Assault Vest";
+        evs = { hp = 252; atk = 252; spd = 4; };
+        moves = [ "Poison Jab" "Shadow Sneak" "Drain Punch" "Fire Punch" ];
+      };
+      muk-alola = {
+        ball = "sport"; ot = true; selfObtained = true; level = 100;
+        nature = "Adamant"; ability = "Poison Touch"; teraType = "Poison";
+        heldItem = "Assault Vest";
+        evs = { hp = 252; atk = 252; spd = 4; };
+        moves = [ "Poison Jab" "Knock Off" "Drain Punch" "Shadow Sneak" ];
+      };
+
+
+      shellder = { ball = "lure"; ot = true; selfObtained = true; level = 100; nature = "Jolly"; ability = "Skill Link"; teraType = "Water"; };
+      cloyster = {
+        ball = "dive"; ot = true; selfObtained = true; level = 100;
+        nature = "Adamant"; ability = "Skill Link"; teraType = "Ice";
+        heldItem = "Focus Sash";
+        evs = { hp = 4; atk = 252; spe = 252; };
+        moves = [ "Shell Smash" "Icicle Spear" "Rock Blast" "Ice Shard" ];
+      };
+
+      gastly  = { ball = "moon"; ot = true; selfObtained = true; level = 100; nature = "Timid"; ability = "Levitate"; teraType = "Ghost"; };
+      haunter = { ball = "premier"; ot = true; selfObtained = true; level = 100; nature = "Timid"; ability = "Levitate"; teraType = "Ghost"; };
+      gengar = {
+        ball = "master"; ot = true; selfObtained = true; level = 100;
+        nature = "Timid"; ability = "Cursed Body"; teraType = "Ghost";
+        heldItem = "Focus Sash";
+        evs = { hp = 4; spa = 252; spe = 252; };
+        ivs = { hp = 31; atk = 0; def = 31; spa = 31; spd = 31; spe = 31; };
+        moves = [ "Nasty Plot" "Shadow Ball" "Sludge Wave" "Focus Blast" ];
+      };
+      gengar-gmax = {
+        ball = "master"; ot = true; selfObtained = true; level = 100;
+        nature = "Timid"; ability = "Cursed Body"; teraType = "Ghost";
+        heldItem = "Focus Sash";
+        evs = { hp = 4; spa = 252; spe = 252; };
+        moves = [ "Nasty Plot" "Shadow Ball" "Sludge Wave" "Focus Blast" ];
+      };
+
+
+      onix    = { ball = "luxury"; ot = true; selfObtained = true; level = 100; nature = "Jolly"; ability = "Sturdy"; teraType = "Rock"; };
+      drowzee = { ball = "heal"; ot = true; selfObtained = true; level = 100; nature = "Calm"; ability = "Insomnia"; teraType = "Psychic"; };
+      hypno-f = { ball = "quick"; ot = true; selfObtained = true; level = 100; nature = "Calm"; ability = "Insomnia"; teraType = "Psychic"; };
+      hypno-m = { ball = "ultra"; ot = true; selfObtained = true; level = 100; nature = "Calm"; ability = "Insomnia"; teraType = "Psychic"; };
+
+      krabby = { ball = "net"; ot = true; selfObtained = true; level = 100; nature = "Adamant"; ability = "Sheer Force"; teraType = "Water"; };
+      kingler = {
+        ball = "beast"; ot = true; selfObtained = true; level = 100;
+        nature = "Adamant"; ability = "Sheer Force"; teraType = "Water";
+        heldItem = "Life Orb";
+        evs = { hp = 4; atk = 252; spe = 252; };
+        moves = [ "Swords Dance" "Liquidation" "X-Scissor" "Rock Slide" ];
+      };
+      kingler-gmax = {
+        ball = "beast"; ot = true; selfObtained = true; level = 100;
+        nature = "Adamant"; ability = "Sheer Force"; teraType = "Water";
+        heldItem = "Life Orb";
+        evs = { hp = 4; atk = 252; spe = 252; };
+        moves = [ "Swords Dance" "Liquidation" "X-Scissor" "Rock Slide" ];
+      };
+
+      voltorb   = { ball = "great"; ot = true; selfObtained = true; level = 100; nature = "Timid"; ability = "Static"; teraType = "Electric"; };
+      electrode = {
+        ball = "poke"; ot = true; selfObtained = true; level = 100;
+        nature = "Timid"; ability = "Aftermath"; teraType = "Electric";
+        heldItem = "Focus Sash";
+        evs = { hp = 4; spa = 252; spe = 252; };
+        moves = [ "Volt Switch" "Thunderbolt" "Taunt" "Explosion" ];
+      };
+      exeggcute = { ball = "premier"; ot = true; selfObtained = true; level = 100; nature = "Modest"; ability = "Chlorophyll"; teraType = "Grass"; };
+      exeggutor = {
+        ball = "luxury"; ot = true; selfObtained = true; level = 100;
+        nature = "Modest"; ability = "Chlorophyll"; teraType = "Grass";
+        heldItem = "Focus Sash";
+        evs = { hp = 252; spa = 252; spd = 4; };
+        ivs = { hp = 31; atk = 0; def = 31; spa = 31; spd = 31; spe = 0; };
+        moves = [ "Trick Room" "Psychic" "Giga Drain" "Sludge Bomb" ];
+      };
+      exeggutor-alola = {
+        ball = "ultra"; ot = true; selfObtained = true; level = 100;
+        nature = "Modest"; ability = "Frisk"; teraType = "Dragon";
+        heldItem = "Choice Specs";
+        evs = { hp = 4; spa = 252; spe = 252; };
+        moves = [ "Draco Meteor" "Leaf Storm" "Flamethrower" "Giga Drain" ];
+      };
+      cubone  = { ball = "luxury"; ot = true; selfObtained = true; level = 100; nature = "Adamant"; ability = "Rock Head"; teraType = "Ground"; };
+      marowak = {
+        ball = "luxury"; ot = true; selfObtained = true; level = 100;
+        nature = "Adamant"; ability = "Rock Head"; teraType = "Ground";
+        heldItem = "Thick Club";
+        evs = { hp = 4; atk = 252; spe = 252; };
+        moves = [ "Swords Dance" "Bonemerang" "Fire Punch" "Knock Off" ];
+      };
+      marowak-alola = {
+        ball = "luxury"; ot = true; selfObtained = true; level = 100;
+        nature = "Adamant"; ability = "Rock Head"; teraType = "Ghost";
+        heldItem = "Thick Club";
+        evs = { hp = 4; atk = 252; spe = 252; };
+        moves = [ "Swords Dance" "Shadow Bone" "Flare Blitz" "Bonemerang" ];
+      };
+
+      hitmonlee = {
+        ball = "luxury"; ot = true; selfObtained = true; level = 100;
+        nature = "Jolly"; ability = "Reckless"; teraType = "Fighting";
+        heldItem = "Choice Band";
+        evs = { hp = 4; atk = 252; spe = 252; };
+        moves = [ "Close Combat" "High Jump Kick" "Knock Off" "Rapid Spin" ];
+      };
+      hitmonchan = {
+        ball = "luxury"; ot = true; selfObtained = true; level = 100;
+        nature = "Jolly"; ability = "Iron Fist"; teraType = "Fighting";
+        heldItem = "Assault Vest";
+        evs = { hp = 4; atk = 252; spe = 252; };
+        moves = [ "Drain Punch" "Mach Punch" "Ice Punch" "Rapid Spin" ];
+      };
+      lickitung = { ball = "beast"; ot = true; selfObtained = true; level = 100; nature = "Adamant"; ability = "Oblivious"; teraType = "Normal"; };
+
+      koffing = { ball = "poke"; ot = true; selfObtained = true; level = 100; nature = "Bold"; ability = "Levitate"; teraType = "Poison"; };
+      weezing = {
+        ball = "poke"; ot = true; selfObtained = true; level = 100;
+        nature = "Bold"; ability = "Levitate"; teraType = "Poison";
+        heldItem = "Black Sludge";
+        evs = { hp = 252; def = 252; spd = 4; };
+        moves = [ "Will-O-Wisp" "Sludge Bomb" "Flamethrower" "Pain Split" ];
+      };
+      weezing-galar = {
+        ball = "master"; ot = true; selfObtained = true; level = 100;
+        nature = "Bold"; ability = "Misty Surge"; teraType = "Fairy";
+        heldItem = "Black Sludge";
+        evs = { hp = 252; def = 252; spd = 4; };
+        moves = [ "Strange Steam" "Flamethrower" "Defog" "Pain Split" ];
+      };
+
+      rhyhorn-f = { ball = "premier"; ot = true; selfObtained = true; level = 100; nature = "Adamant"; ability = "Rock Head"; teraType = "Ground"; };
+      rhyhorn-m = { ball = "safari"; ot = true; selfObtained = true; level = 100; nature = "Adamant"; ability = "Rock Head"; teraType = "Ground"; };
+      rhydon-f  = { ball = "luxury"; ot = true; selfObtained = true; level = 100; nature = "Adamant"; ability = "Rock Head"; teraType = "Ground"; };
+      rhydon-m  = { ball = "great"; ot = true; selfObtained = true; level = 100; nature = "Adamant"; ability = "Rock Head"; teraType = "Ground"; };
+
+      chansey = {
+        ball = "poke"; ot = true; selfObtained = true; level = 100;
+        nature = "Bold"; ability = "Natural Cure"; teraType = "Normal";
+        heldItem = "Eviolite";
+        evs = { hp = 252; def = 252; spd = 4; };
+        moves = [ "Soft-Boiled" "Seismic Toss" "Toxic" "Heal Bell" ];
+      };
+      tangela = {
+        ball = "safari"; ot = true; selfObtained = true; level = 100;
+        nature = "Bold"; ability = "Regenerator"; teraType = "Grass";
+        heldItem = "Eviolite";
+        evs = { hp = 252; def = 252; spd = 4; };
+        moves = [ "Sleep Powder" "Leech Seed" "Giga Drain" "Knock Off" ];
+      };
+      kangaskhan = { ball = "dusk"; ot = true; selfObtained = true; level = 100; nature = "Adamant"; ability = "Scrappy"; teraType = "Normal"; };
+      horsea = { ball = "lure"; ot = true; selfObtained = true; level = 100; nature = "Modest"; ability = "Swift Swim"; teraType = "Water"; };
+      seadra = { ball = "lure"; ot = true; selfObtained = true; level = 100; nature = "Modest"; ability = "Poison Point"; teraType = "Water"; };
+
+      goldeen-f = { ball = "friend"; ot = true; selfObtained = true; level = 100; nature = "Jolly"; ability = "Swift Swim"; teraType = "Water"; };
+      goldeen-m = { ball = "lure"; ot = true; selfObtained = true; level = 100; nature = "Jolly"; ability = "Swift Swim"; teraType = "Water"; };
+      seaking-f = {
+        ball = "beast"; ot = true; selfObtained = true; level = 100;
+        nature = "Jolly"; ability = "Swift Swim"; teraType = "Water";
+        heldItem = "Choice Band";
+        evs = { hp = 4; atk = 252; spe = 252; };
+        moves = [ "Waterfall" "Megahorn" "Knock Off" "Drill Run" ];
+      };
+      seaking-m = {
+        ball = "master"; ot = true; selfObtained = true; level = 100;
+        nature = "Jolly"; ability = "Swift Swim"; teraType = "Water";
+        heldItem = "Choice Band";
+        evs = { hp = 4; atk = 252; spe = 252; };
+        moves = [ "Waterfall" "Megahorn" "Knock Off" "Drill Run" ];
+      };
+      staryu  = { ball = "premier"; ot = true; selfObtained = true; level = 100; nature = "Timid"; ability = "Natural Cure"; teraType = "Water"; };
+      starmie = {
+        ball = "sport"; ot = true; selfObtained = true; level = 100;
+        nature = "Timid"; ability = "Natural Cure"; teraType = "Water";
+        heldItem = "Life Orb";
+        evs = { hp = 4; spa = 252; spe = 252; };
+        moves = [ "Rapid Spin" "Hydro Pump" "Ice Beam" "Thunderbolt" ];
+      };
+      mr-mime       = { ball = "safari"; ot = true; selfObtained = true; level = 100; nature = "Timid"; ability = "Filter"; teraType = "Psychic"; };
+      mr-mime-galar = { ball = "safari"; ot = true; selfObtained = true; level = 100; nature = "Timid"; ability = "Screen Cleaner"; teraType = "Ice"; };
+      scyther-f     = { ball = "ultra"; ot = true; selfObtained = true; level = 100; nature = "Jolly"; ability = "Technician"; teraType = "Bug"; };
+      scyther-m     = { ball = "premier"; ot = true; selfObtained = true; level = 100; nature = "Jolly"; ability = "Technician"; teraType = "Bug"; };
+      jynx = {
+        ball = "sport"; ot = true; selfObtained = true; level = 100;
+        nature = "Timid"; ability = "Dry Skin"; teraType = "Ice";
+        heldItem = "Focus Sash";
+        evs = { hp = 4; spa = 252; spe = 252; };
+        moves = [ "Nasty Plot" "Ice Beam" "Psyshock" "Focus Blast" ];
+      };
+      electabuzz = { ball = "master"; ot = true; selfObtained = true; level = 100; nature = "Jolly"; ability = "Static"; teraType = "Electric"; };
+      magmar     = { ball = "sport"; ot = true; selfObtained = true; level = 100; nature = "Timid"; ability = "Flame Body"; teraType = "Fire"; };
+      pinsir = {
+        ball = "poke"; ot = true; selfObtained = true; level = 100;
+        nature = "Jolly"; ability = "Moxie"; teraType = "Bug";
+        heldItem = "Choice Scarf";
+        evs = { hp = 4; atk = 252; spe = 252; };
+        moves = [ "Close Combat" "X-Scissor" "Stone Edge" "Earthquake" ];
+      };
+      tauros = {
+        ball = "level"; ot = true; selfObtained = true; level = 100;
+        nature = "Jolly"; ability = "Intimidate"; teraType = "Normal";
+        heldItem = "Choice Band";
+        evs = { hp = 4; atk = 252; spe = 252; };
+        moves = [ "Close Combat" "Rock Slide" "Earthquake" "Zen Headbutt" ];
+      };
+      tauros-paldea = {
+        ball = "luxury"; ot = true; selfObtained = true; level = 100;
+        nature = "Jolly"; ability = "Intimidate"; teraType = "Fighting";
+        heldItem = "Choice Band";
+        evs = { hp = 4; atk = 252; spe = 252; };
+        moves = [ "Close Combat" "Raging Bull" "Earthquake" "Rock Slide" ];
+      };
+      tauros-blaze = {
+        ball = "luxury"; ot = true; selfObtained = true; level = 100;
+        nature = "Jolly"; ability = "Cud Chew"; teraType = "Fire";
+        heldItem = "Choice Band";
+        evs = { hp = 4; atk = 252; spe = 252; };
+        moves = [ "Flare Blitz" "Raging Bull" "Close Combat" "Wild Charge" ];
+      };
+      tauros-aqua = {
+        ball = "heavy"; ot = true; selfObtained = true; level = 100;
+        nature = "Jolly"; ability = "Intimidate"; teraType = "Water";
+        heldItem = "Choice Band";
+        evs = { hp = 4; atk = 252; spe = 252; };
+        moves = [ "Aqua Jet" "Wave Crash" "Raging Bull" "Close Combat" ];
+      };
+
+      magikarp-f = { ball = "friend"; ot = true; selfObtained = true; level = 100; nature = "Jolly"; ability = "Swift Swim"; teraType = "Water"; };
+      magikarp-m = { ball = "great"; ot = true; selfObtained = true; level = 100; nature = "Jolly"; ability = "Swift Swim"; teraType = "Water"; };
+      gyarados-f = {
+        ball = "dive"; ot = true; selfObtained = true; level = 100;
+        nature = "Jolly"; ability = "Moxie"; teraType = "Flying";
+        heldItem = "Heavy-Duty Boots";
+        evs = { hp = 4; atk = 252; spe = 252; };
+        moves = [ "Dragon Dance" "Waterfall" "Bounce" "Earthquake" ];
+      };
+      gyarados-m = {
+        ball = "dive"; ot = true; selfObtained = true; level = 100;
+        nature = "Jolly"; ability = "Moxie"; teraType = "Flying";
+        heldItem = "Heavy-Duty Boots";
+        evs = { hp = 4; atk = 252; spe = 252; };
+        moves = [ "Dragon Dance" "Waterfall" "Bounce" "Earthquake" ];
+      };
+
+      lapras = {
+        ball = "master"; ot = true; selfObtained = true; level = 100;
+        nature = "Modest"; ability = "Water Absorb"; teraType = "Water";
+        heldItem = "Life Orb";
+        evs = { hp = 4; spa = 252; spe = 252; };
+        moves = [ "Dragon Dance" "Hydro Pump" "Freeze-Dry" "Thunderbolt" ];
+      };
+      lapras-gmax = {
+        ball = "master"; ot = true; selfObtained = true; level = 100;
+        nature = "Modest"; ability = "Water Absorb"; teraType = "Water";
+        heldItem = "Life Orb";
+        evs = { hp = 4; spa = 252; spe = 252; };
+        moves = [ "Dragon Dance" "Hydro Pump" "Freeze-Dry" "Thunderbolt" ];
+      };
+      ditto = {
+        ball = "master"; ot = true; selfObtained = true; level = 100;
+        nature = "Jolly"; ability = "Imposter"; teraType = "Normal";
+        heldItem = "Choice Scarf";
+        evs = { hp = 252; spd = 4; spe = 252; };
+        moves = [ "Transform" ];
+      };
+
+      eevee-f    = { ball = "safari"; ot = true; selfObtained = true; level = 100; nature = "Jolly"; ability = "Adaptability"; teraType = "Normal"; };
+      eevee-m    = { ball = "luxury"; ot = true; selfObtained = true; level = 100; nature = "Jolly"; ability = "Adaptability"; teraType = "Normal"; };
+      eevee-gmax = { ball = "luxury"; ot = true; selfObtained = true; level = 100; nature = "Jolly"; ability = "Adaptability"; teraType = "Normal"; };
+      vaporeon = {
+        ball = "love"; ot = true; selfObtained = true; level = 100;
+        nature = "Bold"; ability = "Water Absorb"; teraType = "Water";
+        heldItem = "Leftovers";
+        evs = { hp = 252; def = 252; spd = 4; };
+        moves = [ "Wish" "Protect" "Scald" "Heal Bell" ];
+      };
+      jolteon = {
+        ball = "fast"; ot = true; selfObtained = true; level = 100;
+        nature = "Timid"; ability = "Volt Absorb"; teraType = "Electric";
+        heldItem = "Choice Specs";
+        evs = { hp = 4; spa = 252; spe = 252; };
+        moves = [ "Thunderbolt" "Volt Switch" "Shadow Ball" "Hyper Voice" ];
+      };
+      flareon = {
+        ball = "sport"; ot = true; selfObtained = true; level = 100;
+        nature = "Adamant"; ability = "Flash Fire"; teraType = "Fire";
+        heldItem = "Choice Band";
+        evs = { hp = 4; atk = 252; spe = 252; };
+        moves = [ "Flare Blitz" "Superpower" "Quick Attack" "Facade" ];
+      };
+
+      porygon = { ball = "poke"; ot = true; selfObtained = true; level = 100; nature = "Modest"; ability = "Trace"; teraType = "Normal"; };
+      omanyte = { ball = "ultra"; ot = true; selfObtained = true; level = 100; nature = "Modest"; ability = "Swift Swim"; teraType = "Water"; };
+      omastar = {
+        ball = "dream"; ot = true; selfObtained = true; level = 100;
+        nature = "Modest"; ability = "Swift Swim"; teraType = "Water";
+        heldItem = "Focus Sash";
+        evs = { hp = 4; spa = 252; spe = 252; };
+        moves = [ "Shell Smash" "Hydro Pump" "Ice Beam" "Earth Power" ];
+      };
+      kabuto = { ball = "safari"; ot = true; selfObtained = true; level = 100; nature = "Adamant"; ability = "Swift Swim"; teraType = "Rock"; };
+      kabutops = {
+        ball = "friend"; ot = true; selfObtained = true; level = 100;
+        nature = "Adamant"; ability = "Swift Swim"; teraType = "Rock";
+        heldItem = "Life Orb";
+        evs = { hp = 4; atk = 252; spe = 252; };
+        moves = [ "Swords Dance" "Stone Edge" "Liquidation" "Aqua Jet" ];
+      };
+      aerodactyl = {
+        ball = "safari"; ot = true; selfObtained = true; level = 100;
+        nature = "Jolly"; ability = "Rock Head"; teraType = "Rock";
+        heldItem = "Focus Sash";
+        evs = { hp = 4; atk = 252; spe = 252; };
+        moves = [ "Stealth Rock" "Stone Edge" "Earthquake" "Roost" ];
+      };
+
+      snorlax = {
+        ball = "dusk"; ot = true; selfObtained = true; level = 100;
+        nature = "Adamant"; ability = "Thick Fat"; teraType = "Normal";
+        heldItem = "Leftovers";
+        evs = { hp = 252; atk = 252; spd = 4; };
+        moves = [ "Curse" "Body Slam" "Crunch" "Rest" ];
+      };
+      snorlax-gmax = {
+        ball = "dusk"; ot = true; selfObtained = true; level = 100;
+        nature = "Adamant"; ability = "Thick Fat"; teraType = "Normal";
+        heldItem = "Leftovers";
+        evs = { hp = 252; atk = 252; spd = 4; };
+        moves = [ "Curse" "Body Slam" "Crunch" "Rest" ];
+      };
+
+      articuno = {
+        ball = "moon"; ot = true; selfObtained = true; level = 100;
+        nature = "Timid"; ability = "Pressure"; teraType = "Ice";
+        heldItem = "Heavy-Duty Boots";
+        evs = { hp = 252; spd = 4; spe = 252; };
+        moves = [ "Roost" "Freeze-Dry" "Hurricane" "Defog" ];
+      };
+      articuno-galar = {
+        ball = "cherish"; ot = true; selfObtained = true; level = 100;
+        nature = "Timid"; ability = "Competitive"; teraType = "Psychic";
+        heldItem = "Life Orb";
+        evs = { hp = 4; spa = 252; spe = 252; };
+        moves = [ "Calm Mind" "Freezing Glare" "Hurricane" "Recover" ];
+      };
+      zapdos = {
+        ball = "luxury"; ot = true; selfObtained = true; level = 100;
+        nature = "Timid"; ability = "Static"; teraType = "Electric";
+        heldItem = "Heavy-Duty Boots";
+        evs = { hp = 252; spa = 4; spe = 252; };
+        moves = [ "Roost" "Hurricane" "Volt Switch" "Thunderbolt" ];
+      };
+      moltres = {
+        ball = "beast"; ot = true; selfObtained = true; level = 100;
+        nature = "Timid"; ability = "Flame Body"; teraType = "Fire";
+        heldItem = "Heavy-Duty Boots";
+        evs = { hp = 252; spa = 4; spe = 252; };
+        moves = [ "Roost" "Flamethrower" "Hurricane" "U-turn" ];
+      };
+      moltres-galar = {
+        ball = "cherish"; ot = true; selfObtained = true; level = 100;
+        nature = "Timid"; ability = "Berserk"; teraType = "Dark";
+        heldItem = "Weakness Policy";
+        evs = { hp = 4; spa = 252; spe = 252; };
+        moves = [ "Nasty Plot" "Fiery Wrath" "Hurricane" "Agility" ];
+      };
+      dratini   = { ball = "level"; ot = true; selfObtained = true; level = 100; nature = "Adamant"; ability = "Marvel Scale"; teraType = "Dragon"; };
+      dragonair = { ball = "level"; ot = true; selfObtained = true; level = 100; nature = "Adamant"; ability = "Marvel Scale"; teraType = "Dragon"; };
+      dragonite = {
+        ball = "level"; ot = true; selfObtained = true; level = 100;
+        nature = "Adamant"; ability = "Multiscale"; teraType = "Normal";
+        heldItem = "Heavy-Duty Boots";
+        evs = { hp = 4; atk = 252; spe = 252; };
+        moves = [ "Dragon Dance" "Extreme Speed" "Earthquake" "Roost" ];
+      };
+      mewtwo = {
+        ball = "cherish"; ot = true; selfObtained = true; level = 100;
+        nature = "Timid"; ability = "Pressure"; teraType = "Psychic";
+        heldItem = "Life Orb";
+        evs = { hp = 4; spa = 252; spe = 252; };
+        ivs = { hp = 31; atk = 0; def = 31; spa = 31; spd = 31; spe = 31; };
+        moves = [ "Psystrike" "Aura Sphere" "Ice Beam" "Calm Mind" ];
+        notes = "Play! 2016 distribution";
+      };
+      mew = {
+        ball = "poke"; ot = true; selfObtained = true; level = 100;
+        nature = "Timid"; ability = "Synchronize"; teraType = "Psychic";
+        heldItem = "Life Orb";
+        evs = { hp = 4; spa = 252; spe = 252; };
+        moves = [ "Nasty Plot" "Psychic" "Aura Sphere" "Soft-Boiled" ];
+      };
+
+    
       # » GENERATION 2 - JOHTO
       chikorita       = { ball = "poke";    ot = true; style = "star"; egg = false; notes = ""; };
       bayleef         = { ball = "poke";    ot = true; style = "star"; egg = false; notes = ""; };
