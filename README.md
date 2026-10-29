@@ -4,12 +4,14 @@
 <br>
 
 
+
 ![License](https://img.shields.io/badge/license-MIT-black?style=flat-square&logo=opensourceinitiative&logoColor=white)
-![Updated for](https://img.shields.io/badge/Updated%20for-Pok%C3%A9mon%20Sword%2FShield%20(Crown%20Tundra%20DLC)-blue)
 [![Sponsors](https://img.shields.io/github/sponsors/QuackHack-McBlindy?logo=githubsponsors&label=Sponsor&style=flat&labelColor=ff1493&logoColor=fff&color=rgba(234,74,170,0.5) "")](https://github.com/sponsors/QuackHack-McBlindy)
 [![Buy Me a Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-Sponsor?style=flat&logo=buymeacoffee&logoColor=fff&labelColor=ff1493&color=ff1493)](https://buymeacoffee.com/quackhackmcblindy)
 
+![Updated for](https://img.shields.io/badge/Updated%20for-Pok%C3%A9mon%20Sword%2FShield%20(Crown%20Tundra%20DLC)-blue)
 
+![CI](https://github.com/quackhack-mcblindy/yo/actions/workflows/ci.yml/badge.svg)
 [![Built with Nix](https://img.shields.io/badge/Built%20with-Nix-5277C3?style=flat&labelColor=5277C3&color=555&logo=nixos&logoColor=fff)](https://nixos.org)
 
 </div>
