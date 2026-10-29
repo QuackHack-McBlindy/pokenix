@@ -10,13 +10,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - [x] **Trainer** - Who's training these Pokémon?
-- [x] **Breedable Apriballs Pokémon** - Optimized for breeding/trading. Click your mons and CTRL + C them as a list.
+- [x] **Breedable Apriballs Pokémon** - Optimized for breeding/trading. Click #Dex link to serebii. Click your chosen balls and CTRL + C them as a list. Click any Pokémon to view all their egg moves. Hover for move info.  
 - [x] **Event Pokémon** - A collection worth Cherish*ishing*.
-- [x] **True** *(♀️♂️)* **Shiny Living Dex** - Watch your shiny progress grow in %.
+- [x] **True** *(♀️♂️)* **Shiny Living Dex** - Watch your shiny progress grow in %. Easy toggle between caught/missing.
 - [x] **Specials** - Rare marks, ribbons or simply shared memories, any Pokémon belongs! Document anything! Enter IV/EV, nature and your Pokémon stats willl be auto-generated and displayed. 
-- [x] **Search** - Quickly search and find what you are looking for.
+- [x] **Search** - Quickly live search and find what you are looking for.
+- **GitHub Pages** - If used with GitHub Pages: ❌ terminal, ❌ Nix, ❌ local download required. ✅ Simple!
 
-- **GitHub Pages** - If used with GitHub Pages: ❌ terminal, ❌ Nix, ❌ local download required.
 
 ### Changed
 
