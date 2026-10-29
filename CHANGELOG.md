@@ -9,6 +9,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+### Changed
+
+### Fixed
+
+### Removed
+
+
+## [1.0.1] - 2026-10-29
+
+### Added
+
 - [x] **Trainer** - Who's training these Pokémon?
 - [x] **Breedable Apriballs Pokémon** - Optimized for breeding/trading. Click #Dex link to serebii. Click your chosen balls and CTRL + C them as a list. Click any Pokémon to view all their egg moves. Hover for move info.  
 - [x] **Event Pokémon** - A collection worth Cherish*ishing*.
@@ -23,7 +34,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
 ### Removed
-
 
 ## [0.1.0]
 
