@@ -17,7 +17,7 @@ keep_attrs = [
 name        = "pokenix"
 url         = "https://QuackHack-McBlindy.com"
 url_label   = "QuackHack-McBlindy.com"
-version     = "1.0.1"
+version     = "1.0.2"
 description = '''
 <p>
   Welcome to the <strong>{name}</strong> options page.<br>
