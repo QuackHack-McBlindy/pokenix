@@ -9,9 +9,9 @@
 [![Sponsors](https://img.shields.io/github/sponsors/QuackHack-McBlindy?logo=githubsponsors&label=Sponsor&style=flat&labelColor=ff1493&logoColor=fff&color=rgba(234,74,170,0.5) "")](https://github.com/sponsors/QuackHack-McBlindy)
 [![Buy Me a Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-Sponsor?style=flat&logo=buymeacoffee&logoColor=fff&labelColor=ff1493&color=ff1493)](https://buymeacoffee.com/quackhackmcblindy)
 
-![Updated for](https://img.shields.io/badge/Updated%20for-Pok%C3%A9mon%20Sword%2FShield%20(Crown%20Tundra%20DLC)-blue)
+![Updated for](https://img.shields.io/badge/Updated%20for-Pok%C3%A9mon%20Scarlet%2FViolet%20(The%20Hidden%20Treasure%20of%20Area%20Zero%20DLC)-blue)
 
-![CI](https://github.com/quackhack-mcblindy/yo/actions/workflows/ci.yml/badge.svg)
+![CI](https://github.com/quackhack-mcblindy/pokenix/actions/workflows/ci.yml/badge.svg)
 [![Built with Nix](https://img.shields.io/badge/Built%20with-Nix-5277C3?style=flat&labelColor=5277C3&color=555&logo=nixos&logoColor=fff)](https://nixos.org)
 
 </div>
@@ -31,7 +31,7 @@
 - [x] **True** *(♀️♂️)* **Shiny Living Dex** - Watch your shiny progress grow in %. Easy toggle between caught/missing.
 - [x] **Specials** - Rare marks, ribbons or simply shared memories, any Pokémon belongs! Document anything! Enter IV/EV, nature and your Pokémon stats willl be auto-generated and displayed. 
 - [x] **Search** - Quickly live search and find what you are looking for.
-- **GitHub Pages** - If used with GitHub Pages: ❌ terminal, ❌ Nix, ❌ local download required. ✅ Simple!
+- **GitHub Pages** - If used with GitHub Pages: ❌ **terminal**, ❌ **Nix**, ❌ **local download required**. ✅ **Simple!**
 
 
 
