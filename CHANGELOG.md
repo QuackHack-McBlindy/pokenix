@@ -11,6 +11,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+### Fixed
+
+### Removed
+
+
+## [1.0.3] - 2026-11-02
+
+### Added
+
+### Changed
+
 - Changed the default trainer picture.
 - Updated the `example.nix` file.
 - Updated the installation instructions in the `README.md`.
@@ -18,7 +29,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
 ### Removed
-
 
 ## [1.0.2] - 2026-10-31
 
