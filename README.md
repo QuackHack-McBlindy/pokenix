@@ -52,14 +52,14 @@ Using GitHub Pages: No terminal, Nix or local install required.
 
 You need a GitHub account *(free)*.
 
-1. Log in to GitHub and click **Fork** on this repository. Keep the name `pokenix`.
-2. On your forked repo open the **Actions** tab and click **I understand my workflows, go ahead and enable them**. Forks start with Actions turned off, so nothing gets built until you do this.
+1. Log in to GitHub and click **Fork** on this repository.
+2. On your forked repo, go to the browser address bar and add `/actions` at the end and press the Enter key. Click **I understand my workflows, go ahead and enable them**. Forks start with Actions turned off, so nothing gets built until you do this.
 3. Go to **Settings > Pages** and set **Source** to **GitHub Actions**.
 4. Open the file `my-pokemon.nix` and click the pencil icon.
 5. Change `name = "PokèNix";` to your trainer name **(important!)**. If you keep the default name, your site shows the example collection instead of yours.
 6. Add your Pokémon (helpful comments in the file), then click **Commit changes**.
 7. Open the **Actions** tab and wait for **Build and deploy** to turn green. It takes about 3 minutes, a few minutes longer the first time. If it turns red, click the run to see which line of `my-pokemon.nix` it didn't like.
-8. Visit `https://<github-username>.github.io/pokenix/`. The link is also shown on the finished run.
+8. Visit `https://<YOUR-GITHUB-USERNAME>.github.io/pokenix/`. The link is also shown on the finished run.
 
 <br>
 

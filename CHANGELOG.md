@@ -11,6 +11,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- Changed the default trainer picture.
+- Updated the `example.nix` file.
+- Updated the installation instructions in the `README.md`.
+
 ### Fixed
 
 ### Removed
