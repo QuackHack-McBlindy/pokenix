@@ -9,6 +9,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+### Changed
+
+### Fixed
+
+### Removed
+
+
+## [1.0.4] - 2026-11-03
+
+### Added
+
 - New options: `pokenix.pokedex` and `pokenix.moves` - filled with readable data.
 - New options: `pokenix.trainer.githubUsername` and `pokenix.trainer.githubURepo`.
 - New option: `pokenix.shiny.<name>.name` used for naming a pokemon.
@@ -26,7 +37,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Fixed missing `pokenix.shiny.<name>.species`, making automatic identification now possible.
 
 ### Removed
-
 
 ## [1.0.3] - 2026-11-02
 
