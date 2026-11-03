@@ -11,7 +11,7 @@ import requests
 
 BASE  = "https://pokeapi.co/api/v2"
 CACHE = Path(".pokeapi-cache"); CACHE.mkdir(exist_ok=True)
-OUT   = Path("move-info.json")
+OUT   = Path("data/pokedex/move-info.json")
 
 def get(kind, key):
     p = CACHE / f"{kind}_{key}.json"

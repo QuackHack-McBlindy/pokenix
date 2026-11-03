@@ -9,9 +9,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- New options: `pokenix.pokedex` and `pokenix.moves` - filled with readable data.
+- New options: `pokenix.trainer.githubUsername` and `pokenix.trainer.githubURepo`.
+- New option: `pokenix.shiny.<name>.name` used for naming a pokemon.
+- Added Poké cries to the generated website.
+- Added types on all pages and other minor visual improvements. 
+
 ### Changed
 
+- Changed the ogImage to display aprimons, shiny living derx, event mons and special mons each on it's own row. 
+- Data fetching scripts improved to gather more data.
+
 ### Fixed
+
+- Fixed the ogImage to absolute URL resolved by the new pokenix.trainer.github options.
+- Fixed missing `pokenix.shiny.<name>.species`, making automatic identification now possible.
 
 ### Removed
 

@@ -4,6 +4,14 @@ packages/yo-rs/target/
 modules/dump
 /home/Public/dump
 bin/dump
+dump/
+**/dump/
+.env
+**/.env
+target/
+**/target/
+release/
+**/release/
 bin/voice/dump
 devShells/dump
 packages/dump

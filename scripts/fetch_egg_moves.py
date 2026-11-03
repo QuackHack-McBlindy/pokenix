@@ -25,9 +25,9 @@ import requests
 
 BASE_URL  = "https://pokeapi.co/api/v2"
 CACHE_DIR = Path(".pokeapi-cache")
-OUTPUT    = Path("egg-moves.json")
-MAX_ID    = 1025          # Gen 1 .. Gen 9 (1025 = Pecharunt)
-DELAY     = 0.1           # seconds between live requests
+OUTPUT    = Path("data/pokedex/egg-moves.json")
+MAX_ID    = 1025
+DELAY     = 0.1
 
 
 def fetch(pokemon_id: int) -> dict:

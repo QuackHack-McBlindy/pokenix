@@ -123,7 +123,7 @@ in {
 
     # » GENERATION 5
     specials."ducklett-the-driven-1" = { 
-      species = "ducklett"; ball = "luxury"; selfObtained = true; 
+      name = "♥️ Ducklett ♥️"; ball = "luxury"; selfObtained = true; 
       marks = [ "Pumped-Up Mark" ]; notes = "Pumped-Up Mark 2023/09/23";
     };
     specials."cobalion-1"  = { species = "cobalion"; ball = "ultra"; selfObtained = false; ability = "Justified"; region = "ENG"; notes = "2020/08/16"; };
@@ -255,8 +255,9 @@ in {
     events = {
       # »  2003  «
       "farfetchd-2003-jemma" = {
-        species="farfetchd"; dex=83; name="Farfetch'd"; ball="pokeball"; year="2003"; ot="Jemma"; id="17749"; region="ENG"; notes="WiSHMKR";
-        proof="friend of OT TC"; obtained="2021/02/16"; moves=[ "Wish" "Yawn" ]; tradeHistory="GoroMajimaIsMyIdol#8508 > pungkula";
+        species="farfetchd"; dex=83; name="♥️ Farfetch'd ♥️"; ball="pokeball"; year="2003"; ot="Jemma"; id="17749"; region="ENG";
+        notes="WiSHMKR"; proof="friend of OT TC"; obtained="2021/02/16"; tradeHistory="GoroMajimaIsMyIdol#8508 > pungkula";
+        moves=[ "Wish" "Yawn" ]; 
       };
       "jirachi-2003-wishmkr-1" = {
         species="jirachi"; dex=385; name="Jirachi"; ball="pokeball"; shiny=true; year="2003"; ot="WISHMKR"; id="20043"; region="ENG"; notes="WiSHMKR"; moves=[ "Wish" "Confusion" "Rest" ];

@@ -8,8 +8,8 @@
   result = build config.pokenix;
 in {
   imports = [ ./options.nix ];
-  config.pokenix.html  = result.html;
-  config.pokenix.debug = result.debug;
-  config.pokenix.stats = result.stats;
+  config.pokenix.html    = result.html;
+  config.pokenix.debug   = result.debug;
+  config.pokenix.stats   = result.stats;
 
 }

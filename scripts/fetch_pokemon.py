@@ -1,16 +1,38 @@
 #!/usr/bin/env python3
 """
-fetch_pokemon.py — full PokéAPI snapshot for every Pokémon (Gen 1–9).
+fetch_pokemon.py — Full PokéAPI snapshot for Pokémon (National Dex 1–1025).
 
 Produces:
-    pokemon.json         # per-species: types, base stats, abilities, cries,
-                         # egg groups, flavor text, evolution, height/weight,
-                         # egg groups, hatch counter, catch rate, badges
-    moves.json           # per-species: egg / level / tm / tutor / all
-    types.json           # 18 entries: damage relations
-    evolution-chains.json  # full trees, keyed by chain id
-    abilities.json       # ability names + short effect text
-    moves-info.json      # move names + type/power/accuracy/pp/damage class
+
+    pokemon.json
+        Per-Pokémon and species data, including:
+        - National Pokédex number and regional Pokédex entries
+        - Types, abilities, base stats and base experience
+        - Height, weight, cries and sprites
+        - Gender ratio, generation and gender differences
+        - Forms, varieties and alternate form descriptions
+        - Egg groups, hatch counter and breeding-related data
+        - Capture rate, base happiness and growth rate
+        - Legendary, mythical and baby classifications
+        - Habitat, color and shape
+        - Flavor text and localized names
+        - Evolution chain, evolution origin and evolution steps
+        - Historical types, abilities and stats
+        - Held items, game indices and encounter URL
+
+    moves.json
+        Per-Pokémon learnsets:
+        - Egg moves
+        - Level-up moves
+        - TM/machine moves
+        - Tutor moves
+        - All available moves
+
+    types.json
+        Type effectiveness and damage relations for all 18 types.
+
+    evolution-chains.json
+        Full evolution trees, keyed by evolution chain ID.
 """
 
 import json, sys, time
@@ -18,7 +40,12 @@ from pathlib import Path
 import requests
 
 BASE  = "https://pokeapi.co/api/v2"
-CACHE = Path(".pokeapi-cache"); CACHE.mkdir(exist_ok=True)
+PROJECT_ROOT = Path(__file__).resolve().parent.parent
+DATA_DIR = PROJECT_ROOT / "data" / "pokedex"
+CACHE = PROJECT_ROOT / ".pokeapi-cache"
+
+DATA_DIR.mkdir(parents=True, exist_ok=True)
+CACHE.mkdir(parents=True, exist_ok=True)
 
 def get(kind, key):
     p = CACHE / f"{kind}_{key}.json"
@@ -46,8 +73,8 @@ def classify_moves(data):
         "all":   sorted(all_moves),
     }
 
-def evolution_steps(chain_link, sprites, species_slug):
-    """Return [{species, dex, condition, sprite}, …] following chain_link."""
+def evolution_steps(chain_link):
+    """Return [{species, condition}, …] for the evolution chain."""
     steps = []
     for nxt in chain_link.get("evolves_to", []):
         det = nxt["evolution_details"][0] if nxt["evolution_details"] else {}
@@ -63,17 +90,16 @@ def evolution_steps(chain_link, sprites, species_slug):
             cond.append("trade" + (" holding " + det["held_item"]["name"] if det.get("held_item") else ""))
         elif det.get("trigger", {}).get("name") == "shed":
             cond.append("empty slot + Poké Ball")
-        # Gen 9 triggers: three-critical-hits, tower-of-darkness, etc. — raw name
+
         elif det.get("trigger", {}).get("name"):
             cond.append(det["trigger"]["name"].replace("-", " "))
 
         slug = nxt["species"]["name"]
         steps.append({
-            "species":   slug,
+            "species": slug,
             "condition": " · ".join(filter(None, cond)),
-            "sprite":    sprites.get(slug),
         })
-        steps.extend(evolution_steps(nxt, sprites, species_slug))
+        steps.extend(evolution_steps(nxt))
     return steps
 
 def main():
@@ -90,14 +116,12 @@ def main():
 
         slug = p["name"]
 
-        # --- evolution chain ---
         evo_url = sp["evolution_chain"]["url"].rstrip("/").split("/")[-1]
         try:
             chain = get("evolution-chain", evo_url)["chain"]
         except Exception:
             chain = {"evolves_to": []}
 
-        # sprites for evo previews — pull from pokesprite via sprites path convention
         evo_slugs = []
         def walk(link):
             for nxt in link.get("evolves_to", []):
@@ -105,7 +129,97 @@ def main():
         walk(chain)
 
         pokemon_out[slug] = {
-            "types":       [t["type"]["name"] for t in p["types"]],
+            "dexNumber": next(
+                (
+                    entry["entry_number"]
+                    for entry in sp["pokedex_numbers"]
+                    if entry["pokedex"]["name"] == "national"
+                ),
+                None,
+            ),
+
+            "genderRate": sp["gender_rate"],
+            "generation": sp["generation"]["name"],
+            "hasGenderDifferences": sp["has_gender_differences"],
+            "formsSwitchable": sp["forms_switchable"],
+
+            "evolvesFromSpecies": (
+                sp["evolves_from_species"]["name"]
+                if sp["evolves_from_species"] is not None
+                else None
+            ),
+
+            "varieties": [
+                {
+                    "isDefault": variety["is_default"],
+                    "pokemon": variety["pokemon"]["name"],
+                    "url": variety["pokemon"]["url"],
+                }
+                for variety in sp["varieties"]
+            ],
+
+            "pokedexNumbers": [
+                {
+                    "pokedex": entry["pokedex"]["name"],
+                    "number": entry["entry_number"],
+                }
+                for entry in sp["pokedex_numbers"]
+            ],
+
+            "names": [
+                {
+                    "name": entry["name"],
+                    "language": entry["language"]["name"],
+                }
+                for entry in sp["names"]
+            ],
+
+            "formDescriptions": [
+                {
+                    "description": entry["description"],
+                    "language": entry["language"]["name"],
+                }
+                for entry in sp["form_descriptions"]
+            ],
+
+            "palParkEncounters": [
+                {
+                    "area": entry["area"]["name"],
+                    "baseScore": entry["base_score"],
+                    "rate": entry["rate"],
+                }
+                for entry in sp["pal_park_encounters"]
+            ],
+
+            "baseExperience": p["base_experience"],
+            "isDefault": p["is_default"],
+            "order": p["order"],
+
+            "pastTypes": p["past_types"],
+            "pastAbilities": p["past_abilities"],
+            "pastStats": p["past_stats"],
+
+            "gameIndices": [
+                {
+                    "gameIndex": entry["game_index"],
+                    "version": entry["version"]["name"],
+                }
+                for entry in p["game_indices"]
+            ],
+
+            "sprites": p["sprites"],
+
+            "forms": [
+                {
+                    "name": form["name"],
+                    "url": form["url"],
+                }
+                for form in p["forms"]
+            ],
+
+            "locationAreaEncounters": p["location_area_encounters"],
+
+            "types":       [t["type"]["name"] for t in p["types"]],           
             "abilities":   [
                 {"name": a["ability"]["name"], "hidden": a["is_hidden"], "slot": a["slot"]}
                 for a in p["abilities"]
@@ -134,7 +248,7 @@ def main():
             "color":          sp["color"]["name"],
             "shape":          (sp["shape"] or {}).get("name"),
             "evolutionChain": evo_url,
-            "evolutionSteps": evolution_steps(chain, {}, slug),
+            "evolutionSteps": evolution_steps(chain),
         }
         moves_out[slug] = classify_moves(p)
         evolution_chains[evo_url] = chain
@@ -143,7 +257,6 @@ def main():
             print(f"  [{i}/1025] {time.time()-t0:.0f}s", file=sys.stderr)
         time.sleep(0.1)
 
-    # Type relations — 18 fetches, done once
     types_out = {}
     for t in ["normal","fire","water","electric","grass","ice","fighting","poison",
               "ground","flying","psychic","bug","rock","ghost","dragon","dark","steel","fairy"]:
@@ -157,13 +270,22 @@ def main():
             "noDamageTo":       [x["name"] for x in d["damage_relations"]["no_damage_to"]],
         }
 
-    Path("pokemon.json").write_text(json.dumps(pokemon_out, indent=2, sort_keys=True))
-    Path("moves.json").write_text(json.dumps(moves_out, indent=2, sort_keys=True))
-    Path("types.json").write_text(json.dumps(types_out, indent=2, sort_keys=True))
-    Path("evolution-chains.json").write_text(json.dumps(evolution_chains, indent=2, sort_keys=True))
+    (DATA_DIR / "pokemon.json").write_text(
+        json.dumps(pokemon_out, indent=2, sort_keys=True)
+    )
+    (DATA_DIR / "moves.json").write_text(
+        json.dumps(moves_out, indent=2, sort_keys=True)
+    )
+    (DATA_DIR / "types.json").write_text(
+        json.dumps(types_out, indent=2, sort_keys=True)
+    )
+    (DATA_DIR / "evolution-chains.json").write_text(
+        json.dumps(evolution_chains, indent=2, sort_keys=True)
+    )
 
     for f in ["pokemon.json", "moves.json", "types.json", "evolution-chains.json"]:
-        print(f"Wrote {f} · {Path(f).stat().st_size/1024/1024:.1f} MB", file=sys.stderr)
+        path = DATA_DIR / f
+        print(f"Wrote {path.relative_to(PROJECT_ROOT)} · {path.stat().st_size/1024/1024:.1f} MB", file=sys.stderr)
 
 if __name__ == "__main__":
     main()

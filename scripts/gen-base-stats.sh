@@ -1,8 +1,6 @@
 #!/usr/bin/env bash
-# Generates data/base-stats.json from PokéAPI.
-# Stats order per entry: [hp, atk, def, spa, spd, spe]
 set -euo pipefail
-out="data/base-stats.json"
+out="data/pokedex/base-stats.json"
 tmp=$(mktemp)
 echo "{" > "$tmp"
 last=1025

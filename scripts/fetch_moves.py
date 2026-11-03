@@ -5,12 +5,12 @@ from PokéAPI and write a single moves.json keyed by PokéAPI slug.
 
 Output shape per species:
     {
-      "egg":   ["charm", "curse", …],                    # sorted
-      "level": [ {"level": 1, "moves": ["tackle", …]},   # sorted by level
+      "egg":   ["charm", "curse", …],
+      "level": [ {"level": 1, "moves": ["tackle", …]},
                  {"level": 3, "moves": ["vine-whip"]}, …],
-      "tm":    ["toxic", …],                              # sorted
-      "tutor": ["giga-drain", …],                         # sorted
-      "all":   ["…"]                                      # union, sorted
+      "tm":    ["toxic", …],
+      "tutor": ["giga-drain", …],
+      "all":   ["…"]
     }
 
 Usage:
@@ -30,9 +30,9 @@ import requests
 
 BASE_URL  = "https://pokeapi.co/api/v2"
 CACHE_DIR = Path(".pokeapi-cache")
-OUTPUT    = Path("moves.json")
-MAX_ID    = 1025          # Gen 1 .. Gen 9 (1025 = Pecharunt)
-DELAY     = 0.1           # seconds between live requests
+OUTPUT    = Path("data/pokedex/moves.json")
+MAX_ID    = 1025
+DELAY     = 0.1
 
 
 def fetch(pokemon_id: int) -> dict:
