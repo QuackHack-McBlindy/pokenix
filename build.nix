@@ -15,18 +15,18 @@ let
   rawBreedables = import ./breedables { };
 
   movesRaw =
-    let p = ./moves.json;
+    let p = ./data/pokedex/moves.json;
     in if builtins.pathExists p then builtins.fromJSON (builtins.readFile p) else { };
 
   pokemonRaw =
     let
-      paths = [ ./pokemon.json ./data/pokemon-fetch.json ];
+      paths = [ ./data/pokedex/pokemon.json ./data/pokemon-fetch.json ];
       hits  = builtins.filter (p: builtins.pathExists p) paths;
     in if hits == [] then { } else builtins.fromJSON (builtins.readFile (builtins.head hits));
 
   moveInfoRaw =
     let
-      paths = [ ./data/move-info.json ./move-info.json ];
+      paths = [ ./data/pokedex/move-info.json ];
       hits  = builtins.filter (p: builtins.pathExists p) paths;
     in if hits == [] then { } else builtins.fromJSON (builtins.readFile (builtins.head hits));
 
@@ -40,6 +40,63 @@ let
            else if n <= 1 then { }
            else go (n - 1);
     in go (builtins.length parts);
+
+  pokemonKeyFor = name:
+    let
+      parts = lib.splitString "-" name;
+      go = n:
+        let candidate = lib.concatStringsSep "-" (lib.take n parts);
+        in if builtins.hasAttr candidate pokemonRaw
+           then candidate
+           else if n <= 1 then null
+           else go (n - 1);
+    in go (builtins.length parts);
+
+  serebiiUrlFor = key:
+    let k = pokemonKeyFor key;
+    in if k == null then null
+    else "https://www.serebii.net/pokedex-swsh/${k}/";
+
+  typesFor = key:
+    let p = pokemonEntryFor key;
+    in p.types or [];
+
+  typeSortKey = key:
+    let ts = typesFor key;
+    in if ts == [] then "zzz" else lib.toLower (builtins.head ts);
+
+  renderDexLink = key: dex: name:
+    let
+      url = serebiiUrlFor key;
+      pad = padNum dex;
+    in
+    if url == null then ''<span class="dex">#${pad}</span>''
+    else ''
+      <span class="dex-wrap">
+        <a class="dex" href="${url}" target="_blank" rel="noopener">#${pad}</a>
+        <div class="dex-hover">
+          <iframe src="${url}" loading="lazy" title="${name} on Serebii"></iframe>
+          <div class="dex-hover-fallback">
+            <div class="dhf-title">${name} · Serebii</div>
+            <div class="dhf-url">${url}</div>
+            <div class="dhf-hint">Click to open in a new tab.</div>
+          </div>
+        </div>
+      </span>
+    '';
+
+  renderCheckShiny = val:
+    if val
+    then ''<span class="check yes shiny-mark" title="shiny">✨</span>''
+    else ''<span class="check no" title="not shiny"></span>'';
+
+  cryUrlFor = key:
+    let
+      p = pokemonEntryFor key;
+      c = p.cries or null;
+    in
+    if c == null then null
+    else c.latest or (c.legacy or null);
 
   movesEntryFor = name:
     let
@@ -467,7 +524,7 @@ let
   eggPath   = "sprites/pokemon-gen8/egg.png";
   eggExists = builtins.pathExists (./. + "/${eggPath}");
 
-  baseStatsPath   = ./data/base-stats.json;
+  baseStatsPath   = ./data/pokedex/base-stats.json;
   baseStatsExists = builtins.pathExists baseStatsPath;
   baseStats       = if baseStatsExists
                     then builtins.fromJSON (builtins.readFile baseStatsPath)
@@ -576,9 +633,9 @@ let
   ballColumnWidth  = ballContentWidth + 16;
 
   breedColumns   = "56px 52px ${nameWidthCss} ${toString ballColumnWidth}px 140px 48px 80px 88px";
-  eventColumns   = "56px 52px 48px minmax(${nameWidthCss}, 1fr) 44px 44px 88px 120px 88px 32px";
-  specialColumns = "56px 52px 48px minmax(${nameWidthCss}, 1fr) 44px 44px 76px 100px 240px 32px";
-  shinyColumns   = "56px 52px 48px minmax(${shinyNameWidthCss}, 1fr) minmax(120px, 2fr) 44px 82px 48px";
+  eventColumns   = "56px 52px 48px minmax(${nameWidthCss}, 1fr) 110px 44px 44px 88px 120px 88px 32px";
+  specialColumns = "56px 52px 48px minmax(${nameWidthCss}, 1fr) 110px 44px 44px 76px 100px 240px 32px";
+  shinyColumns   = "56px 52px 48px minmax(${shinyNameWidthCss}, 1fr) 110px minmax(120px, 2fr) 44px 82px 48px";
 
   sortedNames =
     let
@@ -625,10 +682,18 @@ let
 
   brandName = if cfg.trainer.name != null then cfg.trainer.name else "PokèNix";
 
+  
   renderSprite = name: s:
+    let
+      cry      = cryUrlFor name;
+      cryAttr  = if cry != null then ''data-cry="${cry}" title="Click to play cry"'' else "";
+      cryClass = if cry != null then " cry-click" else "";
+    in
     if breedableSpriteExists name s
-    then ''<span class="cell-sprite"><img class="sprite" src="data:image/png;base64,@SPRITE_${name}@" alt="${name}"></span>''
-    else ''<span class="cell-sprite"><svg class="sprite placeholder" viewBox="0 0 32 32"><rect width="32" height="32" fill="#2a2a2a"/><text x="16" y="21" font-size="9" text-anchor="middle" fill="#666">#${padDex s}</text></svg></span>'';
+    then ''<span class="cell-sprite${cryClass}" ${cryAttr}><img class="sprite" src="data:image/png;base64,@SPRITE_${name}@" alt="${name}"></span>''
+    else ''<span class="cell-sprite${cryClass}" ${cryAttr}><svg class="sprite placeholder" viewBox="0 0 32 32"><rect width="32" height="32" fill="#2a2a2a"/><text x="16" y="21" font-size="9" text-anchor="middle" fill="#666">#${padDex s}</text></svg></span>'';
+  
+
 
   renderDex = name: s: ''
     <span class="dex-wrap">
@@ -754,16 +819,21 @@ let
     else if !(ballExists e.ball) then ''<span class="event-ball-slot missing" title="${e.ball} (sprite missing)"></span>''
     else ''<span class="event-ball-slot" title="${e.ball}"><img src="data:image/png;base64,@BALL_${e.ball}@" alt="${e.ball}"></span>'';
 
+  
   renderEvtSprite = k: shiny: e:
     let
-      d   = evtDex e;
-      n   = evtName e;
-      pad = padNum d;
-      key = if shiny then "${k}-shiny" else k;
+      d        = evtDex e;
+      n        = evtName e;
+      pad      = padNum d;
+      key      = if shiny then "${k}-shiny" else k;
+      cry      = cryUrlFor e.species;
+      cryAttr  = if cry != null then ''data-cry="${cry}" title="Click to play cry"'' else "";
+      cryClass = if cry != null then " cry-click" else "";
     in
     if evtSpriteExists k e shiny
-    then ''<span class="cell-sprite"><img class="sprite" src="data:image/png;base64,@EVT_SPRITE_${key}@" alt="${n}"></span>''
-    else ''<span class="cell-sprite"><svg class="sprite placeholder" viewBox="0 0 32 32"><rect width="32" height="32" fill="#2a2a2a"/><text x="16" y="21" font-size="9" text-anchor="middle" fill="#666">#${pad}</text></svg></span>'';
+    then ''<span class="cell-sprite${cryClass}" ${cryAttr}><img class="sprite" src="data:image/png;base64,@EVT_SPRITE_${key}@" alt="${n}"></span>''
+    else ''<span class="cell-sprite${cryClass}" ${cryAttr}><svg class="sprite placeholder" viewBox="0 0 32 32"><rect width="32" height="32" fill="#2a2a2a"/><text x="16" y="21" font-size="9" text-anchor="middle" fill="#666">#${pad}</text></svg></span>'';
+  
 
   renderDetail = label: value:
     let v = if value == null then null else toString value;
@@ -864,14 +934,17 @@ let
       y   = if e.year   != null then e.year   else "";
       o   = if e.ot     != null then e.ot     else "";
       r   = if e.region != null then e.region else "";
+      ts  = typesFor e.species;
+      tk  = typeSortKey e.species;
     in ''
-      <details class="event" id="pk-${k}" data-dex="${pad}" data-name="${n}" data-year="${y}" data-ot="${o}" data-region="${r}">
+      <details class="event" id="pk-${k}" data-dex="${pad}" data-name="${n}" data-year="${y}" data-ot="${o}" data-region="${r}" data-type="${tk}">
         <summary class="event-row">
-          <span class="event-dex">#${pad}</span>
+          ${renderDexLink e.species d n}
           ${renderEvtSprite k shiny e}
           ${renderEvtBall e}
           <span class="event-name" title="${n}">${nameWithGmax n e.species}</span>
-          ${renderCheck e.shiny "shiny"}
+          <span class="event-type">${renderTypeBadges ts}</span>
+          ${renderCheckShiny e.shiny}
           ${renderCheck e.selfObtained "self obtained"}
           <span class="event-field">${if e.year   != null then e.year   else "—"}</span>
           <span class="event-field" title="${if e.ot != null then e.ot else ""}">${if e.ot != null then e.ot else "—"}</span>
@@ -896,6 +969,7 @@ let
       <span class="cell-sprite"></span>
       <span class="event-ball-slot"></span>
       <span class="event-name" data-sort="name">Pokémon</span>
+      <span class="event-type" data-sort="type">Type</span>
       <span class="check header-check" title="shiny">✨</span>
       <span class="check header-check" title="self obtained">✓</span>
       <span class="event-field" data-sort="year">Year</span>
@@ -943,16 +1017,19 @@ let
       movesVal   = e.moves   or [ ];
       marksVal   = e.marks   or [ ];
       ribbonsVal = e.ribbons or [ ];
+      ts         = typesFor k;
+      tk         = typeSortKey k;
     in ''
       <details class="shiny-row-details ${if owned then "owned" else "empty"}"
-               id="pk-${k}" data-dex="${pad}" data-name="${entry.name}">
+               id="pk-${k}" data-dex="${pad}" data-name="${entry.name}" data-type="${tk}">
         <summary class="shiny-row">
-          <span class="shiny-dex">#${pad}</span>
+          ${renderDexLink k entry.dex entry.name}
           ${if hasSprite
             then ''<span class="cell-sprite"><img class="sprite" src="data:image/png;base64,@SHINY_${k}@" alt="${entry.name}"></span>''
             else ''<span class="cell-sprite"><svg class="sprite placeholder" viewBox="0 0 32 32"><rect width="32" height="32" fill="#2a2a2a"/><text x="16" y="21" font-size="9" text-anchor="middle" fill="#666">#${pad}</text></svg></span>''}
           ${ballCell}
           <span class="shiny-name" title="${entry.name}">${nameWithGmax entry.name k}</span>
+          <span class="shiny-types">${renderTypeBadges ts}</span>
           <span class="shiny-notes">${if e.notes or null != null then e.notes else ""}</span>
           ${otCell}
           ${eggCell}
@@ -1052,6 +1129,7 @@ let
       <span class="cell-sprite"></span>
       <span class="event-ball-slot"></span>
       <span class="shiny-name" data-sort="name">Pokémon</span>
+      <span class="shiny-types" data-sort="type">Type</span>
       <span class="shiny-notes">Notes</span>
       <span class="check header-check" title="Original Trainer">OT</span>
       <span class="check header-check" title="Egg obtained">Egg</span>
@@ -1097,16 +1175,20 @@ let
 
       lvl   = if sp.level  != null then toString sp.level  else "";
       nat   = if sp.nature != null then sp.nature         else "";
+      ts    = typesFor sp.species;
+      tk    = typeSortKey sp.species;
     in ''
       <details class="event special" id="pk-${k}"
                data-dex="${pad}" data-name="${n}"
-               data-level="${lvl}" data-nature="${nat}">
+               data-level="${lvl}" data-nature="${nat}"
+               data-type="${tk}">
         <summary class="event-row special-row">
-          <span class="event-dex">#${pad}</span>
+          ${renderDexLink sp.species d n}
           ${renderEvtSprite k sp.shiny sp}
           ${renderEvtBall sp}
           <span class="event-name" title="${n}">${nameWithGmax n sp.species}</span>
-          ${renderCheck sp.shiny "shiny"}
+          <span class="event-type">${renderTypeBadges ts}</span>
+          ${renderCheckShiny sp.shiny}
           ${renderCheck sp.selfObtained "self obtained"}
           <span class="event-field">${if sp.level  != null then toString sp.level else "—"}</span>
           <span class="event-field" title="${if sp.nature != null then sp.nature else ""}">${if sp.nature != null then sp.nature else "—"}</span>
@@ -1143,6 +1225,7 @@ let
       <span class="cell-sprite"></span>
       <span class="event-ball-slot"></span>
       <span class="event-name" data-sort="name">Pokémon</span>
+      <span class="event-type" data-sort="type">Type</span>
       <span class="check header-check" title="shiny">✨</span>
       <span class="check header-check" title="self obtained">✓</span>
       <span class="event-field" data-sort="level">Level</span>
@@ -1285,7 +1368,30 @@ let
           updateThemeBtn();
         });
       }
-
+     
+      var currentCry = null;
+      document.addEventListener('click', function(ev) {
+        var cell = ev.target.closest('[data-cry]');
+        if (!cell) return;
+        var url = cell.dataset.cry;
+        if (!url) return;
+        ev.preventDefault();
+        ev.stopPropagation();
+        if (currentCry) {
+          try { currentCry.pause(); } catch (e) {}
+          currentCry = null;
+        }
+        try {
+          var audio = new Audio(url);
+          audio.volume = 0.4;
+          currentCry = audio;
+          audio.play().catch(function() {});
+          audio.addEventListener('ended', function() {
+            if (currentCry === audio) currentCry = null;
+          });
+        } catch (e) {}
+      });
+      
       document.querySelectorAll('.event-header [data-sort]').forEach(function(th) {
         th.style.cursor = 'pointer';
         th.addEventListener('click', function() {
@@ -1806,25 +1912,27 @@ let
     .event-row > *:nth-child(2) { justify-content: center; padding: 2px 4px; }
     .event-row > *:nth-child(3) { justify-content: center; padding: 2px 4px; }
     .event-row > *:nth-child(4) { justify-content: flex-start; }
-    .event-row > *:nth-child(5) { justify-content: center; }
+    .event-row > *:nth-child(5) { justify-content: flex-start; gap: 2px; }
     .event-row > *:nth-child(6) { justify-content: center; }
     .event-row > *:nth-child(7) { justify-content: center; }
-    .event-row > *:nth-child(8) { justify-content: flex-start; }
-    .event-row > *:nth-child(9) { justify-content: center; }
+    .event-row > *:nth-child(8) { justify-content: center; }
+    .event-row > *:nth-child(9) { justify-content: flex-start; }
     .event-row > *:nth-child(10){ justify-content: center; }
+    .event-row > *:nth-child(11){ justify-content: center; }
 
-    .special-row > *:nth-child(7) { justify-content: flex-end; font-family: ui-monospace, monospace; }
-    .special-row > *:nth-child(8) { justify-content: flex-start; }
-    .special-row > *:nth-child(9) { justify-content: flex-end; }
+    .special-row > *:nth-child(8) { justify-content: flex-end; font-family: ui-monospace, monospace; }
+    .special-row > *:nth-child(9) { justify-content: flex-start; }
+    .special-row > *:nth-child(10){ justify-content: flex-end; }
 
     .shiny-row > *:nth-child(1) { justify-content: flex-end; font-family: ui-monospace, monospace; }
     .shiny-row > *:nth-child(2) { justify-content: center; padding: 2px 4px; }
     .shiny-row > *:nth-child(3) { justify-content: center; padding: 2px 4px; }
     .shiny-row > *:nth-child(4) { justify-content: flex-start; }
-    .shiny-row > *:nth-child(5) { justify-content: flex-start; color: var(--fg-3); }
-    .shiny-row > *:nth-child(6) { justify-content: center; }
+    .shiny-row > *:nth-child(5) { justify-content: flex-start; gap: 2px; }
+    .shiny-row > *:nth-child(6) { justify-content: flex-start; color: var(--fg-3); }
     .shiny-row > *:nth-child(7) { justify-content: center; }
     .shiny-row > *:nth-child(8) { justify-content: center; }
+    .shiny-row > *:nth-child(9) { justify-content: center; }
 
     .entry.header,
     .event-header,
@@ -2382,7 +2490,37 @@ let
     .matchup-label {
       min-width: 32px; font-family: ui-monospace, monospace;
       font-size: 10px; color: var(--fg-4);
+    }    
+    .cell-sprite.cry-click {
+      cursor: pointer;
+      transition: filter 0.1s, opacity 0.1s;
     }
+    .cell-sprite.cry-click:hover .sprite {
+      filter: brightness(1.2) saturate(1.15);
+    }
+    .cell-sprite.cry-click:active .sprite {
+      animation: cry-pulse 0.3s ease-out;
+    }
+    @keyframes cry-pulse {
+      0%   { opacity: 0.5; }
+      50%  { opacity: 1; }
+      100% { opacity: 1; }
+    }    
+    .shiny-types, .event-type {
+      display: flex; align-items: center; gap: 2px;
+      overflow: hidden;
+    }
+    .shiny-types .type-badge, .event-type .type-badge {
+      font-size: 9px; padding: 1px 5px; margin-right: 2px;
+    }
+
+    .check.yes.shiny-mark {
+      color: var(--accent-gold);
+      border-color: color-mix(in srgb, var(--accent-gold) 40%, transparent);
+      background: color-mix(in srgb, var(--accent-gold) 8%, transparent);
+      font-size: 14px;
+    }
+    .dex-wrap { overflow: visible !important; }
   '';
 
   siteDescription =
@@ -2390,6 +2528,18 @@ let
     + "${toString totalCaptures}/${toString totalPossibleCaptures} aprimons · "
     + "${toString shinyOwnedCount}/${toString shinyTotalCount} shiny · "
     + "${toString eventCount} events";
+
+  ogImageUrl =
+    let
+      user = cfg.trainer.githubUsername;
+      repo = cfg.trainer.githubRepo;
+      isUserPage = repo == null || repo == "" || repo == "${user}.github.io";
+    in
+    if user == null || user == ""
+    then "og.png"
+    else if isUserPage
+    then "https://${user}.github.io/og.png"
+    else "https://${user}.github.io/${repo}/og.png";
 
   ogImage =
     let
@@ -2401,12 +2551,18 @@ let
 
       about  = flat (if cfg.trainer.about  != null then cfg.trainer.about  else "");
       region = flat (if cfg.trainer.region != null then cfg.trainer.region else "");
-
-      stats =
+      
+      statLines = [
         "${toString totalCaptures}/${toString totalPossibleCaptures} aprimons"
-        + " · ${toString shinyOwnedCount}/${toString shinyTotalCount} shiny"
-        + " · ${toString eventCount} events";
-
+        "${toString shinyOwnedCount}/${toString shinyTotalCount} shiny living dex"
+        "${toString eventCount} event pokémon"
+        "${toString specialsCount} other pokémon"
+      ];
+      
+      statAnnots = lib.concatStringsSep " " (lib.imap0
+        (i: line: "-annotate +${textX}+${toString (420 + i * 38)} ${esc line}")
+        statLines);
+      
       picStep = lib.optionalString hasPic ''
         convert ${cfg.trainer.picture} \
           -resize 480x480^ -gravity center -extent 480x480 \
@@ -2432,7 +2588,7 @@ let
         -pointsize 22 -fill '#6cf' \
           -annotate +${textX}+310 ${esc region} \
         -pointsize 24 -fill '#cccccc' \
-          -annotate +${textX}+420 ${esc stats} \
+          ${statAnnots} \
         -pointsize 20 -fill '#666666' \
           -annotate +60+590 ${esc "PokéNix · github.com/QuackHack-McBlindy/pokenix"} \
         og.png
@@ -2450,20 +2606,22 @@ let
 
     <meta name="description" content="${siteDescription}">
 
-    <meta property="og:type"         content="website">
-    <meta property="og:site_name"    content="PokéNix">
-    <meta property="og:title"        content="${title}">
-    <meta property="og:description"  content="${siteDescription}">
-    <meta property="og:image"        content="og.png">
-    <meta property="og:image:type"   content="image/png">
-    <meta property="og:image:width"  content="1200">
-    <meta property="og:image:height" content="630">
-    <meta property="og:image:alt"    content="PokéNix trainer card for ${brandName}">
+    <meta property="og:type"             content="website">
+    <meta property="og:site_name"        content="PokéNix">
+    <meta property="og:title"            content="${title}">
+    <meta property="og:description"      content="${siteDescription}">
+    <meta property="og:image"            content="${ogImageUrl}">
+    <meta property="og:image:secure_url" content="${ogImageUrl}">
+    <meta property="og:image:type"       content="image/png">
+    <meta property="og:image:width"      content="1200">
+    <meta property="og:image:height"     content="630">
+    <meta property="og:image:alt"        content="PokéNix trainer card for ${brandName}">
+    <meta property="og:url"              content="${ogImageUrl}">
 
     <meta name="twitter:card"        content="summary_large_image">
     <meta name="twitter:title"       content="${title}">
     <meta name="twitter:description" content="${siteDescription}">
-    <meta name="twitter:image"       content="og.png">
+    <meta name="twitter:image"       content="${ogImageUrl}">
 
     <style>
     ${sharedCss}

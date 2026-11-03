@@ -430,6 +430,29 @@
     };
   };
 
+
+  dataDir = ./data/pokedex;
+
+  readJSON = file:
+    builtins.fromJSON (
+      builtins.readFile "${dataDir}/${file}"
+    );
+
+  rawPokemon = readJSON "pokemon.json";
+  rawLearnsets = readJSON "moves.json";
+  rawEggMoves = readJSON "egg-moves.json";
+  rawMoveInfo = readJSON "move-info.json";
+
+  pokemon = lib.mapAttrs
+    (name: data:
+      data // {
+        eggMoves = rawEggMoves.${name} or [ ];
+        learnset = rawLearnsets.${name} or {};
+      }
+    )
+    rawPokemon;
+
+  
 in {
   options.pokenix.breedables = mkOption {
     description = ''
@@ -492,6 +515,16 @@ in {
               description = "Ball caught in. `null` (default) means not owned — the row renders dimmed. Any string implies ownership.";
               example     = "luxury";
             };
+            species = mkOption {
+              type = types.str;
+              default = n;
+              description = "Pokémon species identifier.";
+            };
+            name = mkOption {
+              type = types.str;
+              default = n;
+              description = "Pokémon name.";
+            };
             notes = mkOption {
               type        = types.nullOr types.str;
               default     = null;
@@ -517,7 +550,6 @@ in {
               example     = "square";
             };
 
-            # ── optional expansion fields (shown only when the row is open) ──
             selfObtained = mkOption {
               type        = types.bool;
               default     = false;
@@ -628,6 +660,8 @@ in {
                     moves = [ "Psystrike" "Aura Sphere" "Ice Beam" "Calm Mind" ]; };
     };
   };
+  
+  
   options.pokenix.specials = mkOption {
     description = ''
       Hand-curated special Pokémon — anything you want to document with full stats
@@ -655,23 +689,35 @@ in {
 
   options.pokenix.trainer = mkOption {
     description = ''
-      Trainer profile shown on the **trainer** page. Set `name` to override the
-      **PokèNix** brand text in the header. All fields are optional; anything
+      Trainer profile shown on the trainer page. Set `name` to override the
+      PokèNix brand text in the header. All fields are optional; anything
       unset is silently omitted.
     '';
     type = types.submodule {
       options = {
         picture = mkOption {
           type        = types.nullOr types.path;
-          default     = null;
+          default     = ./profile-picture.png;
           description = "Avatar shown at the top of the trainer card. PNG/JPG/WEBP/GIF — mime detected from extension. Base64-embedded; no external asset needed.";
           example     = ./images/me.png;
         };
         name = mkOption {
           type        = types.nullOr types.str;
-          default     = null;
+          default     = "PokéNix";
           description = "Trainer name. Replaces the `PokèNix` brand text in the sticky header on every page.";
           example     = "pungkula";
+        };
+        githubUsername = mkOption {
+          type        = types.nullOr types.str;
+          default     = "quackhack-mcblindy";
+          example     = "myusername";
+          description = "GitHub username. Used for absolute og:image URLs.";
+        };
+        githubRepo = mkOption {
+          type        = types.nullOr types.str;
+          default     = "pokenix";
+          example     = "pokedex";
+          description = "GitHub repository. Used for absolute og:image URLs. If you kept the default name on your fork (pokenix) leave this option alone.";
         };
         about = mkOption {
           type        = types.nullOr types.str;
@@ -744,55 +790,46 @@ in {
     shinyOwned = mkOption {
       type        = types.int;
       default     = 0;
-      #readOnly    = true;
       description = "Number of shiny Pokémon marked as owned (ball ≠ null).";
     };
     shinyTotal = mkOption {
       type        = types.int;
       default     = 0;
-      #readOnly    = true;
       description = "Total shiny Pokémon tracked in the living dex.";
     };
     eventCount = mkOption {
       type        = types.int;
       default     = 0;
-      #readOnly    = true;
       description = "Number of event Pokémon recorded.";
     };
     specialsCount = mkOption {
       type        = types.int;
       default     = 0;
-      #readOnly    = true;
       description = "Number of special Pokémon recorded.";
     };
     aprimonsOwned = mkOption {
       type        = types.int;
       default     = 0;
-      #readOnly    = true;
       description = "Breedable species with at least one ball marked as caught.";
     };
     aprimonsTotal = mkOption {
       type        = types.int;
       default     = 0;
-      #readOnly    = true;
       description = "Total breedable species tracked.";
     };
     ballCaptures = mkOption {
       type        = types.int;
       default     = 0;
-      #readOnly    = true;
       description = "Total (species × ball) captures across every breedable.";
     };
     ballPossible = mkOption {
       type        = types.int;
       default     = 0;
-      # readOnly = true; 
       description = "Total legal (species × ball) combinations across every breedable.";
     };
     totalMons = mkOption {
       type        = types.int;
       default     = 0;
-      # readOnly = true; 
       description = "Sum of shinyOwned + eventCount + specialsCount + aprimonsOwned.";
     };
   };
@@ -800,5 +837,45 @@ in {
   options.pokenix.debug = mkOption {
     type        = types.anything;
     description = "Diagnostic values for sprite resolution and coverage — computed by `build.nix`. Inspect with `nix eval .#debug.x86_64-linux`. Not user-settable.";
+
+  };
+  
+   
+  options.pokenix.pokedex = mkOption {
+    readOnly = true;
+  
+    type = types.submodule {
+      options = {
+        pokemon = mkOption {
+          type = types.attrsOf types.anything;
+          description = ''
+            Complete Pokémon database.
+  
+            Includes all original Pokémon fields, cries,
+            evolution information, abilities, stats, breeding
+            information, held items, egg moves and learnsets.
+          '';
+        };
+  
+        moves = mkOption {
+          type = types.attrsOf types.anything;
+          description = ''
+            Complete Pokémon move metadata database.
+            Includes every field from move-info.json.
+          '';
+        };
+      };
+    };
+  
+    description = ''
+      Complete Pokenix Pokédex database.
+      All source JSON data is preserved.
+    '';
+  };
+  
+
+  config.pokenix.pokedex = {
+    inherit pokemon;
+    moves = rawMoveInfo;
 
   };}

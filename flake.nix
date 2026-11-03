@@ -1,6 +1,5 @@
 {
-  description = "PokéNix – Pokémon Collection Builder";
-
+  description = "PokéNix – Pokémon Collection Website Builder";
   inputs.nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
 
   outputs = { self, nixpkgs }:
