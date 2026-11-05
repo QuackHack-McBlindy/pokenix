@@ -1,5 +1,6 @@
 { 
   lib,
+  config,
   ...
 } : let
   inherit (lib) mkOption types genAttrs mkIf fixedWidthString;
@@ -169,7 +170,35 @@
   };
 
   data      = import ./breedables { };
-  shinyData = import ./shiny { };
+  shinyDexType  = config.pokenix.trainer.shinyDexType;
+  shinyJsonPath = ./. + "/data/pokedex/shiny-${shinyDexType}.json";
+
+  shinyList =
+    if builtins.pathExists shinyJsonPath
+    then (builtins.fromJSON (builtins.readFile shinyJsonPath)).shiny
+    else [ ];
+
+  shinyData = builtins.listToAttrs
+    (map (e: { name = e.slug; value = e; }) shinyList);
+
+  shinySlugAliases =
+    let
+      rosterKeys = builtins.attrNames shinyData;
+      byName = builtins.foldl'
+        (acc: k:
+          let n = shinyData.${k}.name or k;
+          in acc // { ${n} = (acc.${n} or [ ]) ++ [ k ]; })
+        { }
+        rosterKeys;
+        
+      aliasNames = builtins.filter
+        (n: !(builtins.hasAttr n shinyData))
+        (builtins.attrNames byName);
+    in
+    aliasNames;
+
+  allShinyKeys = (builtins.attrNames shinyData) ++ shinySlugAliases;
+
 
   eventModule = { ... }: {
     options = {
@@ -266,7 +295,7 @@
         type        = types.nullOr types.str;
         default     = null;
         description = "Chain of trades that led to you owning this Pokémon.";
-        example     = "GoroMajimaIsMyIdol#8508 > pungkula";
+        example     = "TradePartnerNickName#8508 > pungkula";
       };
     };
   };
@@ -425,7 +454,7 @@
         type        = types.nullOr types.str;
         default     = null;
         description = "Chain of trades that led to you owning this Pokémon.";
-        example     = "Alto#0457 > pungkula";
+        example     = "TradePartnerNickName#0457 > pungkula";
       };
     };
   };
@@ -438,16 +467,45 @@
       builtins.readFile "${dataDir}/${file}"
     );
 
-  rawPokemon = readJSON "pokemon.json";
+  readJSONOrEmpty = file:
+    let p = "${dataDir}/${file}";
+    in if builtins.pathExists p
+       then builtins.fromJSON (builtins.readFile p)
+       else { };
+
+  rawPokemon   = readJSON "pokemon.json";
   rawLearnsets = readJSON "moves.json";
-  rawEggMoves = readJSON "egg-moves.json";
-  rawMoveInfo = readJSON "move-info.json";
+
+  miscRaw = readJSONOrEmpty "misc.json";
+
+  indexMisc = category:
+    let
+      entries = miscRaw.${category} or [ ];
+      slugify = s: lib.replaceStrings
+        [ " " "'" "’" "/" "." ]
+        [ "-" ""  ""  "-" ""  ]
+        (lib.toLower s);
+    in
+    builtins.foldl'
+      (acc: entry:
+        let key = slugify (entry.name.eng or "");
+        in if key == "" || builtins.hasAttr key acc
+           then acc
+           else acc // { ${key} = entry; })
+      { }
+      entries;
 
   pokemon = lib.mapAttrs
-    (name: data:
-      data // {
-        eggMoves = rawEggMoves.${name} or [ ];
-        learnset = rawLearnsets.${name} or {};
+    (name: pdata:
+      let
+        breedEntry = data.${name} or { };
+        legal      = breedEntry.balls or allBalls;
+        learnset   = rawLearnsets.${name} or { };
+      in
+      pdata // {
+        eggMoves   = learnset.egg or [ ];
+        learnset   = learnset;
+        ballsLegal = legal;
       }
     )
     rawPokemon;
@@ -496,161 +554,157 @@ in {
     };
   };
 
+
   options.pokenix.shiny = mkOption {
     description = ''
-      Shiny living dex progress. One entry per locked target — dex number, name,
-      and sprite are fixed by `shiny/*.nix` data files. You fill in **ball**,
-      **notes**, **ot**, **egg**, **style** — plus any of the optional stat /
-      move / ribbon / proof fields, which are shown when the row is expanded.
-      Progress counter (N/M · P%) appears in the sticky header on the
-      **shiny living** page.
+      Shiny living dex progress. One entry per target — write the key
+      however you like (`pikachu`, `aegislash`, `charizard-mega-x`, …).
+      Entries are matched against the roster via `name`, `species`, and
+      slug aliases in `build.nix`; you never have to know the PokéAPI
+      slug.
     '';
-    type = types.submodule {
-      options = genAttrs (builtins.attrNames shinyData) (n: mkOption {
-        type = types.submodule {
-          options = {
-            ball = mkOption {
-              type        = types.nullOr types.str;
-              default     = null;
-              description = "Ball caught in. `null` (default) means not owned — the row renders dimmed. Any string implies ownership.";
-              example     = "luxury";
-            };
-            species = mkOption {
-              type = types.str;
-              default = n;
-              description = "Pokémon species identifier.";
-            };
-            name = mkOption {
-              type = types.str;
-              default = n;
-              description = "Pokémon name.";
-            };
-            notes = mkOption {
-              type        = types.nullOr types.str;
-              default     = null;
-              description = "Free-form note shown in the Notes column.";
-              example     = "Self-bred, MM 42 eggs";
-            };
-            ot = mkOption {
-              type        = types.nullOr (types.either types.bool types.str);
-              default     = false;
-              description = "Original Trainer info. `true` = self-obtained (renders ✓), `false` = unknown/not OT, or a string for the OT name (shown in the expansion).";
-              example     = true;
-            };
-            egg = mkOption {
-              type        = types.bool;
-              default     = false;
-              description = "True if obtained as an egg. Drives the ✓ in the Egg column. Renders `—` for non-eggable mons.";
-              example     = true;
-            };
-            style = mkOption {
-              type        = types.enum [ "star" "square" ];
-              default     = "star";
-              description = "Sparkle glyph — `★` (star, default) or `▣` (square, BDSP-style).";
-              example     = "square";
-            };
-
-            selfObtained = mkOption {
-              type        = types.bool;
-              default     = false;
-              description = "True if obtained yourself; false for trades. Shown in the expansion.";
-              example     = true;
-            };
-            level = mkOption {
-              type        = types.nullOr types.int;
-              default     = null;
-              description = "Current level (1–100). Shown in the expansion.";
-              example     = 100;
-            };
-            nature = mkOption {
-              type        = types.nullOr types.str;
-              default     = null;
-              description = "Nature — `Timid`, `Adamant`, `Jolly`, `Modest`, etc.";
-              example     = "Timid";
-            };
-            ability = mkOption {
-              type        = types.nullOr types.str;
-              default     = null;
-              description = "Ability name. Include `(Hidden)` suffix if the Hidden Ability.";
-              example     = "Pressure";
-            };
-            heldItem = mkOption {
-              type        = types.nullOr types.str;
-              default     = null;
-              description = "Item currently held.";
-              example     = "Life Orb";
-            };
-            teraType = mkOption {
-              type        = types.nullOr types.str;
-              default     = null;
-              description = "Tera Type (Gen 9 only).";
-              example     = "Psychic";
-            };
-            evs = mkOption {
-              type        = types.submodule statModule;
-              default     = {};
-              description = "EV spread. Each stat 0–252. Leave unset for untrained.";
-              example     = { hp = 4; spa = 252; spe = 252; };
-            };
-            ivs = mkOption {
-              type        = types.submodule statModule;
-              default     = {};
-              description = "IV spread. Each stat 0–31. Leave unset for not-recorded.";
-              example     = { hp = 31; atk = 0; def = 31; spa = 31; spd = 31; spe = 31; };
-            };
-            moves = mkOption {
-              type        = types.listOf types.str;
-              default     = [];
-              description = "Current moveset (up to 4 moves). Rendered joined with ` · `.";
-              example     = [ "Psystrike" "Aura Sphere" "Ice Beam" "Calm Mind" ];
-            };
-            marks = mkOption {
-              type        = types.listOf types.str;
-              default     = [];
-              description = "Marks earned (Gen 8+) — `The Unrivaled`, `The Recluse`, `Itemfinder`, etc.";
-              example     = [ "The Unrivaled" ];
-            };
-            ribbons = mkOption {
-              type        = types.listOf types.str;
-              default     = [];
-              description = "Ribbons earned — `Effort Ribbon`, `Master Rank Ribbon`, etc.";
-              example     = [ "Effort Ribbon" "Master Rank Ribbon" ];
-            };
-            obtained = mkOption {
-              type        = types.nullOr types.str;
-              default     = null;
-              description = "Date obtained. `YYYY/MM/DD` recommended.";
-              example     = "2023/08/15";
-            };
-            region = mkOption {
-              type        = types.nullOr types.str;
-              default     = null;
-              description = "Region/language code — `ENG`, `JPN`, `GER`, `KOR`, `SPA`, `ITA`, etc.";
-              example     = "ENG";
-            };
-            id = mkOption {
-              type        = types.nullOr types.str;
-              default     = null;
-              description = "Trainer ID (5–6 digit string).";
-              example     = "082409";
-            };
-            proof = mkOption {
-              type        = types.nullOr types.str;
-              default     = null;
-              description = "Proof of legitimacy — WC photo, video, screenshot, etc.";
-              example     = "Video in /proofs/…";
-            };
-            tradeHistory = mkOption {
-              type        = types.nullOr types.str;
-              default     = null;
-              description = "Chain of trades that led to you owning this Pokémon.";
-              example     = "Alto#0457 > pungkula";
-            };
-          };
+    type = types.attrsOf (types.submodule {
+      options = {
+        ball = mkOption {
+          type        = types.nullOr types.str;
+          default     = null;
+          description = "Ball caught in. `null` (default) means not owned — the row renders dimmed. Any string implies ownership.";
+          example     = "luxury";
         };
-        default = {};
-      });
-    };
+        species = mkOption {
+          type        = types.nullOr types.str;
+          default     = null;
+          description = "Optional explicit species slug. Only needed if the key you chose is ambiguous (e.g. both `pikachu-m` and `pikachu-f` exist and you want `pikachu` to mean only one of them).";
+          example     = "aegislash-shield";
+        };
+        name = mkOption {
+          type        = types.nullOr types.str;
+          default     = null;
+          description = "Optional display name override.";
+          example     = "Aegislash";
+        };
+        notes = mkOption {
+          type        = types.nullOr types.str;
+          default     = null;
+          description = "Free-form note shown in the Notes column.";
+          example     = "Self-bred, MM 42 eggs";
+        };
+        ot = mkOption {
+          type        = types.nullOr (types.either types.bool types.str);
+          default     = false;
+          description = "Original Trainer info. `true` = self-obtained (renders ✓), `false` = unknown/not OT, or a string for the OT name.";
+          example     = true;
+        };
+        egg = mkOption {
+          type        = types.bool;
+          default     = false;
+          description = "True if obtained as an egg.";
+          example     = true;
+        };
+        style = mkOption {
+          type        = types.enum [ "star" "square" ];
+          default     = "star";
+          description = "Sparkle glyph — `★` (star, default) or `▣` (square, BDSP-style).";
+          example     = "square";
+        };
+        selfObtained = mkOption {
+          type        = types.bool;
+          default     = false;
+          description = "True if obtained yourself; false for trades.";
+          example     = true;
+        };
+        level = mkOption {
+          type        = types.nullOr types.int;
+          default     = null;
+          description = "Current level (1–100).";
+          example     = 100;
+        };
+        nature = mkOption {
+          type        = types.nullOr types.str;
+          default     = null;
+          description = "Nature — `Timid`, `Adamant`, `Jolly`, `Modest`, etc.";
+          example     = "Timid";
+        };
+        ability = mkOption {
+          type        = types.nullOr types.str;
+          default     = null;
+          description = "Ability name. Include `(Hidden)` suffix if the Hidden Ability.";
+          example     = "Pressure";
+        };
+        heldItem = mkOption {
+          type        = types.nullOr types.str;
+          default     = null;
+          description = "Item currently held.";
+          example     = "Life Orb";
+        };
+        teraType = mkOption {
+          type        = types.nullOr types.str;
+          default     = null;
+          description = "Tera Type (Gen 9 only).";
+          example     = "Psychic";
+        };
+        evs = mkOption {
+          type        = types.submodule statModule;
+          default     = {};
+          description = "EV spread. Each stat 0–252. Leave unset for untrained.";
+          example     = { hp = 4; spa = 252; spe = 252; };
+        };
+        ivs = mkOption {
+          type        = types.submodule statModule;
+          default     = {};
+          description = "IV spread. Each stat 0–31.";
+          example     = { hp = 31; atk = 0; def = 31; spa = 31; spd = 31; spe = 31; };
+        };
+        moves = mkOption {
+          type        = types.listOf types.str;
+          default     = [];
+          description = "Current moveset (up to 4 moves).";
+          example     = [ "Psystrike" "Aura Sphere" "Ice Beam" "Calm Mind" ];
+        };
+        marks = mkOption {
+          type        = types.listOf types.str;
+          default     = [];
+          description = "Marks earned (Gen 8+).";
+          example     = [ "The Unrivaled" ];
+        };
+        ribbons = mkOption {
+          type        = types.listOf types.str;
+          default     = [];
+          description = "Ribbons earned.";
+          example     = [ "Effort Ribbon" "Master Rank Ribbon" ];
+        };
+        obtained = mkOption {
+          type        = types.nullOr types.str;
+          default     = null;
+          description = "Date obtained. `YYYY/MM/DD` recommended.";
+          example     = "2023/08/15";
+        };
+        region = mkOption {
+          type        = types.nullOr types.str;
+          default     = null;
+          description = "Region/language code — `ENG`, `JPN`, `GER`, `KOR`, `SPA`, `ITA`, etc.";
+          example     = "ENG";
+        };
+        id = mkOption {
+          type        = types.nullOr types.str;
+          default     = null;
+          description = "Trainer ID (5–6 digit string).";
+          example     = "082409";
+        };
+        proof = mkOption {
+          type        = types.nullOr types.str;
+          default     = null;
+          description = "Proof of legitimacy — WC photo, video, screenshot, etc.";
+          example     = "Video in /proofs/…";
+        };
+        tradeHistory = mkOption {
+          type        = types.nullOr types.str;
+          default     = null;
+          description = "Chain of trades that led to you owning this Pokémon.";
+          example     = "TradePartnerNickName#0457 > pungkula";
+        };
+      };
+    });
     default = {};
     example = {
       bulbasaur = { ball = "moon"; style = "star"; ot = true; egg = true; };
@@ -660,7 +714,6 @@ in {
                     moves = [ "Psystrike" "Aura Sphere" "Ice Beam" "Calm Mind" ]; };
     };
   };
-  
   
   options.pokenix.specials = mkOption {
     description = ''
@@ -690,7 +743,7 @@ in {
   options.pokenix.trainer = mkOption {
     description = ''
       Trainer profile shown on the trainer page. Set `name` to override the
-      PokèNix brand text in the header. All fields are optional; anything
+      PokèNix brand text in the header. All fields except `name` are optional; anything
       unset is silently omitted.
     '';
     type = types.submodule {
@@ -711,13 +764,22 @@ in {
           type        = types.nullOr types.str;
           default     = "quackhack-mcblindy";
           example     = "myusername";
-          description = "GitHub username. Used for absolute og:image URLs.";
+          description = "GitHub username. Used for absolute og:image URLs and website links.";
         };
         githubRepo = mkOption {
           type        = types.nullOr types.str;
           default     = "pokenix";
           example     = "pokedex";
-          description = "GitHub repository. Used for absolute og:image URLs. If you kept the default name on your fork (pokenix) leave this option alone.";
+          description = "GitHub repository. Used for absolute og:image URLs and website links. If you kept the default name on your fork (pokenix) leave this option alone.";
+        };
+        shinyDexType = mkOption {
+          type = types.enum [ "national" "gender-diff" ];
+          description = ''
+            Choose your shiny living dex type. `national` is a full national dex (1025).
+            while `gender-diff` is for users who aim to collect full dex + those who differ in looks between genders + forms (1456).
+          '';  
+          default = "gender-diff";
+          example = "national";
         };
         about = mkOption {
           type        = types.nullOr types.str;
@@ -864,6 +926,49 @@ in {
             Includes every field from move-info.json.
           '';
         };
+
+        abilities = mkOption {
+          type        = types.attrsOf types.anything;
+          default     = { };
+          description = ''
+            Complete ability database (data/pokedex/abilities.json).
+            Keys are ability slugs (e.g. "stench", "intimidate").
+            Empty if the file does not exist.
+          '';
+        };
+
+        items = mkOption {
+          type = types.attrsOf types.anything;
+          default = { };
+          description = ''
+            Complete item database (data/pokedex/items.json).
+            Keys are item slugs; values are whatever the items source
+            produces. Empty if the file does not exist.
+          '';
+        };
+
+        marks = mkOption {
+          type = types.attrsOf types.anything;
+          default = { };
+          description = ''
+            Complete marks database (data/pokedex/marks.json).
+            Empty if the file does not exist.
+          '';
+        };
+
+        ribbons = mkOption {
+          type = types.attrsOf types.anything;
+          default = { };
+          description = ''
+            Complete ribbons database (data/pokedex/ribbons.json).
+            Empty if the file does not exist.
+          '';
+        };
+        misc = mkOption {
+          type        = types.attrsOf types.anything;
+          default     = { };
+          description = "Raw data/misc.json (ribbons, marks, body-styles, type-logos, …).";
+        };
       };
     };
   
@@ -876,6 +981,10 @@ in {
 
   config.pokenix.pokedex = {
     inherit pokemon;
-    moves = rawMoveInfo;
+    moves         = readJSONOrEmpty "move-info.json";
+    items         = readJSONOrEmpty "items.json";
+    abilities     = readJSONOrEmpty "abilities.json";
+    ribbons       = indexMisc "ribbon";
+    marks         = indexMisc "mark";
 
   };}

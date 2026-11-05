@@ -22,7 +22,6 @@ import math
 import re
 import shutil
 import sys
-from datetime import datetime, timezone
 from html import escape
 from pathlib import Path
 
@@ -355,7 +354,7 @@ header h1 { margin: 0; font-size: 1.15em; font-weight: 600; }
   align-items: center;
   gap: .35em;
   padding: .3em .5em;
-  margin-bottom: .4em;          /* was .8em — each link now has its own row */
+  margin-bottom: .4em;
   border-radius: 4px;
   color: var(--link);
   text-decoration: none;
@@ -400,12 +399,6 @@ a.footer-project:hover { color: var(--link); }
   word-break: break-all;
 }
 .footer-link:hover { text-decoration: underline; }
-.footer-build {
-  color: var(--muted);
-  font-size: .72em;
-  margin-top: .5em;
-  font-family: ui-monospace, SFMono-Regular, monospace;
-}
 
 main {
   overflow-y: auto;
@@ -458,7 +451,7 @@ details.quickstart > pre {
   border-top: 1px solid var(--border);
   background: var(--code-bg);
   overflow-x: auto;
-  white-space: pre;          /* override the global pre-wrap */
+  white-space: pre;
   word-break: normal;
   border-radius: 0;
 }
@@ -726,7 +719,6 @@ TEMPLATE = """<!DOCTYPE html>
       {coverage}
       <a class="footer-link" href="{CHANGELOG_URL}" target="_blank" rel="noopener">Changelog</a>
       <a class="footer-link" href="{PROJECT_URL}" target="_blank" rel="noopener">{PROJECT_URL_LABEL}</a>
-      <div class="footer-build">{built_at}</div>
     </div>
   </aside>
   <main id="main">
@@ -954,6 +946,7 @@ def copy_screenshots(files, dst):
         names.append(f.name)
     return names
 
+
 def render_quick_start(config_text):
     if not config_text or not config_text.strip():
         return ''
@@ -965,6 +958,7 @@ def render_quick_start(config_text):
         '</details>'
         '</section>'
     )
+
 
 def render_screenshots(names):
     if not names:
@@ -1041,7 +1035,6 @@ def main():
     else:
         print('no Screenshots/ or screenshots/ directory found', file=sys.stderr)
 
-    built_at = datetime.now(timezone.utc).strftime('%Y-%m-%d %H:%M:%S UTC')
     quick_start_html = render_quick_start(cfg.get("quick_start_config", ""))
     quickstart_link = (
         '<a href="#quickstart" class="quickstart-link">Quick start</a>'
@@ -1063,8 +1056,7 @@ def main():
             .replace('{screenshots}', screenshots_html)
             .replace('{sidebar}', sidebar)
             .replace('{content}', content)
-            .replace('{coverage}', coverage_html)
-            .replace('{built_at}', f'built {built_at}'))
+            .replace('{coverage}', coverage_html))
 
     dst.parent.mkdir(parents=True, exist_ok=True)
     dst.write_text(html, encoding='utf-8')

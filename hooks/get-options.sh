@@ -2,41 +2,31 @@
 # hooks/get-options.sh
 # run before build-docs.sh
 # USAGE:
-# bash hooks/get-options.sh \
-#   --flake /path/to/your/flake \
-#   --hostname desktop
+# bash hooks/get-options.sh
 
 set -euo pipefail
 
 SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd)"   # repo root
-HOOKS_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"       # hooks/ (where this script lives)
+HOOKS_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"       # hooks/
 PROJECT_TOML="$SCRIPT_DIR/project.toml"
-FLAKE_REF="$SCRIPT_DIR"
-HOSTNAME_ARG="${HOSTNAME:-}"
+FLAKE_REF="$(pwd -P)"
 option1=""
 OPTIONAL_ARG2=""
 
 usage() {
   cat >&2 <<'EOF'
-Usage: get-options.sh [--flake REF] [--hostname HOST]
-                      [--option1 PATH] [--option2 PATH]
+Usage: get-options.sh [--option1 PATH] [--option2 PATH]
 
 Options:
-  --flake REF       Nix flake path or reference (defaults to project directory)
-  --hostname HOST   NixOS configuration name (defaults to $HOSTNAME)
   --option1 PATH    Attribute path for options.json (overrides project.toml)
   --option2 PATH    Attribute path for service.json (overrides project.toml)
   -h, --help        Show this help
-
-Default option paths are read from project.toml:
-  [options]
-  include = ["yo", "services.yo-rs"]
 EOF
 }
 
 
 if [[ ! -f "$PROJECT_TOML" ]]; then
-  echo "Error: project.toml not found: $PROJECT_TOML" >&2
+  echo "error: project.toml not found: $PROJECT_TOML" >&2
   exit 1
 fi
 
@@ -79,32 +69,6 @@ print(json.dumps(config.get("options", {}).get("keep_attrs", [])))
 
 while [[ $# -gt 0 ]]; do
   case "$1" in
-    --flake)
-      [[ $# -ge 2 ]] || {
-        echo "Missing value for --flake" >&2
-        usage
-        exit 1
-      }
-      FLAKE_REF="$2"
-      shift 2
-      ;;
-    --flake=*)
-      FLAKE_REF="${1#*=}"
-      shift
-      ;;
-    --hostname)
-      [[ $# -ge 2 ]] || {
-        echo "Missing value for --hostname" >&2
-        usage
-        exit 1
-      }
-      HOSTNAME_ARG="$2"
-      shift 2
-      ;;
-    --hostname=*)
-      HOSTNAME_ARG="${1#*=}"
-      shift
-      ;;
     --option1)
       [[ $# -ge 2 ]] || {
         echo "Missing value for --option1" >&2
@@ -143,8 +107,7 @@ while [[ $# -gt 0 ]]; do
   esac
 done
 
-: "${FLAKE_REF:?--flake must not be empty}"
-: "${HOSTNAME_ARG:?--hostname (or \$HOSTNAME) is required}"
+: "${FLAKE_REF:?Project flake must not be empty}"
 : "${option1:?No options configured in project.toml; provide --option1}"
 
 
@@ -164,19 +127,46 @@ build_doc() {
       --print-out-paths \
       --expr "
         let
-          flake   = builtins.getFlake \"${FLAKE_REF}\";
-          pkgs    = flake.inputs.nixpkgs.legacyPackages.x86_64-linux;
-          lib     = pkgs.lib;
-          cfg     = flake.nixosConfigurations.\"${HOSTNAME_ARG}\";
+          flake = builtins.getFlake \"${FLAKE_REF}\";
+          nixpkgs = flake.inputs.nixpkgs;
+          pkgs = nixpkgs.legacyPackages.x86_64-linux;
+          lib = nixpkgs.lib;
 
-          optPath  = \"${opt_path}\";
+          userModule = import (flake.outPath + \"/my-pokemon.nix\");
+          userEvaluated = userModule { inherit lib; };
+
+          trainerName =
+            let
+              pk = userEvaluated.pokenix or {};
+              tr = pk.trainer or {};
+            in
+              tr.name or \"\";
+
+          defaultNames = [ \"PokèNix\" \"PokéNix\" ];
+          isDefaultUser = builtins.elem trainerName defaultNames;
+
+          chosenModule =
+            if isDefaultUser
+            then import (flake.outPath + \"/example.nix\")
+            else userModule;
+
+          evaluated = lib.evalModules {
+            modules = [
+              ./options.nix
+              chosenModule
+            ];
+          };
+
+          cfg = evaluated;
+
+          optPath = \"${opt_path}\";
           excludes = builtins.fromJSON ''
             ${CONFIG_EXCLUDES_JSON}
           '';
 
           keepName = name: _value:
             let
-              fullName   = \"\${optPath}.\${name}\";
+              fullName = \"\${optPath}.\${name}\";
               isExcluded = builtins.any
                 (p: fullName == p || lib.hasPrefix \"\${p}.\" fullName)
                 excludes;
@@ -211,7 +201,6 @@ if [[ -n "$OPTIONAL_ARG2" ]]; then
   files+=("$HOOKS_DIR/service.json")
 fi
 
-# echo undocumented options and examples.
 for f in "${files[@]}"; do
   jq -r --arg f "$(basename "$f")" '
     def undoc:
@@ -251,3 +240,4 @@ for f in "${files[@]}"; do
 
   echo
 done
+
