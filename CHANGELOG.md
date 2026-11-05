@@ -9,6 +9,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+### Changed
+
+### Fixed
+
+### Removed
+
+
+## [1.0.5] - 2026-11-05
+
+### Added
+
 - Web editor: — click `Edit` on any page to edit breedables, shiny, events, specials, and the trainer profile directly from the browser. Copy and paste into users GitHub fork using buttons. PokéNix now only requires a browser and zero Nix knowledge.
 - Generation 9 now supported. 
 - Edit persistence: — changes are saved to `localStorage` as a diff against the Nix data, so they survive page reloads and navigation until you export or clear site data.
@@ -33,7 +44,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Removed `data/pokedex/egg-moves.json` — merged into `moves.json` (`.egg` field).
 - Removed `scripts/fetch_egg_moves.py` — data already produced by `fetch_pokemon.py`.
 - Removed all `./shiny/*.nix` files.
-
 
 ## [1.0.4] - 2026-11-03
 
