@@ -121,7 +121,7 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add -A -- hooks/ docs/
-          git commit -m "chore: regenerate option reference and wiki [skip ci]"
+          git commit -m "chore: regenerate option reference and wiki"
           git push origin HEAD:dev
 
 
