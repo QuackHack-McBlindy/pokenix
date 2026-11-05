@@ -1,113 +1,56 @@
-{ 
-  lib,
-  pkgs
-} : cfg:
+{ lib, pkgs }: cfg:
 let
-  inherit (lib)
-    mkOption types genAttrs mkIf concatStringsSep filterAttrs
-    mapAttrsToList fixedWidthString;
+  inherit (lib) mkOption types genAttrs mkIf concatStringsSep filterAttrs
+                mapAttrsToList fixedWidthString;
 
-  projectToml = builtins.fromTOML (builtins.readFile ./project.toml);
-  version     = projectToml.project.version;
+  root = ./.;
 
-  pokespriteData = builtins.fromJSON (builtins.readFile ./data/pokemon.json);
+  fns     = import ./lib/fns.nix     { inherit lib root; };
+  data    = import ./lib/data.nix    { inherit lib root; };
+  species = import ./lib/species.nix { inherit lib; inherit (data) pokemonRaw movesRaw; };
+  sprites = import ./lib/sprites.nix { inherit lib fns root; inherit (data) pokespriteData; };
+  misc    = import ./lib/misc.nix    { inherit lib fns; pokedex = cfg.pokedex; };
+  shiny   = import ./lib/shiny.nix   { inherit lib fns cfg root; };
+  lookup  = import ./lib/lookup.nix  {
+    inherit lib fns root;
+    breedables = cfg.breedables;
+    inherit (shiny) shinyData;
+    inherit (sprites) autoSprite;
+  };
+  statsM  = import ./lib/stats.nix {
+    inherit lib;
+    inherit (data) pokemonRaw;
+    inherit (lookup) evtDex;
+  };
 
-  rawBreedables = import ./breedables { };
+  inherit (fns) padNum padDex formatRatio genOfDex titleCaseSlug keyFor firstExisting
+                ballFile ballPath ballExists isGmax stripGmax shinySpriteBase
+                shinyDisplayName itemSlug itemCandidates markSlug markFile
+                ribbonSlug ribbonFileCandidates balls eventBalls regions;
 
-  movesRaw =
-    let p = ./data/pokedex/moves.json;
-    in if builtins.pathExists p then builtins.fromJSON (builtins.readFile p) else { };
+  inherit (data) version pokespriteData rawBreedables movesRaw pokemonRaw moveInfoRaw;
 
-  pokemonRaw =
-    let
-      paths = [ ./data/pokedex/pokemon.json ./data/pokemon-fetch.json ];
-      hits  = builtins.filter (p: builtins.pathExists p) paths;
-    in if hits == [] then { } else builtins.fromJSON (builtins.readFile (builtins.head hits));
+  inherit (species) pokemonEntryFor pokemonKeyFor serebiiUrlFor typesFor typeSortKey
+                    cryUrlFor movesEntryFor;
 
-  moveInfoRaw =
-    let
-      paths = [ ./data/pokedex/move-info.json ];
-      hits  = builtins.filter (p: builtins.pathExists p) paths;
-    in if hits == [] then { } else builtins.fromJSON (builtins.readFile (builtins.head hits));
+  inherit (sprites) formSuffixFor slugForDex autoSprite autoShinySprite
+                    breedableSpriteFor breedableSpriteExists spritePath spriteExists;
 
-  pokemonEntryFor = name:
-    let
-      parts = lib.splitString "-" name;
-      go = n:
-        let candidate = lib.concatStringsSep "-" (lib.take n parts);
-        in if builtins.hasAttr candidate pokemonRaw
-           then pokemonRaw.${candidate}
-           else if n <= 1 then { }
-           else go (n - 1);
-    in go (builtins.length parts);
+  inherit (misc) miscLookup miscSpritePath ribbonSpriteFor markSpriteFor;
 
-  pokemonKeyFor = name:
-    let
-      parts = lib.splitString "-" name;
-      go = n:
-        let candidate = lib.concatStringsSep "-" (lib.take n parts);
-        in if builtins.hasAttr candidate pokemonRaw
-           then candidate
-           else if n <= 1 then null
-           else go (n - 1);
-    in go (builtins.length parts);
+  inherit (shiny) shinyJsonPath shinyList shinyData specialShiniesBySpecies
+                  isShinyOwned isShinyFromSpecial effectiveShinyFor;
 
-  serebiiUrlFor = key:
-    let k = pokemonKeyFor key;
-    in if k == null then null
-    else "https://www.serebii.net/pokedex-swsh/${k}/";
+  inherit (lookup) resolveSpeciesKey lookupSpecies evtDex evtName evtSpriteFor evtSpriteExists;
 
-  typesFor = key:
-    let p = pokemonEntryFor key;
-    in p.types or [];
+  inherit (statsM) natures statsByDex computeStats;
 
-  typeSortKey = key:
-    let ts = typesFor key;
-    in if ts == [] then "zzz" else lib.toLower (builtins.head ts);
-
-  renderDexLink = key: dex: name:
-    let
-      url = serebiiUrlFor key;
-      pad = padNum dex;
-    in
-    if url == null then ''<span class="dex">#${pad}</span>''
-    else ''
-      <span class="dex-wrap">
-        <a class="dex" href="${url}" target="_blank" rel="noopener">#${pad}</a>
-        <div class="dex-hover">
-          <iframe src="${url}" loading="lazy" title="${name} on Serebii"></iframe>
-          <div class="dex-hover-fallback">
-            <div class="dhf-title">${name} · Serebii</div>
-            <div class="dhf-url">${url}</div>
-            <div class="dhf-hint">Click to open in a new tab.</div>
-          </div>
-        </div>
-      </span>
-    '';
-
-  renderCheckShiny = val:
-    if val
-    then ''<span class="check yes shiny-mark" title="shiny">✨</span>''
-    else ''<span class="check no" title="not shiny"></span>'';
-
-  cryUrlFor = key:
-    let
-      p = pokemonEntryFor key;
-      c = p.cries or null;
-    in
-    if c == null then null
-    else c.latest or (c.legacy or null);
-
-  movesEntryFor = name:
-    let
-      parts = lib.splitString "-" name;
-      go = n:
-        let candidate = lib.concatStringsSep "-" (lib.take n parts);
-        in if builtins.hasAttr candidate movesRaw
-           then movesRaw.${candidate}
-           else if n <= 1 then { }
-           else go (n - 1);
-    in go (builtins.length parts);
+  picMime = p:
+    let s = lib.toLower (toString p);
+    in if lib.hasSuffix ".jpg" s || lib.hasSuffix ".jpeg" s then "image/jpeg"
+       else if lib.hasSuffix ".webp" s then "image/webp"
+       else if lib.hasSuffix ".gif" s then "image/gif"
+       else "image/png";
 
   breedMeta = name:
     let raw = rawBreedables.${name} or { };
@@ -117,7 +60,7 @@ let
       genderless     = raw.genderless     or false;
       male           = raw.male           or null;
       female         = raw.female         or null;
-      hatchCycles    = raw.hatchCycles    or null;
+      hatchCycles    = raw.hatchCycles    or (p.hatchCounter or null);
       ha             = raw.ha             or "";
       eggMoves       = raw.eggMoves       or (m.egg   or [ ]);
       levelMoves     = raw.levelMoves     or (m.level or [ ]);
@@ -137,7 +80,7 @@ let
     };
 
   shinyStatsSp = k: entry:
-    let e = cfg.shiny.${k};
+    let e = effectiveShinyFor k;
     in {
       dex    = entry.dex;
       level  = e.level  or null;
@@ -159,10 +102,10 @@ let
       name = cfg.breedables.${n}.name;
       dex  = cfg.breedables.${n}.dex;
       key  = n;
-      page = "index.html";
+      page = "breedables.html";
     }) sortedNames;
     shiny = builtins.map (k: {
-      name = shinyData.${k}.name;
+      name = shinyDisplayName shinyData.${k};
       dex  = shinyData.${k}.dex;
       key  = k;
       page = "shiny.html";
@@ -181,296 +124,8 @@ let
     }) (builtins.attrNames cfg.specials);
   };
 
-  loadShiny = path:
-    let v = import path;
-    in if builtins.isFunction v then v { } else v;
-
-  shinyData =
-    (loadShiny ./shiny/kanto.nix)
-    // (loadShiny ./shiny/johto.nix)
-    // (loadShiny ./shiny/hoenn.nix)
-    // (loadShiny ./shiny/sinnoh.nix)
-    // (loadShiny ./shiny/unova.nix)
-    // (loadShiny ./shiny/kalos.nix)
-    // (loadShiny ./shiny/alola.nix)
-    // (loadShiny ./shiny/galar.nix)
-    // (loadShiny ./shiny/paldea.nix);
-
-  formSuffixFor = dex: key:
-    let
-      padDex = padNum dex;
-      entry  = pokespriteData.${padDex} or null;
-      forms =
-        if entry == null then []
-        else
-          let
-            g8 = (entry."gen-8" or {}).forms or {};
-            g7 = (entry."gen-7" or {}).forms or {};
-          in builtins.filter (k: k != "$")
-               (builtins.attrNames (g8 // g7));
-      matching = builtins.filter
-        (form:
-          let suffix = "-" + form;
-          in builtins.stringLength key > builtins.stringLength suffix
-             && lib.hasSuffix suffix key)
-        forms;
-      sorted = builtins.sort
-        (a: b: builtins.stringLength a > builtins.stringLength b) matching;
-    in
-    if sorted == [] then "" else "-" + builtins.head sorted;
-
-  slugForDex = dex:
-    let
-      padDex = padNum dex;
-      entry  = pokespriteData.${padDex} or null;
-    in
-    if entry == null then null else entry.slug.eng;
-
-  autoSprite = dex: key: shiny:
-    let
-      padDex   = padNum dex;
-      baseName = let s = slugForDex dex; in if s != null then s else key;
-      suffix   = formSuffixFor dex key;
-      variant  = if shiny then "shiny" else "regular";
-      candidates = [
-        "sprites/pokemon-gen9/${variant}/${baseName}${suffix}.png"
-        "sprites/pokemon-gen8/${variant}/${baseName}${suffix}.png"
-        "sprites/pokemon-gen7x/${variant}/${baseName}${suffix}.png"
-        "sprites/pokemon-gen9/${variant}/${key}.png"
-        "sprites/pokemon-gen8/${variant}/${key}.png"
-        "sprites/pokemon-gen7x/${variant}/${key}.png"
-        "sprites/pokemon-gen9/${variant}/${baseName}.png"
-        "sprites/pokemon-gen8/${variant}/${baseName}.png"
-        "sprites/pokemon-gen7x/${variant}/${baseName}.png"
-      ];
-      unique = lib.unique candidates;
-      hits = builtins.filter (p: builtins.pathExists (./. + "/${p}")) unique;
-    in
-    if hits == [] then null else builtins.head hits;
-
-  autoShinySprite = entry:
-    let
-      slug   = entry.slug;
-      female = (entry.gender or null) == "f";
-      femaleFirst = if female then [
-        "sprites/pokemon-gen9/shiny/female/${slug}.png"
-        "sprites/pokemon-gen8/shiny/female/${slug}.png"
-        "sprites/pokemon-gen7x/shiny/female/${slug}.png"
-        "sprites/pokemon-gen9/regular/female/${slug}.png"
-        "sprites/pokemon-gen8/regular/female/${slug}.png"
-        "sprites/pokemon-gen7x/regular/female/${slug}.png"
-      ] else [];
-      base = [
-        "sprites/pokemon-gen9/shiny/${slug}.png"
-        "sprites/pokemon-gen8/shiny/${slug}.png"
-        "sprites/pokemon-gen7x/shiny/${slug}.png"
-        "sprites/pokemon-gen9/regular/${slug}.png"
-        "sprites/pokemon-gen8/regular/${slug}.png"
-        "sprites/pokemon-gen7x/regular/${slug}.png"
-      ];
-      unique = lib.unique (femaleFirst ++ base);
-      hits = builtins.filter (p: builtins.pathExists (./. + "/${p}")) unique;
-    in
-    if hits == [] then null else builtins.head hits;
-
-  eventBalls = [ "cherish" "pokeball" ];
-
-  balls = [
-    "safari" "sport" "fast" "friend" "heavy" "level"
-    "love" "lure" "moon" "dream" "beast"
-  ];
-
-  regions = {
-    "1" = "KANTO";   "2" = "JOHTO";  "3" = "HOENN";  "4" = "SINNOH";  "5" = "UNOVA";
-    "6" = "KALOS";   "7" = "ALOLA";  "8" = "GALAR";  "9" = "PALDEA";
-  };
-
   logoPath   = ./images/logo.png;
   logoExists = builtins.pathExists logoPath;
-
-  resolveSpeciesKey = k:
-    let
-      parts = lib.splitString "-" k;
-      n     = builtins.length parts;
-      tryPrefix = i:
-        if i <= 0 then null
-        else
-          let p = lib.concatStringsSep "-" (lib.take i parts);
-          in if builtins.hasAttr p cfg.breedables
-             then p
-             else tryPrefix (i - 1);
-    in tryPrefix n;
-
-  lookupSpecies = k:
-    let
-      parts = lib.splitString "-" k;
-      n     = builtins.length parts;
-      tryB = i:
-        if i <= 0 then null
-        else
-          let p = lib.concatStringsSep "-" (lib.take i parts);
-          in if builtins.hasAttr p cfg.breedables
-             then {
-               key    = p;
-               dex    = cfg.breedables.${p}.dex;
-               name   = cfg.breedables.${p}.name;
-               sprite = cfg.breedables.${p}.sprite;
-             }
-             else tryB (i - 1);
-      tryS = i:
-        if i <= 0 then null
-        else
-          let p = lib.concatStringsSep "-" (lib.take i parts);
-          in if builtins.hasAttr p shinyData
-             then {
-               key    = p;
-               dex    = shinyData.${p}.dex;
-               name   = shinyData.${p}.name;
-               sprite = null;
-             }
-             else tryS (i - 1);
-      b = tryB n;
-    in
-    if b != null then b else tryS n;
-
-  evtDex = e:
-    if e.dex != null then e.dex
-    else
-      let lu = lookupSpecies e.species;
-      in if lu != null then lu.dex else 0;
-
-  evtName = e:
-    if e.name != null then e.name
-    else
-      let lu = lookupSpecies e.species;
-      in if lu != null then lu.name else e.species;
-
-  evtSpriteFor = k: e: shiny:
-    if e.sprite != null then e.sprite
-    else
-      let
-        lu        = lookupSpecies e.species;
-        spriteKey = if lu != null then lu.key else e.species;
-      in
-      if !shiny && lu != null && lu.sprite != null
-      then lu.sprite
-      else autoSprite (evtDex e) spriteKey shiny;
-
-  evtSpriteExists = k: e: shiny:
-    let sp = evtSpriteFor k e shiny; in
-    sp != null && builtins.pathExists (./. + "/${sp}");
-
-  breedableSpriteFor = n: s:
-    if s.sprite != null then s.sprite
-    else autoSprite s.dex n false;
-
-  breedableSpriteExists = n: s:
-    let sp = breedableSpriteFor n s;
-    in sp != null && builtins.pathExists (./. + "/${sp}");
-
-  spritePath   = s: if s.sprite == null then null else ./. + "/${s.sprite}";
-  ballFile     = b: if b == "pokeball" then "poke" else b;
-  ballPath     = b: ./. + "/sprites/balls/${ballFile b}.png";
-  spriteExists = s: s.sprite != null && builtins.pathExists (spritePath s);
-  ballExists   = b: builtins.pathExists (ballPath b);
-
-  picMime = p:
-    let s = lib.toLower (toString p);
-    in if lib.hasSuffix ".jpg" s || lib.hasSuffix ".jpeg" s then "image/jpeg"
-       else if lib.hasSuffix ".webp" s then "image/webp"
-       else if lib.hasSuffix ".gif" s then "image/gif"
-       else "image/png";
-
-  keyFor = name:
-    lib.replaceStrings [ " " "'" "’" "/" "." ] [ "_" "" "" "_" "" ] name;
-
-  markOverrides = {
-    "the unrivaled" = "uncommon";
-    "unrivaled"     = "uncommon";
-    "uncommon"      = "uncommon";
-    "the recluse"   = "rare";
-    "recluse"       = "rare";
-    "rare"          = "rare";
-    "the teary-eyed" = "teary";
-    "teary-eyed"    = "teary";
-    "teary"         = "teary";
-    "the sleepy-time" = "sleepy-time";
-    "the early bird"  = "dawn";
-    "the itemfinder"  = "itemfinder";
-    "itemfinder"      = "itemfinder";
-  };
-
-  markSlug = name:
-    let
-      s = lib.toLower name;
-    in
-    if builtins.hasAttr s markOverrides then markOverrides.${s}
-    else
-      let stripped =
-        if lib.hasPrefix "the " s then lib.removePrefix "the " s else s;
-      in
-      lib.replaceStrings [ " " "'" "’" "." ] [ "-" "" "" "" ] stripped;
-
-  markFile = name: "sprites/misc/mark/${markSlug name}-mark.png";
-
-  ribbonSlug = name:
-    let
-      s = lib.toLower name;
-      s1 = if lib.hasSuffix " ribbon" s then lib.removeSuffix " ribbon" s else s;
-    in
-    lib.replaceStrings [ " " "'" "’" "." ] [ "-" "" "" "" ] s1;
-
-  ribbonFileCandidates = name: [
-    "sprites/misc/ribbon/${ribbonSlug name}-ribbon.png"
-    "sprites/misc/ribbon/gen8/${ribbonSlug name}-ribbon.png"
-  ];
-
-  firstExisting = candidates:
-    let hits = builtins.filter (p: builtins.pathExists (./. + "/${p}")) candidates;
-    in if hits == [] then null else builtins.head hits;
-
-  itemSlug = name:
-    let
-      s = lib.toLower name;
-    in
-    lib.replaceStrings [ " " "'" "’" "." ] [ "-" "" "" "" ] s;
-
-  itemCandidates = name: [
-    "sprites/items/hold-item/${itemSlug name}.png"
-    "sprites/items/berry/${itemSlug name}.png"
-  ];
-
-  padNum = n:
-    let
-      s = toString n;
-      w = if builtins.stringLength s > 3 then builtins.stringLength s else 3;
-    in
-    fixedWidthString w "0" s;
-
-  padDex = s: padNum s.dex;
-
-  formatRatio = x:
-    if x == null then "—"
-    else if builtins.isInt x then builtins.toString x
-    else
-      let
-        scaled   = builtins.floor (x * 10 + 0.5);
-        intPart  = scaled / 10;
-        fracPart = scaled - (intPart * 10);
-      in
-        if fracPart == 0 then builtins.toString intPart
-        else "${builtins.toString intPart}.${builtins.toString fracPart}";
-
-  genOfDex = d:
-    if d <= 151 then 1
-    else if d <= 251 then 2
-    else if d <= 386 then 3
-    else if d <= 493 then 4
-    else if d <= 649 then 5
-    else if d <= 721 then 6
-    else if d <= 809 then 7
-    else if d <= 905 then 8
-    else 9;
 
   maxNameLen = builtins.foldl'
     (acc: n:
@@ -483,7 +138,7 @@ let
 
   shinyMaxNameLen = builtins.foldl'
     (acc: n:
-      let l = builtins.stringLength shinyData.${n}.name;
+      let l = builtins.stringLength (shinyDisplayName shinyData.${n});
       in if l > acc then l else acc)
     0
     (builtins.attrNames shinyData);
@@ -493,23 +148,6 @@ let
   typeIconKey    = t: lib.toLower t;
   typeIconPath   = t: "sprites/misc/types/gen8/${typeIconKey t}.png";
   typeIconExists = t: builtins.pathExists (./. + "/${typeIconPath t}");
-
-  isGmax = s:
-    let str = lib.toLower s;
-    in lib.hasSuffix "-gmax" str || lib.hasInfix "(gmax)" str;
-
-  stripGmax = n:
-    let
-      cleaned = builtins.replaceStrings
-        [ " (Gmax)" " (GMAX)" " (gmax)" ]
-        [ "" "" "" ]
-        n;
-      low = lib.toLower cleaned;
-      len = builtins.stringLength cleaned;
-    in
-    if len > 5 && lib.hasSuffix "-gmax" low
-    then lib.substring 0 (len - 5) cleaned
-    else cleaned;
 
   gmaxIconPath   = "sprites/misc/special-attribute/gigantamax-icon.png";
   gmaxIconExists = builtins.pathExists (./. + "/${gmaxIconPath}");
@@ -523,86 +161,6 @@ let
 
   eggPath   = "sprites/pokemon-gen8/egg.png";
   eggExists = builtins.pathExists (./. + "/${eggPath}");
-
-  baseStatsPath   = ./data/pokedex/base-stats.json;
-  baseStatsExists = builtins.pathExists baseStatsPath;
-  baseStats       = if baseStatsExists
-                    then builtins.fromJSON (builtins.readFile baseStatsPath)
-                    else { };
-
-  natures = {
-    hardy   = { up = null;  down = null; };
-    lonely  = { up = "atk"; down = "def"; };
-    brave   = { up = "atk"; down = "spe"; };
-    adamant = { up = "atk"; down = "spa"; };
-    naughty = { up = "atk"; down = "spd"; };
-    bold    = { up = "def"; down = "atk"; };
-    docile  = { up = null;  down = null; };
-    relaxed = { up = "def"; down = "spe"; };
-    impish  = { up = "def"; down = "spa"; };
-    lax     = { up = "def"; down = "spd"; };
-    timid   = { up = "spe"; down = "atk"; };
-    hasty   = { up = "spe"; down = "def"; };
-    serious = { up = null;  down = null; };
-    jolly   = { up = "spe"; down = "spa"; };
-    naive   = { up = "spe"; down = "spd"; };
-    modest  = { up = "spa"; down = "atk"; };
-    mild    = { up = "spa"; down = "def"; };
-    quiet   = { up = "spa"; down = "spe"; };
-    bashful = { up = null;  down = null; };
-    rash    = { up = "spa"; down = "spd"; };
-    calm    = { up = "spd"; down = "atk"; };
-    gentle  = { up = "spd"; down = "def"; };
-    sassy   = { up = "spd"; down = "spe"; };
-    careful = { up = "spd"; down = "spa"; };
-    quirky  = { up = null;  down = null; };
-  };
-
-  computeStats = sp:
-    let
-      bs = baseStats.${toString (evtDex sp)} or null;
-    in
-    if bs == null then null
-    else
-      let
-        lvl    = if sp.level != null then sp.level else 100;
-        natKey = if sp.nature != null then lib.toLower sp.nature else "hardy";
-        nat    = natures.${natKey} or { up = null; down = null; };
-        mod = stat:
-          if nat.up   == stat then 1.1
-          else if nat.down == stat then 0.9
-          else 1.0;
-
-        evOf = s:
-          if builtins.hasAttr s sp.evs && sp.evs.${s} != null
-          then sp.evs.${s} else 0;
-        ivOf = s:
-          if builtins.hasAttr s sp.ivs && sp.ivs.${s} != null
-          then sp.ivs.${s} else 31;
-
-        baseAt = i: builtins.elemAt bs i;
-
-        calcHp = base:
-          if base == 1 then 1
-          else builtins.floor
-                 ((2 * base + ivOf "hp" + builtins.floor (evOf "hp" / 4)) * lvl / 100)
-               + lvl + 10;
-
-        calcOther = base: stat:
-          builtins.floor (
-            (builtins.floor
-              ((2 * base + ivOf stat + builtins.floor (evOf stat / 4)) * lvl / 100)
-             + 5)
-            * mod stat
-          );
-      in {
-        hp  = calcHp    (baseAt 0);
-        atk = calcOther (baseAt 1) "atk";
-        def = calcOther (baseAt 2) "def";
-        spa = calcOther (baseAt 3) "spa";
-        spd = calcOther (baseAt 4) "spd";
-        spe = calcOther (baseAt 5) "spe";
-      };
 
   renderCalculatedStats = sp:
     let
@@ -667,8 +225,9 @@ let
 
   shinyTotalCount = builtins.length (builtins.attrNames shinyData);
   shinyOwnedCount = builtins.length (builtins.filter
-    (n: cfg.shiny.${n}.ball != null)
+    isShinyOwned
     (builtins.attrNames shinyData));
+
   shinyPct = if shinyTotalCount == 0 then 0
     else (shinyOwnedCount * 100) / shinyTotalCount;
 
@@ -682,7 +241,6 @@ let
 
   brandName = if cfg.trainer.name != null then cfg.trainer.name else "PokèNix";
 
-  
   renderSprite = name: s:
     let
       cry      = cryUrlFor name;
@@ -692,8 +250,6 @@ let
     if breedableSpriteExists name s
     then ''<span class="cell-sprite${cryClass}" ${cryAttr}><img class="sprite" src="data:image/png;base64,@SPRITE_${name}@" alt="${name}"></span>''
     else ''<span class="cell-sprite${cryClass}" ${cryAttr}><svg class="sprite placeholder" viewBox="0 0 32 32"><rect width="32" height="32" fill="#2a2a2a"/><text x="16" y="21" font-size="9" text-anchor="middle" fill="#666">#${padDex s}</text></svg></span>'';
-  
-
 
   renderDex = name: s: ''
     <span class="dex-wrap">
@@ -726,13 +282,6 @@ let
     if m.hatchCycles == null then ''<span class="cycles">—</span>''
     else ''<span class="cycles">${toString m.hatchCycles}</span>'';
 
-  titleCaseSlug = slug:
-    let cap = w:
-      if w == "" then ""
-      else lib.toUpper (builtins.substring 0 1 w)
-           + builtins.substring 1 (builtins.stringLength w - 1) w;
-    in concatStringsSep " " (map cap (lib.splitString "-" slug));
-
   moveInfo = slug: moveInfoRaw.${slug} or { };
 
   renderMovePill = slug:
@@ -741,9 +290,9 @@ let
       name = info.name or (titleCaseSlug slug);
       typ  = info.type or "normal";
       cls  = info.damageClass or "status";
-      pw   = info.power;
-      acc  = info.accuracy;
-      pp   = info.pp;
+      pw   = info.power    or null;
+      acc  = info.accuracy or null;
+      pp   = info.pp       or null;
       eff  = info.effect or "";
       tip  = "${name} · ${typ}"
            + (if cls == "physical" then " · physical"
@@ -819,7 +368,6 @@ let
     else if !(ballExists e.ball) then ''<span class="event-ball-slot missing" title="${e.ball} (sprite missing)"></span>''
     else ''<span class="event-ball-slot" title="${e.ball}"><img src="data:image/png;base64,@BALL_${e.ball}@" alt="${e.ball}"></span>'';
 
-  
   renderEvtSprite = k: shiny: e:
     let
       d        = evtDex e;
@@ -833,7 +381,6 @@ let
     if evtSpriteExists k e shiny
     then ''<span class="cell-sprite${cryClass}" ${cryAttr}><img class="sprite" src="data:image/png;base64,@EVT_SPRITE_${key}@" alt="${n}"></span>''
     else ''<span class="cell-sprite${cryClass}" ${cryAttr}><svg class="sprite placeholder" viewBox="0 0 32 32"><rect width="32" height="32" fill="#2a2a2a"/><text x="16" y="21" font-size="9" text-anchor="middle" fill="#666">#${pad}</text></svg></span>'';
-  
 
   renderDetail = label: value:
     let v = if value == null then null else toString value;
@@ -841,16 +388,20 @@ let
 
   renderItemPill = kind: name:
     let
-      candidates =
-        if kind == "ribbon" then ribbonFileCandidates name
-        else [ (markFile name) ];
-      file = firstExisting candidates;
-      key  = keyFor name;
-      ph   = "@${lib.toUpper kind}_FILE_${key}@";
+      category = if kind == "ribbon" then "ribbons" else "marks";
+      meta     = miscLookup category name;
+      display  = if meta != null then (meta.name.eng or name) else name;
+      desc     = if meta != null then (meta.description.eng or "") else "";
+      tip      = if desc != "" then "${display} — ${desc}" else display;
+      file     =
+        if kind == "ribbon" then ribbonSpriteFor name
+        else                      markSpriteFor   name;
+      key = keyFor name;
+      ph  = "@${lib.toUpper kind}_FILE_${key}@";
     in
     if file == null
-    then ''<span class="${kind}-item">${name}</span>''
-    else ''<span class="${kind}-item"><img class="${kind}-sprite" src="data:image/png;base64,${ph}" alt="" title="${name}"><span>${name}</span></span>'';
+    then ''<span class="${kind}-item" title="${tip}">${display}</span>''
+    else ''<span class="${kind}-item" title="${tip}"><img class="${kind}-sprite" src="data:image/png;base64,${ph}" alt="" title="${tip}"><span>${display}</span></span>'';
 
   renderPills = kind: label: items:
     if items == [] then ""
@@ -865,12 +416,8 @@ let
 
   renderRibbonMarkStrip = sp:
     let
-      ribbonImgs = builtins.filter
-        (n: firstExisting (ribbonFileCandidates n) != null)
-        sp.ribbons;
-      markImgs = builtins.filter
-        (n: firstExisting [ (markFile n) ] != null)
-        sp.marks;
+      ribbonImgs = builtins.filter (n: ribbonSpriteFor n != null) sp.ribbons;
+      markImgs   = builtins.filter (n: markSpriteFor   n != null) sp.marks;
       renderImg = kind: name:
         let
           key = keyFor name;
@@ -988,17 +535,22 @@ let
 
   renderShinyRow = k: entry:
     let
-      e          = cfg.shiny.${k};
-      sprite     = autoShinySprite entry;
-      hasSprite  = sprite != null && builtins.pathExists (./. + "/${sprite}");
-      pad        = padNum entry.dex;
-      owned      = e.ball != null;
-      eggable    = entry.eggable or true;
-      shinyIcon  = if e.style == "square" then "▣" else "★";
-      ballCell   =
+      e             = effectiveShinyFor k;
+      fromSpecial   = isShinyFromSpecial k;
+      sprite        = autoShinySprite entry;
+      hasSprite     = sprite != null && builtins.pathExists (./. + "/${sprite}");
+      pad           = padNum entry.dex;
+      owned         = isShinyOwned k;
+      eggable       = entry.eggable or true;
+      shinyIcon     = if (e.style or "star") == "square" then "▣" else "★";
+      ballCell      =
         if !owned then ''<span class="event-ball-slot empty"></span>''
-        else if !(ballExists e.ball) then ''<span class="event-ball-slot missing" title="${e.ball} (sprite missing)"></span>''
-        else ''<span class="event-ball-slot" title="${e.ball}"><img src="data:image/png;base64,@BALL_${e.ball}@" alt="${e.ball}"></span>'';
+        else if e.ball == null then
+          ''<span class="event-ball-slot missing" title="owned · ball not recorded"></span>''
+        else if !(ballExists e.ball) then
+          ''<span class="event-ball-slot missing" title="${e.ball} (sprite missing)"></span>''
+        else
+          ''<span class="event-ball-slot" title="${e.ball}"><img src="data:image/png;base64,@BALL_${e.ball}@" alt="${e.ball}"></span>'';
       otVal      = e.ot or null;
       otCell     = if otVal == true then ''<span class="check yes" title="OT">✓</span>'' else ''<span class="check no"></span>'';
       otDisplay  =
@@ -1020,7 +572,7 @@ let
       ts         = typesFor k;
       tk         = typeSortKey k;
     in ''
-      <details class="shiny-row-details ${if owned then "owned" else "empty"}"
+      <details class="shiny-row-details ${if owned then "owned" else "empty"}${if fromSpecial then " from-special" else ""}"
                id="pk-${k}" data-dex="${pad}" data-name="${entry.name}" data-type="${tk}">
         <summary class="shiny-row">
           ${renderDexLink k entry.dex entry.name}
@@ -1028,9 +580,9 @@ let
             then ''<span class="cell-sprite"><img class="sprite" src="data:image/png;base64,@SHINY_${k}@" alt="${entry.name}"></span>''
             else ''<span class="cell-sprite"><svg class="sprite placeholder" viewBox="0 0 32 32"><rect width="32" height="32" fill="#2a2a2a"/><text x="16" y="21" font-size="9" text-anchor="middle" fill="#666">#${pad}</text></svg></span>''}
           ${ballCell}
-          <span class="shiny-name" title="${entry.name}">${nameWithGmax entry.name k}</span>
+          <span class="shiny-name" title="${shinyDisplayName entry}">${shinyDisplayName entry}${renderGmaxBadge entry.slug}</span>
           <span class="shiny-types">${renderTypeBadges ts}</span>
-          <span class="shiny-notes">${if e.notes or null != null then e.notes else ""}</span>
+          <span class="shiny-notes">${if fromSpecial then ''<span class="src-badge" title="Filled in from pokenix.specials">★ specials</span> '' else ""}${if e.notes or null != null then e.notes else ""}</span>
           ${otCell}
           ${eggCell}
           <span class="shiny-style">${if owned then shinyIcon else ""}</span>
@@ -1120,6 +672,10 @@ let
         </div>
       '' else ""}
     </div>
+    <div class="trainer-footer">
+      © PokéNix 2026 · Please report issues or feature requests at
+      <a href="https://github.com/quackhack-mcblindy/pokenix" target="_blank" rel="noopener">GitHub</a>.
+    </div>
   '';
 
   renderShinyList = ''
@@ -1172,7 +728,6 @@ let
       n   = evtName sp;
       pad = padNum d;
       movesStr   = if sp.moves   == [] then null else concatStringsSep " · " sp.moves;
-
       lvl   = if sp.level  != null then toString sp.level  else "";
       nat   = if sp.nature != null then sp.nature         else "";
       ts    = typesFor sp.species;
@@ -1308,1220 +863,28 @@ let
 
   navBar = currentPage: ''
     <h1>
-      ${if logoExists then ''
-        <a href="https://github.com/QuackHack-McBlindy/pokenix" class="logo-link" target="_blank" rel="noopener" title="pokenix on GitHub">
-          <img class="logo" src="data:image/png;base64,@LOGO@" alt="PokèNix">
-        </a>
-      '' else ""}
+      ${if logoExists then "<a href=\"https://github.com/QuackHack-McBlindy/pokenix\" class=\"logo-link\" target=\"_blank\" rel=\"noopener\" title=\"pokenix on GitHub\"><img class=\"logo\" src=\"data:image/png;base64,@LOGO@\" alt=\"PokèNix\"></a>" else ""}
       <span class="brand">${brandName}</span>
-      <small>· ${navLink currentPage "trainer"    "trainer.html" "trainer"} · ${navLink currentPage "breedables" "index.html" "breedables"} · ${navLink currentPage "shiny" "shiny.html" "shiny living"} · ${navLink currentPage "events" "events.html" "events"} · ${navLink currentPage "specials" "specials.html" "specials"}</small>
-      ${lib.optionalString (currentPage == "shiny") ''<span class="progress">${toString shinyOwnedCount}/${toString shinyTotalCount} · ${toString shinyPct}%</span>''}
+      <small>· ${navLink currentPage "trainer"    "index.html"     "trainer"} · ${navLink currentPage "breedables" "breedables.html" "breedables"} · ${navLink currentPage "shiny" "shiny.html" "shiny living"} · ${navLink currentPage "events" "events.html" "events"} · ${navLink currentPage "specials" "specials.html" "specials"}</small>
+      ${lib.optionalString (currentPage == "shiny") "<span class=\"progress\">${toString shinyOwnedCount}/${toString shinyTotalCount} · ${toString shinyPct}%</span>"}
       <span class="h1-right">
-        ${lib.optionalString (currentPage != "trainer") ''
-          <span class="search-wrap">
-            <input type="text" id="search-input" class="tool-input"
-                   placeholder="Search all Pokémon…" autocomplete="off" spellcheck="false">
-            <div id="search-results" class="search-results"></div>
-          </span>
-        ''}
-        ${lib.optionalString (currentPage == "breedables" || currentPage == "shiny") ''
-          <button id="filter-toggle" class="tool-btn" type="button">Showing: all</button>
-        ''}
+        ${lib.optionalString (currentPage != "trainer") "<span class=\"search-wrap\"><input type=\"text\" id=\"search-input\" class=\"tool-input\" placeholder=\"Search all Pokémon…\" autocomplete=\"off\" spellcheck=\"false\"><div id=\"search-results\" class=\"search-results\"></div></span>"}
+        ${lib.optionalString (currentPage == "breedables" || currentPage == "shiny") "<button id=\"filter-toggle\" class=\"tool-btn\" type=\"button\">Showing: all</button>"}
+        <button id="pk-edit-toggle" class="tool-btn" type="button" title="Toggle inline edit mode">✎ Edit</button>
+        <button id="pk-edit-new" class="tool-btn" type="button" title="Add a new blank row" hidden>＋</button>
+        <button id="export-btn" class="tool-btn" type="button" title="Export collection (Upload on GitHub)">Export</button>
         <button id="theme-toggle" class="theme-btn" type="button" title="Toggle theme">☀️</button>
-        <a href="#" class="top-btn" onclick="window.scrollTo({top:0,behavior:'smooth'}); return false;">↑ Top</a>
+        <a href="#" class="top-btn" onclick="window.scrollTo({top:0,behavior:'smooth'}); return false;">↑</a>
       </span>
     </h1>
   '';
 
-  sharedJs = ''
-    (function() {
-      function syncH1Height() {
-        var h1 = document.querySelector('h1');
-        if (h1) {
-          document.documentElement.style.setProperty('--h1-h', h1.offsetHeight + 'px');
-        }
-      }
-      window.addEventListener('DOMContentLoaded', syncH1Height);
-      window.addEventListener('resize', syncH1Height);
-      syncH1Height();
-
-      var themeBtn = document.getElementById('theme-toggle');
-      try {
-        var savedTheme = localStorage.getItem('pokenix-theme');
-        if (savedTheme === 'light' || savedTheme === 'dark') {
-          document.documentElement.dataset.theme = savedTheme;
-        }
-      } catch (e) {}
-      function updateThemeBtn() {
-        if (!themeBtn) return;
-        var t = document.documentElement.dataset.theme || 'dark';
-        themeBtn.textContent = t === 'dark' ? '☀️' : '🌙';
-        themeBtn.title = t === 'dark' ? 'Switch to light' : 'Switch to dark';
-      }
-      updateThemeBtn();
-      if (themeBtn) {
-        themeBtn.addEventListener('click', function() {
-          var cur = document.documentElement.dataset.theme || 'dark';
-          var next = cur === 'dark' ? 'light' : 'dark';
-          document.documentElement.dataset.theme = next;
-          try { localStorage.setItem('pokenix-theme', next); } catch (e) {}
-          updateThemeBtn();
-        });
-      }
-     
-      var currentCry = null;
-      document.addEventListener('click', function(ev) {
-        var cell = ev.target.closest('[data-cry]');
-        if (!cell) return;
-        var url = cell.dataset.cry;
-        if (!url) return;
-        ev.preventDefault();
-        ev.stopPropagation();
-        if (currentCry) {
-          try { currentCry.pause(); } catch (e) {}
-          currentCry = null;
-        }
-        try {
-          var audio = new Audio(url);
-          audio.volume = 0.4;
-          currentCry = audio;
-          audio.play().catch(function() {});
-          audio.addEventListener('ended', function() {
-            if (currentCry === audio) currentCry = null;
-          });
-        } catch (e) {}
-      });
-      
-      document.querySelectorAll('.event-header [data-sort]').forEach(function(th) {
-        th.style.cursor = 'pointer';
-        th.addEventListener('click', function() {
-          var key = th.dataset.sort;
-          var newDir = th.dataset.dir === 'asc' ? 'desc' : 'asc';
-          var mult = newDir === 'asc' ? 1 : -1;
-          document.querySelectorAll('.event-header [data-sort]').forEach(function(t) {
-            delete t.dataset.dir;
-            t.style.color = "";
-          });
-          th.dataset.dir = newDir;
-          th.style.color = 'var(--accent-blue)';
-          var list = document.querySelector('.event-list');
-          if (!list) return;
-          var items = Array.from(list.querySelectorAll('details.event'));
-          items.sort(function(a, b) {
-            var av = a.dataset[key] || "";
-            var bv = b.dataset[key] || "";
-            if (key === 'dex' || key === 'level') {
-              av = parseInt(av, 10) || 0;
-              bv = parseInt(bv, 10) || 0;
-            }
-            if (av < bv) return -1 * mult;
-            if (av > bv) return 1 * mult;
-            return 0;
-          });
-          items.forEach(function(el) { list.appendChild(el); });
-        });
-      });
-
-      document.querySelectorAll('.shiny-header [data-sort]').forEach(function(th) {
-        th.style.cursor = 'pointer';
-        th.addEventListener('click', function() {
-          var key = th.dataset.sort;
-          var newDir = th.dataset.dir === 'asc' ? 'desc' : 'asc';
-          var mult = newDir === 'asc' ? 1 : -1;
-          document.querySelectorAll('.shiny-header [data-sort]').forEach(function(t) {
-            delete t.dataset.dir;
-            t.style.color = "";
-          });
-          th.dataset.dir = newDir;
-          th.style.color = 'var(--accent-blue)';
-          var list = document.querySelector('.shiny-list');
-          if (!list) return;
-          var items = Array.from(list.querySelectorAll('details.shiny-row-details'));
-          items.sort(function(a, b) {
-            var av = a.dataset[key] || "";
-            var bv = b.dataset[key] || "";
-            if (key === 'dex') {
-              av = parseInt(av, 10) || 0;
-              bv = parseInt(bv, 10) || 0;
-            }
-            if (av < bv) return -1 * mult;
-            if (av > bv) return 1 * mult;
-            return 0;
-          });
-          items.forEach(function(el) { list.appendChild(el); });
-        });
-      });
-
-      var selected = new Map();
-      document.querySelectorAll('.ball[data-pokemon][data-state]').forEach(function(ball) {
-        if (ball.dataset.state === 'possible') return;
-        ball.style.cursor = 'pointer';
-        ball.addEventListener('click', function(ev) {
-          ev.preventDefault();
-          ev.stopPropagation();
-          var key = ball.dataset.pokemon + '|' + ball.dataset.ball;
-          if (selected.has(key)) {
-            selected.delete(key);
-            ball.classList.remove('selected');
-          } else {
-            selected.set(key, {
-              pokemon: ball.dataset.pokemon,
-              ball: ball.dataset.ball,
-              state: ball.dataset.state
-            });
-            ball.classList.add('selected');
-          }
-          var hint = document.getElementById('copy-hint');
-          if (hint) {
-            if (selected.size === 0) {
-              hint.textContent = 'selected: CTRL + C to copy as list';
-              hint.style.color = "";
-            } else {
-              hint.textContent = selected.size + ' selected · CTRL + C to copy';
-              hint.style.color = 'var(--accent-red)';
-            }
-          }
-        });
-      });
-
-      function copyText(text) {
-        var ta = document.createElement('textarea');
-        ta.value = text;
-        ta.style.position = 'fixed';
-        ta.style.left = '-9999px';
-        document.body.appendChild(ta);
-        ta.select();
-        try { document.execCommand('copy'); } catch (err) { console.error(err); }
-        document.body.removeChild(ta);
-      }
-
-      document.addEventListener('keydown', function(ev) {
-        if ((ev.ctrlKey || ev.metaKey) && ev.key === 'c' && selected.size > 0) {
-          var lines = [];
-          selected.forEach(function(v) {
-            var pn = v.pokemon.charAt(0).toUpperCase() + v.pokemon.slice(1);
-            var bn = v.ball.charAt(0).toUpperCase() + v.ball.slice(1);
-            var line = pn + ' ' + bn + ' Ball';
-            if (v.state === 'ha' || v.state === 'em') line += ' HA';
-            lines.push(line);
-          });
-          copyText(lines.join('\n'));
-          var hint = document.getElementById('copy-hint');
-          if (hint) {
-            var orig = hint.textContent;
-            hint.textContent = '✓ Copied ' + lines.length + ' entries!';
-            hint.style.color = 'var(--accent-green)';
-            setTimeout(function() {
-              hint.textContent = orig;
-              hint.style.color = "";
-            }, 2000);
-          }
-          ev.preventDefault();
-        }
-      });
-
-      var filterState = 'all';
-      var filterBtn = document.getElementById('filter-toggle');
-      var searchInput = document.getElementById('search-input');
-
-      function applyFilters() {
-        var q = ((searchInput && searchInput.value) || "").toLowerCase().trim();
-        var filtering = q.length > 0 || filterState !== 'all';
-
-        var shinyList = document.querySelector('.shiny-list');
-        if (shinyList) {
-          Array.from(shinyList.querySelectorAll('details.shiny-row-details')).forEach(function(row) {
-            var name = (row.dataset.name || "").toLowerCase();
-            var dex  = row.dataset.dex || "";
-            var isOwned = row.classList.contains('owned');
-            var matchQ  = !q || name.indexOf(q) >= 0 || dex.indexOf(q) >= 0;
-            var matchF  =
-              filterState === 'all' ||
-              (filterState === 'owned' && isOwned) ||
-              (filterState === 'missing' && !isOwned);
-            row.style.display = (matchQ && matchF) ? "" : 'none';
-          });
-        }
-
-        var entriesList = document.querySelector('.entries-list');
-        if (entriesList) {
-          Array.from(entriesList.querySelectorAll('details.breedable-row')).forEach(function(row) {
-            var name    = (row.dataset.name || "").toLowerCase();
-            var dex     = row.dataset.dex  || "";
-            var summary = row.querySelector('summary.entry');
-            var isOwned = summary && !summary.classList.contains('untouched');
-            var matchQ  = !q || name.indexOf(q) >= 0 || dex.indexOf(q) >= 0;
-            var matchF  =
-              filterState === 'all' ||
-              (filterState === 'owned' && isOwned) ||
-              (filterState === 'missing' && !isOwned);
-            row.style.display = (matchQ && matchF) ? "" : 'none';
-          });
-          Array.from(entriesList.querySelectorAll('.generation-label')).forEach(function(el) {
-            el.style.display = filtering ? 'none' : "";
-          });
-        }
-
-        var eventList = document.querySelector('.event-list');
-        if (eventList) {
-          Array.from(eventList.querySelectorAll('details.event')).forEach(function(row) {
-            var name = (row.dataset.name || "").toLowerCase();
-            var dex  = row.dataset.dex  || "";
-            var matchQ = !q || name.indexOf(q) >= 0 || dex.indexOf(q) >= 0;
-            row.style.display = matchQ ? "" : 'none';
-          });
-        }
-      }
-
-      function updateFilterBtn() {
-        if (!filterBtn) return;
-        var labels = { all: 'Showing: all', owned: 'Showing: caught', missing: 'Showing: missing' };
-        filterBtn.textContent = labels[filterState] || 'Showing: all';
-        filterBtn.classList.toggle('active', filterState !== 'all');
-      }
-
-      if (filterBtn) {
-        filterBtn.addEventListener('click', function(ev) {
-          ev.preventDefault();
-          filterState =
-            filterState === 'all' ? 'owned' :
-            filterState === 'owned' ? 'missing' : 'all';
-          updateFilterBtn();
-          applyFilters();
-        });
-      }
-
-      var searchResults = document.getElementById('search-results');
-      var searchWrap    = document.querySelector('.search-wrap');
-
-      function hideGlobalResults() {
-        if (searchResults) { searchResults.classList.remove('open'); }
-      }
-
-      function buildGlobalResults(q) {
-        if (!searchResults) return;
-        if (!q) { hideGlobalResults(); searchResults.innerHTML = ""; return; }
-        if (!window.POKENIX_INDEX) return;
-        var ql = q.toLowerCase();
-        var cats = [
-          { key: 'breedables', label: 'Breedables' },
-          { key: 'shiny',      label: 'Shiny Living' },
-          { key: 'events',     label: 'Events' },
-          { key: 'specials',   label: 'Specials' }
-        ];
-        var html = "";
-        var total = 0;
-        cats.forEach(function(cat) {
-          var items = (window.POKENIX_INDEX[cat.key] || []).filter(function(it) {
-            return (it.name || "").toLowerCase().indexOf(ql) >= 0
-                || String(it.dex || "").indexOf(ql) >= 0
-                || (it.key || "").toLowerCase().indexOf(ql) >= 0;
-          });
-          if (items.length === 0) return;
-          total += items.length;
-          html += '<div class="sr-category">' + cat.label + ' (' + items.length + ')</div>';
-          items.slice(0, 40).forEach(function(it) {
-            var pad = ('000' + it.dex).slice(-3);
-            var safe = document.createElement('span');
-            safe.textContent = it.name;
-            html += '<div class="sr-item" data-page="' + it.page + '" data-key="' + it.key + '">'
-                 +  '<span class="sr-dex">#' + pad + '</span>'
-                 +  '<span class="sr-name">' + safe.innerHTML + '</span>'
-                 +  '</div>';
-          });
-        });
-        if (total === 0) html = '<div class="sr-empty">No matches.</div>';
-        searchResults.innerHTML = html;
-        searchResults.classList.add('open');
-      }
-
-      function highlightTarget(key) {
-        var t = document.getElementById('pk-' + key);
-        if (!t) return;
-        if (t.tagName === 'DETAILS') t.open = true;
-        t.classList.add('highlight');
-        setTimeout(function() { t.scrollIntoView({ behavior: 'smooth', block: 'center' }); }, 60);
-        setTimeout(function() { t.classList.remove('highlight'); }, 1800);
-      }
-
-      if (searchResults && searchInput) {
-        searchInput.addEventListener('input', function() {
-          applyFilters();
-          buildGlobalResults(searchInput.value.trim());
-        });
-        searchResults.addEventListener('click', function(ev) {
-          var row = ev.target.closest('.sr-item');
-          if (!row) return;
-          var page = row.dataset.page;
-          var key  = row.dataset.key;
-          var currentPath = (window.location.pathname.split('/').pop() || 'index.html');
-          hideGlobalResults();
-          searchInput.value = "";
-          applyFilters();
-          if (page === currentPath) {
-            highlightTarget(key);
-          } else {
-            window.location.href = page + '#pk-' + encodeURIComponent(key);
-          }
-        });
-        document.addEventListener('click', function(ev) {
-          if (searchWrap && !searchWrap.contains(ev.target)) hideGlobalResults();
-        });
-        searchInput.addEventListener('keydown', function(ev) {
-          if (ev.key === 'Escape') hideGlobalResults();
-        });
-      }
-
-      (function() {
-        var h = window.location.hash;
-        if (!h || h.indexOf('#pk-') !== 0) return;
-        var key = decodeURIComponent(h.substring(4));
-        setTimeout(function() { highlightTarget(key); }, 120);
-      })();
-    })();
-  '';
-
-  sharedCss = ''
-    :root {
-      color-scheme: dark;
-      --h1-h: 60px;
-      --bg: #121212;
-      --bg-1: #161616;
-      --bg-2: #1c1c1c;
-      --bg-3: #1a1a1a;
-      --border-1: #232323;
-      --border-2: #2a2a2a;
-      --border-3: #333;
-      --border-4: #444;
-      --fg: #e6e6e6;
-      --fg-1: #ccc;
-      --fg-2: #999;
-      --fg-3: #888;
-      --fg-4: #666;
-      --accent-blue: #6cf;
-      --accent-gold: #f0c040;
-      --accent-green: #40e080;
-      --accent-cyan: #40c0f0;
-      --accent-pink: #f6c;
-      --accent-red: #f04040;
-    }
-    :root[data-theme="light"] {
-      color-scheme: light;
-      --bg: #f5f5f5;
-      --bg-1: #f0f0f0;
-      --bg-2: #e8e8e8;
-      --bg-3: #ececec;
-      --border-1: #dcdcdc;
-      --border-2: #cccccc;
-      --border-3: #bbbbbb;
-      --border-4: #999999;
-      --fg: #1a1a1a;
-      --fg-1: #333;
-      --fg-2: #555;
-      --fg-3: #666;
-      --fg-4: #888;
-      --accent-blue: #0066dd;
-      --accent-gold: #b8860b;
-      --accent-green: #108040;
-      --accent-cyan: #0077bb;
-      --accent-pink: #cc3388;
-      --accent-red: #cc2222;
-    }
-    * { box-sizing: border-box; }
-    body {
-      font-family: -apple-system, "Segoe UI", system-ui, sans-serif;
-      background: var(--bg); color: var(--fg);
-      margin: 0; padding: 0 24px 28px;
-      overflow-x: auto;
-    }
-    h1 {
-      position: sticky;
-      top: 0;
-      z-index: 30;
-      background: var(--bg);
-      margin: 0;
-      padding: 16px 0 12px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      font-weight: 300;
-      letter-spacing: 1px;
-    }
-    h1 .logo-link {
-      display: inline-flex;
-      flex-shrink: 0;
-      margin: -4px 0 -4px -4px;
-      text-decoration: none;
-    }
-    h1 .logo {
-      width: 40px;
-      height: 40px;
-      image-rendering: pixelated;
-      display: block;
-    }
-    h1 .brand { font-weight: 300; }
-    h1 small { color: var(--fg-4); font-size: 13px; font-weight: 400; }
-    h1 small a { color: var(--accent-blue); text-decoration: none; }
-    h1 small a:hover { text-decoration: underline; }
-    h1 small .nav-current { color: var(--fg); font-weight: 500; }
-    h1 .h1-right {
-      margin-left: auto;
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-    }
-    h1 .top-btn {
-      color: var(--accent-blue);
-      text-decoration: none;
-      font-size: 12px;
-      padding: 6px 12px;
-      border: 1px solid var(--border-3);
-      border-radius: 4px;
-      font-weight: 400;
-      transition: background .15s;
-      background: var(--bg);
-    }
-    h1 .top-btn:hover { background: var(--bg-3); }
-    h1 .progress {
-      margin-left: 16px;
-      color: var(--accent-gold);
-      font-size: 13px;
-      font-family: ui-monospace, monospace;
-      font-weight: 500;
-    }
-    .tool-input {
-      background: var(--bg-3);
-      border: 1px solid var(--border-3);
-      color: var(--fg);
-      font-size: 12px;
-      padding: 6px 10px;
-      border-radius: 4px;
-      width: 180px;
-      font-family: inherit;
-    }
-    .tool-input:focus { outline: none; border-color: var(--accent-blue); }
-    .tool-btn {
-      background: var(--bg);
-      border: 1px solid var(--border-3);
-      color: var(--accent-blue);
-      font-size: 12px;
-      padding: 6px 12px;
-      border-radius: 4px;
-      cursor: pointer;
-      font-family: inherit;
-      transition: background .15s, border-color .15s, color .15s;
-    }
-    .tool-btn:hover { background: var(--bg-3); }
-    .tool-btn.active { border-color: var(--accent-gold); color: var(--accent-gold); }
-    .theme-btn {
-      background: var(--bg);
-      border: 1px solid var(--border-3);
-      color: var(--fg);
-      font-size: 16px;
-      width: 32px;
-      height: 32px;
-      padding: 0;
-      border-radius: 4px;
-      cursor: pointer;
-      line-height: 1;
-      font-family: inherit;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      transition: background .15s;
-    }
-    .theme-btn:hover { background: var(--bg-3); }
-
-    .summary { color: var(--fg-3); margin-bottom: 14px; font-size: 13px; }
-    .legend {
-      color: var(--fg-2); font-size: 12px; margin-bottom: 18px;
-      display: flex; gap: 16px; align-items: center; flex-wrap: wrap;
-    }
-    .legend .item { display: inline-flex; align-items: center; gap: 6px; }
-    .legend .ball { pointer-events: none; }
-
-    .entry,
-    .event-row,
-    .shiny-row {
-      display: grid;
-      align-items: stretch;
-      width: 100%;
-      background: transparent;
-    }
-    .entry       { grid-template-columns: ${breedColumns}; }
-    .event-row   { grid-template-columns: ${eventColumns}; }
-    .event-row.special-row { grid-template-columns: ${specialColumns}; }
-    .shiny-row   { grid-template-columns: ${shinyColumns}; }
-
-    .entry > *,
-    .event-row > *,
-    .shiny-row > * {
-      display: flex;
-      align-items: center;
-      min-height: 42px;
-      padding: 0 8px;
-      min-width: 0;
-      border-right: 1px solid var(--border-1);
-      border-bottom: 1px solid var(--border-1);
-      overflow: hidden;
-      white-space: nowrap;
-      text-overflow: ellipsis;
-      font-size: 12px;
-      line-height: 1.2;
-      color: var(--fg-1);
-      background: transparent;
-    }
-    .entry > *:last-child,
-    .event-row > *:last-child,
-    .shiny-row > *:last-child {
-      border-right: none;
-    }
-
-    .cell-sprite {
-      padding: 2px 4px !important;
-      justify-content: center !important;
-    }
-    .cell-sprite .sprite {
-      display: block;
-      width: 40px;
-      height: 40px;
-      image-rendering: pixelated;
-    }
-
-    .balls {
-      padding: 2px 4px !important;
-      gap: 2px;
-      justify-content: flex-start !important;
-    }
-    .event-ball-slot {
-      padding: 2px 4px !important;
-      justify-content: center !important;
-      position: relative;
-    }
-
-    .entry > *:nth-child(1) { justify-content: flex-end;   font-family: ui-monospace, monospace; }
-    .entry > *:nth-child(2) { justify-content: center;     padding: 2px 4px; }
-    .entry > *:nth-child(3) { justify-content: flex-start; }
-    .entry > *:nth-child(4) { justify-content: flex-start; padding: 2px 4px; }
-    .entry > *:nth-child(5) { justify-content: flex-start; color: var(--accent-blue); }
-    .entry > *:nth-child(6) { justify-content: center; }
-    .entry > *:nth-child(7) { justify-content: flex-end; }
-    .entry > *:nth-child(8) { justify-content: flex-end; }
-
-    .event-row > *:nth-child(1) { justify-content: flex-end; font-family: ui-monospace, monospace; }
-    .event-row > *:nth-child(2) { justify-content: center; padding: 2px 4px; }
-    .event-row > *:nth-child(3) { justify-content: center; padding: 2px 4px; }
-    .event-row > *:nth-child(4) { justify-content: flex-start; }
-    .event-row > *:nth-child(5) { justify-content: flex-start; gap: 2px; }
-    .event-row > *:nth-child(6) { justify-content: center; }
-    .event-row > *:nth-child(7) { justify-content: center; }
-    .event-row > *:nth-child(8) { justify-content: center; }
-    .event-row > *:nth-child(9) { justify-content: flex-start; }
-    .event-row > *:nth-child(10){ justify-content: center; }
-    .event-row > *:nth-child(11){ justify-content: center; }
-
-    .special-row > *:nth-child(8) { justify-content: flex-end; font-family: ui-monospace, monospace; }
-    .special-row > *:nth-child(9) { justify-content: flex-start; }
-    .special-row > *:nth-child(10){ justify-content: flex-end; }
-
-    .shiny-row > *:nth-child(1) { justify-content: flex-end; font-family: ui-monospace, monospace; }
-    .shiny-row > *:nth-child(2) { justify-content: center; padding: 2px 4px; }
-    .shiny-row > *:nth-child(3) { justify-content: center; padding: 2px 4px; }
-    .shiny-row > *:nth-child(4) { justify-content: flex-start; }
-    .shiny-row > *:nth-child(5) { justify-content: flex-start; gap: 2px; }
-    .shiny-row > *:nth-child(6) { justify-content: flex-start; color: var(--fg-3); }
-    .shiny-row > *:nth-child(7) { justify-content: center; }
-    .shiny-row > *:nth-child(8) { justify-content: center; }
-    .shiny-row > *:nth-child(9) { justify-content: center; }
-
-    .entry.header,
-    .event-header,
-    .shiny-header {
-      position: sticky;
-      top: var(--h1-h);
-      z-index: 20;
-      background: var(--bg-3);
-    }
-    .entry.header > *,
-    .event-header > *,
-    .shiny-header > * {
-      background: var(--bg-3);
-      color: var(--fg-3);
-      font-size: 11px;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      border-bottom: 2px solid var(--border-3);
-      min-height: 38px;
-    }
-    .entry.header > *:nth-child(5) { color: var(--fg-3); }
-
-    .breedable-row { display: block; }
-    .breedable-row > summary.entry { list-style: none; cursor: pointer; }
-    .breedable-row > summary.entry::-webkit-details-marker { display: none; }
-    .breedable-row[open] > summary.entry { background: var(--bg-2); }
-    .breedable-row > summary.entry:hover { background: var(--bg-2); }
-
-    .generation-block > .breedable-row:nth-child(even) > summary.entry { background: var(--bg-1); }
-
-    .entry-details {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 10px 28px;
-      padding: 10px 16px 16px 64px;
-      background: var(--bg-1);
-      border-bottom: 1px solid var(--border-1);
-    }
-    .entry-details .detail-wide { grid-column: 1 / -1; }
-
-    .ball-status-pill {
-      display: inline-flex; align-items: center; gap: 6px;
-      padding: 3px 8px;
-      background: var(--bg-3);
-      border: 1px solid var(--border-2);
-      border-radius: 4px;
-      font-size: 11px; color: var(--fg-1);
-      white-space: nowrap;
-    }
-    .ball-status-pill .ball { width: 22px; height: 22px; }
-    .ball-status-pill .ball img { width: 18px; height: 18px; }
-
-    .shiny-row-details { display: block; }
-    .shiny-row-details > summary.shiny-row { list-style: none; cursor: pointer; }
-    .shiny-row-details > summary.shiny-row::-webkit-details-marker { display: none; }
-    .shiny-row-details[open] > summary.shiny-row { background: var(--bg-2); }
-    .shiny-row-details > summary.shiny-row:hover { background: var(--bg-2); }
-    .shiny-row-details.empty > summary.shiny-row { opacity: 0.55; }
-    .shiny-row-details.empty > summary.shiny-row:hover { opacity: 1; }
-
-    @keyframes highlight-pulse {
-      0%   { background-color: color-mix(in srgb, var(--accent-gold) 35%, transparent); }
-      100% { background-color: transparent; }
-    }
-    .highlight > summary { animation: highlight-pulse 1.5s ease-out; }
-
-    .search-wrap { position: relative; display: inline-block; }
-    .search-results {
-      position: absolute;
-      top: 100%;
-      right: 0;
-      width: 380px;
-      max-height: 480px;
-      overflow-y: auto;
-      background: var(--bg-2);
-      border: 1px solid var(--border-3);
-      border-radius: 6px;
-      box-shadow: 0 8px 24px rgba(0,0,0,0.5);
-      z-index: 100;
-      display: none;
-      margin-top: 4px;
-    }
-    .search-results.open { display: block; }
-    .search-results .sr-category {
-      padding: 6px 10px;
-      font-size: 10px;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      color: var(--fg-4);
-      border-bottom: 1px solid var(--border-1);
-      background: var(--bg-3);
-    }
-    .search-results .sr-item {
-      padding: 8px 10px;
-      display: flex; gap: 8px; align-items: center;
-      cursor: pointer;
-      font-size: 12px; color: var(--fg-1);
-      border-bottom: 1px solid var(--border-1);
-    }
-    .search-results .sr-item:hover { background: var(--bg-3); color: var(--fg); }
-    .search-results .sr-dex  { color: var(--fg-4); font-family: ui-monospace, monospace; font-size: 11px; }
-    .search-results .sr-name { font-weight: 500; }
-    .search-results .sr-empty { padding: 12px; color: var(--fg-4); font-size: 12px; text-align: center; }
-
-    .event > summary.event-row:hover { background: var(--bg-2); }
-    .event[open] > summary.event-row { background: var(--bg-2); }
-
-    .generation-block { display: block; }
-    .generation-label {
-      padding: 22px 0 8px;
-      font-size: 11px;
-      text-transform: uppercase;
-      letter-spacing: 3px;
-      color: var(--fg-4);
-      font-weight: 600;
-      border-bottom: 1px solid var(--border-2);
-      margin-bottom: 2px;
-    }
-    .entries-list > .generation-block:first-child .generation-label { padding-top: 4px; }
-
-    .dex-wrap { position: relative; }
-    .dex {
-      display: block; color: var(--fg-4);
-      font-family: ui-monospace, monospace; font-size: 12px;
-      text-decoration: none;
-    }
-    .dex:hover { color: var(--accent-blue); }
-    .sprite { width: 40px; height: 40px; image-rendering: pixelated; }
-    .name { font-weight: 500; color: var(--fg); display: inline-flex; align-items: center; gap: 6px; }
-    .star { color: var(--accent-gold); font-size: 12px; }
-    .hidden-ability { font-size: 12px; }
-    .gender { font-size: 15px; }
-    .gender.male   { color: var(--accent-blue); }
-    .gender.female { color: var(--accent-pink); }
-    .ratio  { color: var(--fg-3); font-size: 11px; }
-    .cycles { color: var(--fg-3); font-size: 11px; font-family: ui-monospace, monospace; }
-    .entry.untouched .ratio,
-    .entry.untouched .cycles { color: var(--fg-4); }
-    .entry.untouched { opacity: 0.75; }
-    .entry.untouched:hover { opacity: 1; }
-
-    .dex-hover {
-      display: none;
-      position: absolute;
-      top: 100%;
-      left: 0;
-      width: 440px;
-      height: 360px;
-      background: var(--bg-3);
-      border: 1px solid var(--border-4);
-      border-radius: 8px;
-      overflow: hidden;
-      z-index: 100;
-      box-shadow: 0 8px 32px rgba(0,0,0,0.9);
-      margin-top: 2px;
-    }
-    .dex-wrap:hover .dex-hover { display: block; }
-    .dex-hover iframe {
-      width: 100%; height: 100%; border: 0; background: #fff;
-      position: relative; z-index: 2;
-    }
-    .dex-hover-fallback {
-      position: absolute; inset: 0;
-      padding: 16px;
-      display: flex; flex-direction: column; gap: 6px;
-      align-items: center; justify-content: center;
-      text-align: center;
-      z-index: 1;
-      color: var(--fg-3); font-size: 12px;
-    }
-    .dhf-title { color: var(--fg); font-size: 14px; font-weight: 500; }
-    .dhf-url { color: var(--accent-blue); font-family: ui-monospace, monospace; font-size: 11px; word-break: break-all; }
-    .dhf-hint { color: var(--fg-4); font-size: 11px; margin-top: 8px; }
-
-    .ball {
-      position: relative;
-      box-sizing: border-box;
-      width: 30px; height: 30px;
-      flex-shrink: 0;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      transition: transform 0.15s;
-    }
-    .ball img {
-      width: 20px; height: 20px;
-      display: block;
-      image-rendering: pixelated;
-      position: relative;
-      z-index: 1;
-    }
-    .ball::before {
-      content: "";
-      position: absolute;
-      inset: -3px;
-      border-radius: 50%;
-      border: 2px solid transparent;
-      box-sizing: border-box;
-      pointer-events: none;
-      transition: border-color 0.15s;
-    }
-    .ball:hover { transform: scale(1.15); }
-    .ball.possible       { opacity: 0.35; filter: grayscale(0.5); }
-    .ball.caught::before   { border-color: var(--fg-4); }
-    .ball.ha::before      { border-color: var(--accent-cyan); }
-    .ball.em::before      { border-color: var(--accent-green); }
-    .ball.missing::before { border-color: var(--border-3); border-style: dashed; }
-    .ball.selected::after {
-      content: "";
-      position: absolute;
-      inset: -5px;
-      border-radius: 50%;
-      border: 3px solid var(--accent-red);
-      pointer-events: none;
-    }
-
-    .ball.unavailable {
-      opacity: 0.35;
-      cursor: default;
-      pointer-events: none;
-    }
-    .ball.unavailable:hover { transform: none; }
-    .ball.unavailable .ball-x {
-      color: var(--fg-4);
-      font-size: 13px;
-      font-weight: 700;
-      line-height: 1;
-      user-select: none;
-    }
-
-    .entry.header .ball-col {
-      display: inline-flex; flex-direction: column; align-items: center; gap: 2px;
-    }
-    .entry.header .ball-count {
-      font-size: 10px; color: var(--fg-1);
-      font-family: ui-monospace, monospace; line-height: 1;
-      text-transform: none; letter-spacing: 0;
-    }
-
-    .event { border: none; }
-    .event > summary.event-row { cursor: pointer; list-style: none; }
-    .event > summary.event-row::-webkit-details-marker { display: none; }
-    .event[open] .event-chevron { transform: rotate(90deg); }
-
-    .event-dex, .shiny-dex { color: var(--fg-4); font-family: ui-monospace, monospace; font-size: 12px; }
-    .event-name, .shiny-name { font-weight: 500; color: var(--fg); }
-    .event-field { font-size: 12px; color: var(--fg-1); }
-    .shiny-notes { font-size: 12px; color: var(--fg-3); }
-    .shiny-style { color: var(--accent-gold); font-size: 14px; text-align: center; }
-
-    .event-ball-slot img { width: 20px; height: 20px; image-rendering: pixelated; }
-    .event-ball-slot.empty::before { display: none; }
-    .event-ball-slot.missing::before {
-      content: ""; width: 20px; height: 20px; border-radius: 50%;
-      border: 1px dashed var(--fg-4);
-    }
-
-    .check {
-      width: 22px; height: 22px; flex-shrink: 0;
-      display: inline-flex; align-items: center; justify-content: center;
-      font-size: 12px; font-weight: 700;
-      border-radius: 3px;
-    }
-    .check.yes { color: var(--accent-green); border: 1px solid color-mix(in srgb, var(--accent-green) 40%, transparent); background: color-mix(in srgb, var(--accent-green) 8%, transparent); }
-    .check.no  { color: transparent; border: 1px solid var(--border-3); }
-    .check.na  { color: var(--fg-4); }
-    .check.header-check { color: var(--fg-3); border: none; font-weight: 400; font-size: 11px; }
-
-    .egg-slot {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      width: 66px;
-      height: 66px;
-      flex-shrink: 0;
-    }
-    .egg-sprite {
-      max-height: 60px;
-      max-width: 60px;
-      width: auto;
-      image-rendering: pixelated;
-      display: block;
-    }
-
-    .event-chevron {
-      color: var(--fg-4); font-size: 12px;
-      transition: transform .15s;
-    }
-
-    .event-details {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 10px 28px;
-      padding: 10px 16px 16px 64px;
-      background: var(--bg-1);
-      border-bottom: 1px solid var(--border-1);
-    }
-    .event-details.special-details { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-    .detail { display: flex; flex-direction: column; gap: 3px; }
-    .detail-wide { grid-column: 1 / -1; }
-    .detail-label { color: var(--fg-4); font-size: 10px; text-transform: uppercase; letter-spacing: 1px; }
-    .detail-value { color: var(--fg-1); font-size: 12px; word-break: break-word; }
-
-    .pills { display: flex; flex-wrap: wrap; gap: 6px; align-items: flex-start; }
-    .ribbon-item, .mark-item {
-      display: inline-flex; align-items: center; gap: 5px;
-      padding: 3px 8px;
-      background: var(--bg-3);
-      border: 1px solid var(--border-2);
-      border-radius: 4px;
-      font-size: 11px;
-      color: var(--fg-1);
-      white-space: nowrap;
-    }
-    .ribbon-sprite, .mark-sprite {
-      max-height: 18px; width: auto;
-      image-rendering: pixelated;
-      display: block; flex-shrink: 0;
-    }
-    .item-pill {
-      display: inline-flex; align-items: center; gap: 5px;
-      padding: 3px 8px;
-      background: var(--bg-3);
-      border: 1px solid var(--border-2);
-      border-radius: 4px;
-      font-size: 11px;
-      color: var(--fg-1);
-      white-space: nowrap;
-    }
-    .item-sprite {
-      max-height: 18px; width: auto;
-      image-rendering: pixelated;
-      display: block; flex-shrink: 0;
-    }
-    .ribbon-header-spacer { min-width: 0; min-height: 1px; }
-    .event-ribbon-strip {
-      display: inline-flex;
-      gap: 3px;
-      align-items: center;
-      flex-shrink: 0;
-      max-width: 220px;
-      overflow: hidden;
-    }
-    .event-ribbon-strip img {
-      max-height: 16px; width: auto;
-      image-rendering: pixelated;
-      display: block; flex-shrink: 0;
-    }
-
-    .type-pill {
-      display: inline-flex;
-      align-items: center;
-      gap: 5px;
-      padding: 3px 8px;
-      background: var(--bg-3);
-      border: 1px solid var(--border-2);
-      border-radius: 4px;
-      font-size: 11px;
-      color: var(--fg-1);
-      white-space: nowrap;
-    }
-    .type-sprite {
-      max-height: 18px;
-      width: auto;
-      image-rendering: pixelated;
-      display: block;
-      flex-shrink: 0;
-    }
-
-    .gmax-badge {
-      display: inline-block;
-      width: 16px;
-      height: 16px;
-      margin-left: 5px;
-      image-rendering: pixelated;
-      vertical-align: middle;
-      flex-shrink: 0;
-    }
-
-    .trainer-card {
-      max-width: 720px;
-      margin: 48px auto;
-      padding: 32px;
-      background: var(--bg-2);
-      border: 1px solid var(--border-2);
-      border-radius: 8px;
-    }
-    .trainer-pic-wrap { display: flex; justify-content: center; margin-bottom: 24px; }
-    .trainer-pic {
-      width: 128px; height: 128px;
-      border-radius: 50%;
-      object-fit: cover;
-      border: 2px solid var(--border-2);
-    }
-    .trainer-name {
-      font-weight: 300; letter-spacing: 2px; margin: 0 0 8px;
-      font-size: 24px; text-align: center;
-    }
-    .trainer-about {
-      color: var(--fg-2); margin: 0 0 24px;
-      font-size: 13px; line-height: 1.6; text-align: center;
-    }
-    .trainer-fields {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 16px 24px;
-    }
-    .trainer-field { display: flex; flex-direction: column; gap: 4px; }
-    .trainer-field-label {
-      color: var(--fg-4); font-size: 10px;
-      text-transform: uppercase; letter-spacing: 1px;
-    }
-    .trainer-field-value { color: var(--fg-1); font-size: 13px; word-break: break-word; }
-    .trainer-section-label {
-      font-size: 11px; text-transform: uppercase; letter-spacing: 2px;
-      color: var(--fg-4); font-weight: 600;
-      margin: 32px 0 12px; padding-bottom: 8px;
-      border-bottom: 1px solid var(--border-1);
-    }
-    .trainer-stats {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-      gap: 12px; margin-bottom: 8px;
-    }
-    .stat {
-      display: flex; flex-direction: column; gap: 6px;
-      padding: 16px 12px;
-      background: var(--bg);
-      border: 1px solid var(--border-2);
-      border-radius: 6px;
-      text-align: center;
-    }
-    .stat-value {
-      font-size: 22px; font-weight: 600;
-      color: var(--fg);
-      font-family: ui-monospace, monospace;
-      line-height: 1.2;
-    }
-    .stat-sub { font-size: 13px; font-weight: 400; color: var(--fg-4); }
-    .stat-label {
-      font-size: 10px; text-transform: uppercase; letter-spacing: 1px;
-      color: var(--fg-4); line-height: 1.3;
-    }
-
-    .placeholder {
-      margin-top: 48px; padding: 48px 24px;
-      border: 1px dashed var(--border-3); border-radius: 8px;
-      text-align: center; color: var(--fg-3);
-    }
-    .placeholder h2 {
-      color: var(--fg); font-weight: 300; letter-spacing: 2px; margin: 0 0 12px;
-    }
-    .placeholder p { margin: 6px 0; font-size: 13px; }
-    .stat-up   { color: var(--accent-green); font-weight: 600; }
-    .stat-down { color: var(--accent-red);   font-weight: 600; }
-
-    .level-moves { display: flex; flex-direction: column; gap: 3px; }
-    .level-row   { display: flex; gap: 10px; font-size: 12px; }
-    .level-num   {
-      color: var(--fg-4);
-      font-family: ui-monospace, monospace;
-      min-width: 52px;
-    }
-    .level-moves-list { color: var(--fg-1); word-break: break-word; }
-
-    .move-grid { display: flex; flex-wrap: wrap; gap: 3px; margin-top: 6px; }
-    .move-count { color: var(--fg-4); font-weight: normal; margin-left: 4px; }
-
-    .move-pill {
-      display: inline-flex; align-items: center; gap: 4px;
-      padding: 2px 8px;
-      border-radius: 10px;
-      font-size: 11px; font-weight: 500;
-      color: #fff; background: #666;
-      border: 1px solid rgba(0,0,0,0.25);
-      white-space: nowrap; cursor: default;
-      transition: transform .1s;
-    }
-    .move-pill:hover { transform: translateY(-1px); }
-    .move-pill .move-power {
-      font-size: 9px; font-family: ui-monospace, monospace;
-      padding: 0 3px; border-radius: 4px;
-      background: rgba(0,0,0,0.3);
-    }
-    .move-pill.cls-physical { box-shadow: inset 0 -2px 0 rgba(230, 80, 80, 0.9); }
-    .move-pill.cls-special  { box-shadow: inset 0 -2px 0 rgba(110, 150, 240, 0.9); }
-    .move-pill.cls-status   { box-shadow: inset 0 -2px 0 rgba(200, 200, 200, 0.6); }
-
-    .move-pill.type-normal   { background: #9a9a80; }
-    .move-pill.type-fire     { background: #d8543a; }
-    .move-pill.type-water    { background: #3f7fd4; }
-    .move-pill.type-electric { background: #c9a900; color: #111; }
-    .move-pill.type-grass    { background: #3f9d45; }
-    .move-pill.type-ice      { background: #6ec5c5; color: #111; }
-    .move-pill.type-fighting { background: #a63939; }
-    .move-pill.type-poison   { background: #924592; }
-    .move-pill.type-ground   { background: #b38a37; }
-    .move-pill.type-flying   { background: #7a6ed4; }
-    .move-pill.type-psychic  { background: #c84875; }
-    .move-pill.type-bug      { background: #7a9a22; }
-    .move-pill.type-rock     { background: #a39550; }
-    .move-pill.type-ghost    { background: #5c4e89; }
-    .move-pill.type-dragon   { background: #5e2b9b; }
-    .move-pill.type-dark     { background: #4a3a3a; }
-    .move-pill.type-steel    { background: #8a8aa0; }
-    .move-pill.type-fairy    { background: #d56fa7; }
-
-    .type-badge {
-      display: inline-block; padding: 2px 7px;
-      border-radius: 4px; font-size: 10px;
-      text-transform: uppercase; letter-spacing: .5px;
-      color: #fff; background: #666;
-      margin-right: 4px;
-    }
-    .type-badge.type-normal   { background: #9a9a80; }
-    .type-badge.type-fire     { background: #d8543a; }
-    .type-badge.type-water    { background: #3f7fd4; }
-    .type-badge.type-electric { background: #c9a900; color: #111; }
-    .type-badge.type-grass    { background: #3f9d45; }
-    .type-badge.type-ice      { background: #6ec5c5; color: #111; }
-    .type-badge.type-fighting { background: #a63939; }
-    .type-badge.type-poison   { background: #924592; }
-    .type-badge.type-ground   { background: #b38a37; }
-    .type-badge.type-flying   { background: #7a6ed4; }
-    .type-badge.type-psychic  { background: #c84875; }
-    .type-badge.type-bug      { background: #7a9a22; }
-    .type-badge.type-rock     { background: #a39550; }
-    .type-badge.type-ghost    { background: #5c4e89; }
-    .type-badge.type-dragon   { background: #5e2b9b; }
-    .type-badge.type-dark     { background: #4a3a3a; }
-    .type-badge.type-steel    { background: #8a8aa0; }
-    .type-badge.type-fairy    { background: #d56fa7; }
-
-    .special-badge {
-      display: inline-flex; align-items: center; justify-content: center;
-      width: 14px; height: 14px; margin-left: 4px;
-      border-radius: 3px; font-size: 9px; font-weight: 700;
-      color: #111; vertical-align: middle;
-    }
-    .special-badge.legendary { background: var(--accent-gold); }
-    .special-badge.mythical  { background: var(--accent-pink); }
-    .special-badge.baby      { background: var(--accent-cyan); }
-
-    .cry-wrap { position: relative; }
-    .cry-btn {
-      position: absolute; bottom: 0; right: 0;
-      width: 16px; height: 16px; padding: 0;
-      background: var(--bg-3); border: 1px solid var(--border-3);
-      border-radius: 50%; color: var(--fg-2);
-      font-size: 10px; cursor: pointer; line-height: 1;
-    }
-    .cry-btn:hover { color: var(--accent-blue); border-color: var(--accent-blue); }
-
-    .matchup-row { display: flex; gap: 4px; align-items: center; margin: 2px 0; }
-    .matchup-label {
-      min-width: 32px; font-family: ui-monospace, monospace;
-      font-size: 10px; color: var(--fg-4);
-    }    
-    .cell-sprite.cry-click {
-      cursor: pointer;
-      transition: filter 0.1s, opacity 0.1s;
-    }
-    .cell-sprite.cry-click:hover .sprite {
-      filter: brightness(1.2) saturate(1.15);
-    }
-    .cell-sprite.cry-click:active .sprite {
-      animation: cry-pulse 0.3s ease-out;
-    }
-    @keyframes cry-pulse {
-      0%   { opacity: 0.5; }
-      50%  { opacity: 1; }
-      100% { opacity: 1; }
-    }    
-    .shiny-types, .event-type {
-      display: flex; align-items: center; gap: 2px;
-      overflow: hidden;
-    }
-    .shiny-types .type-badge, .event-type .type-badge {
-      font-size: 9px; padding: 1px 5px; margin-right: 2px;
-    }
-
-    .check.yes.shiny-mark {
-      color: var(--accent-gold);
-      border-color: color-mix(in srgb, var(--accent-gold) 40%, transparent);
-      background: color-mix(in srgb, var(--accent-gold) 8%, transparent);
-      font-size: 14px;
-    }
-    .dex-wrap { overflow: visible !important; }
-  '';
+  sharedJs  = builtins.readFile ./static/script.js;
+  sharedCss =
+    builtins.replaceStrings
+      [ "__BREED_COLUMNS__" "__EVENT_COLUMNS__" "__SPECIAL_COLUMNS__" "__SHINY_COLUMNS__" ]
+      [ breedColumns        eventColumns        specialColumns        shinyColumns        ]
+      (builtins.readFile ./static/styles.css);
 
   siteDescription =
     "PokéNix — ${brandName}'s collection: "
@@ -2546,30 +909,24 @@ let
       fontPath = "${pkgs.dejavu_fonts}/share/fonts/truetype";
       esc      = s: "'${builtins.replaceStrings [ "'" ] [ "'\\''" ] s}'";
       flat     = s: builtins.replaceStrings [ "\n" ] [ " " ] s;
-
       hasPic = cfg.trainer.picture != null;
-
       about  = flat (if cfg.trainer.about  != null then cfg.trainer.about  else "");
       region = flat (if cfg.trainer.region != null then cfg.trainer.region else "");
-      
       statLines = [
         "${toString totalCaptures}/${toString totalPossibleCaptures} aprimons"
         "${toString shinyOwnedCount}/${toString shinyTotalCount} shiny living dex"
         "${toString eventCount} event pokémon"
         "${toString specialsCount} other pokémon"
       ];
-      
       statAnnots = lib.concatStringsSep " " (lib.imap0
         (i: line: "-annotate +${textX}+${toString (420 + i * 38)} ${esc line}")
         statLines);
-      
       picStep = lib.optionalString hasPic ''
         convert ${cfg.trainer.picture} \
           -resize 480x480^ -gravity center -extent 480x480 \
           -bordercolor '#333333' -border 4 \
           -alpha remove -alpha off pic.png
       '';
-
       picLayer = if hasPic then "pic.png -geometry +60+75 -composite" else "";
       textX    = if hasPic then "600" else "80";
     in
@@ -2631,20 +988,81 @@ let
     ${navBar currentPage}
     ${body}
     <script>window.POKENIX_INDEX = ${builtins.toJSON globalIndex};</script>
+    <script>window.POKENIX_DATA = ${builtins.toJSON {
+      shiny      = cfg.shiny;
+      events     = cfg.events;
+      specials   = cfg.specials;
+      trainer    = {
+        inherit (cfg.trainer)
+          name about region timezone contact friendCode
+          switchName trainerId secretId githubUsername githubRepo shinyDexType;
+      };
+      breedables = builtins.mapAttrs (n: s: { inherit (s) name dex; }) cfg.breedables;
+      natures    = builtins.attrNames natures;
+      balls      = balls;
+
+      breedablesFull = builtins.mapAttrs (n: s:
+        let
+          active = builtins.filter (b:
+            (s.${b}.ball     or false) ||
+            (s.${b}.ha       or false) ||
+            (s.${b}.eggMoves or false)
+          ) balls;
+        in {
+          inherit (s) name dex;
+          captured = builtins.listToAttrs (map (b: {
+            name = b;
+            value = {
+              ball     = s.${b}.ball     or false;
+              ha       = s.${b}.ha       or false;
+              eggMoves = s.${b}.eggMoves or false;
+            };
+          }) active);
+        }
+      ) cfg.breedables;
+
+      speciesValid = lib.unique (builtins.attrNames (cfg.pokedex.pokemon or {}));
+      speciesList  = lib.unique (
+        let
+          dexNames   = builtins.attrNames (cfg.pokedex.pokemon or {});
+          baseNames  = map (n: builtins.head (lib.splitString "-" n)) dexNames;
+          collection = (builtins.attrNames cfg.breedables)
+                    ++ (builtins.attrNames cfg.shiny)
+                    ++ (builtins.attrNames cfg.events)
+                    ++ (builtins.attrNames cfg.specials);
+        in dexNames ++ baseNames ++ collection
+      );
+      speciesMeta = builtins.mapAttrs (n: p: {
+        dex   = p.dexNumber or null;
+        types = p.types     or [];
+        name  = p.name      or p.species or n;
+      }) (cfg.pokedex.pokemon or {});
+
+      ballSprites = builtins.listToAttrs (map (b: {
+        name  = b;
+        value = "data:image/png;base64,@BALL_${b}@";
+      }) existingBalls);
+
+      githubUrl =
+        if cfg.trainer.githubUsername != null && cfg.trainer.githubRepo != null
+        then "https://github.com/${cfg.trainer.githubUsername}/${cfg.trainer.githubRepo}"
+        else null;
+    }};</script>
+
     <script>${sharedJs}</script>
     </body>
     </html>
   '';
 
   breedablesBody = ''
-    <div class="summary">${toString totalCount} species · ${toString ownedSpeciesCount} in collection · ${toString totalCaptures} ball captures</div>
+    <div class="summary">${toString totalCount} species · ${toString ownedSpeciesCount} in collection · ${toString totalCaptures} aprimons total</div>
     <div class="legend">
       <span>ball guide:</span>
-      <span class="item"><span class="ball possible"><img src="data:image/png;base64,@BALL_safari@" alt=""></span>possible</span>
+      <span class="item"><span class="ball possible"><img src="data:image/png;base64,@BALL_safari@" alt=""></span>legal</span>
       <span class="item"><span class="ball caught"><img src="data:image/png;base64,@BALL_fast@" alt=""></span>caught</span>
       <span class="item"><span class="ball ha"><img src="data:image/png;base64,@BALL_love@" alt=""></span>+ HA</span>
       <span class="item"><span class="ball em"><img src="data:image/png;base64,@BALL_beast@" alt=""></span>HA + EM</span>
-      <span class="item"><span class="ball unavailable"><span class="ball-x">✕</span></span>not available</span>
+      <span class="item"><span class="ball unavailable"><span class="ball-x">✕</span></span>not legal</span>
       <span class="item"><span class="ball selected"><img src="data:image/png;base64,@BALL_dream@" alt=""></span><span id="copy-hint">selected: CTRL + C to copy as list</span></span>
     </div>
     ${headerRow}
@@ -2751,13 +1169,8 @@ let
     ++ (builtins.concatMap (k: cfg.shiny.${k}.marks   or [ ]) (builtins.attrNames cfg.shiny))
   );
 
-  ribbonsWithSprite = builtins.filter
-    (n: firstExisting (ribbonFileCandidates n) != null)
-    allUsedRibbons;
-
-  marksWithSprite = builtins.filter
-    (n: firstExisting [ (markFile n) ] != null)
-    allUsedMarks;
+  ribbonsWithSprite = builtins.filter (n: ribbonSpriteFor n != null) allUsedRibbons;
+  marksWithSprite   = builtins.filter (n: markSpriteFor   n != null) allUsedMarks;
 
   allUsedItems = lib.unique (builtins.filter (x: x != null && x != "") (
     (map (k: cfg.specials.${k}.heldItem)         (builtins.attrNames cfg.specials))
@@ -2842,12 +1255,12 @@ let
     cp ${ogImage} $out/og.png
 
     cat > $out/index.html <<'IDX'
-${pageShell "breedables" "PokèNix · breedables" breedablesBody}
+${pageShell "trainer" "PokèNix · trainer" trainerBody}
 IDX
 
-    cat > $out/trainer.html <<'TRN'
-${pageShell "trainer" "PokèNix · trainer" trainerBody}
-TRN
+    cat > $out/breedables.html <<'BRD'
+${pageShell "breedables" "PokèNix · breedables" breedablesBody}
+BRD
 
     cat > $out/shiny.html <<'SHN'
 ${pageShell "shiny" "PokèNix · shiny living" shinyBody}
@@ -2867,7 +1280,7 @@ SPC
       base64 -w0 ${ballPath b} >> $out/balls.sed
       printf '|g\n' >> $out/balls.sed
     '') existingBalls)}
-    for f in $out/index.html $out/events.html $out/shiny.html $out/specials.html; do
+    for f in $out/breedables.html $out/events.html $out/shiny.html $out/specials.html; do
       sed -i -f $out/balls.sed "$f"
     done
     rm -f $out/balls.sed
@@ -2878,7 +1291,7 @@ SPC
       base64 -w0 ${./. + "/${breedableSpriteFor n cfg.breedables.${n}}" } >> $out/sprites.sed
       printf '|g\n' >> $out/sprites.sed
     '') existingSprites)}
-    sed -i -f $out/sprites.sed $out/index.html
+    sed -i -f $out/sprites.sed $out/breedables.html
     rm -f $out/sprites.sed
 
     : > $out/sprites.sed
@@ -2914,12 +1327,12 @@ SPC
     : > $out/items.sed
     ${concatStringsSep "\n" (map (n: ''
       printf 's|@RIBBON_FILE_${keyFor n}@|' >> $out/items.sed
-      base64 -w0 ${./. + "/${firstExisting (ribbonFileCandidates n)}"} >> $out/items.sed
+      base64 -w0 ${./. + "/${ribbonSpriteFor n}"} >> $out/items.sed
       printf '|g\n' >> $out/items.sed
     '') ribbonsWithSprite)}
     ${concatStringsSep "\n" (map (n: ''
       printf 's|@MARK_FILE_${keyFor n}@|' >> $out/items.sed
-      base64 -w0 ${./. + "/${markFile n}"} >> $out/items.sed
+      base64 -w0 ${./. + "/${markSpriteFor n}"} >> $out/items.sed
       printf '|g\n' >> $out/items.sed
     '') marksWithSprite)}
     ${concatStringsSep "\n" (map (n: ''
@@ -2981,7 +1394,7 @@ SPC
       printf 's|@TRAINER_PIC@|' >> $out/pic.sed
       base64 -w0 ${cfg.trainer.picture} >> $out/pic.sed
       printf '|g\n' >> $out/pic.sed
-      sed -i -f $out/pic.sed $out/trainer.html
+      sed -i -f $out/pic.sed $out/index.html
       rm -f $out/pic.sed
     ''}
   '';
@@ -2997,6 +1410,31 @@ SPC
     ballPossible  = totalPossibleCaptures;
     totalMons     = shinyOwnedCount + eventCount + specialsCount + ownedSpeciesCount;
   };
+  
+  renderDexLink = key: dex: name:
+    let
+      url = serebiiUrlFor key;
+      pad = padNum dex;
+    in
+    if url == null then ''<span class="dex">#${pad}</span>''
+    else ''
+      <span class="dex-wrap">
+        <a class="dex" href="${url}" target="_blank" rel="noopener">#${pad}</a>
+        <div class="dex-hover">
+          <iframe src="${url}" loading="lazy" title="${name} on Serebii"></iframe>
+          <div class="dex-hover-fallback">
+            <div class="dhf-title">${name} · Serebii</div>
+            <div class="dhf-url">${url}</div>
+            <div class="dhf-hint">Click to open in a new tab.</div>
+          </div>
+        </div>
+      </span>
+    '';
+
+  renderCheckShiny = val:
+    if val
+    then ''<span class="check yes shiny-mark" title="shiny">✨</span>''
+    else ''<span class="check no" title="not shiny"></span>'';
 
 in {
   inherit html debug stats;

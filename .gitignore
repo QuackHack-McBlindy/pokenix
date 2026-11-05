@@ -1,3 +1,4 @@
+.pokeapi-cache
 packages/yo-rs/build.sh
 packages/yo-rs/target/
 *.bak

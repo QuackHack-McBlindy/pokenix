@@ -28,7 +28,7 @@
 
           eval = lib.evalModules {
             modules = [
-              (import ./options.nix { inherit lib; })
+              ./options.nix
               chosenModule
             ];
           };
