@@ -1,7 +1,7 @@
 {
   "pokenix.events": {
     "declarations": [
-      "/home/pungkula/new/pokenix/options.nix"
+      "/home/runner/work/pokenix/pokenix/options.nix"
     ],
     "default": {
       "_type": "literalExpression",
@@ -21,7 +21,7 @@
   },
   "pokenix.events.<name>.ball": {
     "declarations": [
-      "/home/pungkula/new/pokenix/options.nix"
+      "/home/runner/work/pokenix/pokenix/options.nix"
     ],
     "default": {
       "_type": "literalExpression",
@@ -43,7 +43,7 @@
   },
   "pokenix.events.<name>.dex": {
     "declarations": [
-      "/home/pungkula/new/pokenix/options.nix"
+      "/home/runner/work/pokenix/pokenix/options.nix"
     ],
     "default": {
       "_type": "literalExpression",
@@ -65,7 +65,7 @@
   },
   "pokenix.events.<name>.id": {
     "declarations": [
-      "/home/pungkula/new/pokenix/options.nix"
+      "/home/runner/work/pokenix/pokenix/options.nix"
     ],
     "default": {
       "_type": "literalExpression",
@@ -87,7 +87,7 @@
   },
   "pokenix.events.<name>.moves": {
     "declarations": [
-      "/home/pungkula/new/pokenix/options.nix"
+      "/home/runner/work/pokenix/pokenix/options.nix"
     ],
     "default": {
       "_type": "literalExpression",
@@ -109,7 +109,7 @@
   },
   "pokenix.events.<name>.name": {
     "declarations": [
-      "/home/pungkula/new/pokenix/options.nix"
+      "/home/runner/work/pokenix/pokenix/options.nix"
     ],
     "default": {
       "_type": "literalExpression",
@@ -131,7 +131,7 @@
   },
   "pokenix.events.<name>.notes": {
     "declarations": [
-      "/home/pungkula/new/pokenix/options.nix"
+      "/home/runner/work/pokenix/pokenix/options.nix"
     ],
     "default": {
       "_type": "literalExpression",
@@ -153,7 +153,7 @@
   },
   "pokenix.events.<name>.obtained": {
     "declarations": [
-      "/home/pungkula/new/pokenix/options.nix"
+      "/home/runner/work/pokenix/pokenix/options.nix"
     ],
     "default": {
       "_type": "literalExpression",
@@ -175,7 +175,7 @@
   },
   "pokenix.events.<name>.ot": {
     "declarations": [
-      "/home/pungkula/new/pokenix/options.nix"
+      "/home/runner/work/pokenix/pokenix/options.nix"
     ],
     "default": {
       "_type": "literalExpression",
@@ -197,7 +197,7 @@
   },
   "pokenix.events.<name>.proof": {
     "declarations": [
-      "/home/pungkula/new/pokenix/options.nix"
+      "/home/runner/work/pokenix/pokenix/options.nix"
     ],
     "default": {
       "_type": "literalExpression",
@@ -219,7 +219,7 @@
   },
   "pokenix.events.<name>.region": {
     "declarations": [
-      "/home/pungkula/new/pokenix/options.nix"
+      "/home/runner/work/pokenix/pokenix/options.nix"
     ],
     "default": {
       "_type": "literalExpression",
@@ -241,7 +241,7 @@
   },
   "pokenix.events.<name>.selfObtained": {
     "declarations": [
-      "/home/pungkula/new/pokenix/options.nix"
+      "/home/runner/work/pokenix/pokenix/options.nix"
     ],
     "default": {
       "_type": "literalExpression",
@@ -263,7 +263,7 @@
   },
   "pokenix.events.<name>.shiny": {
     "declarations": [
-      "/home/pungkula/new/pokenix/options.nix"
+      "/home/runner/work/pokenix/pokenix/options.nix"
     ],
     "default": {
       "_type": "literalExpression",
@@ -285,7 +285,7 @@
   },
   "pokenix.events.<name>.species": {
     "declarations": [
-      "/home/pungkula/new/pokenix/options.nix"
+      "/home/runner/work/pokenix/pokenix/options.nix"
     ],
     "description": "Species identifier — a breedable key (`jirachi`) or free-form id for event-only Pokémon (`walking-wake`). Used to auto-resolve dex, sprite, and display name.",
     "example": {
@@ -303,7 +303,7 @@
   },
   "pokenix.events.<name>.sprite": {
     "declarations": [
-      "/home/pungkula/new/pokenix/options.nix"
+      "/home/runner/work/pokenix/pokenix/options.nix"
     ],
     "default": {
       "_type": "literalExpression",
@@ -325,7 +325,7 @@
   },
   "pokenix.events.<name>.tradeHistory": {
     "declarations": [
-      "/home/pungkula/new/pokenix/options.nix"
+      "/home/runner/work/pokenix/pokenix/options.nix"
     ],
     "default": {
       "_type": "literalExpression",
@@ -347,7 +347,7 @@
   },
   "pokenix.events.<name>.year": {
     "declarations": [
-      "/home/pungkula/new/pokenix/options.nix"
+      "/home/runner/work/pokenix/pokenix/options.nix"
     ],
     "default": {
       "_type": "literalExpression",
@@ -369,7 +369,7 @@
   },
   "pokenix.pokedex": {
     "declarations": [
-      "/home/pungkula/new/pokenix/options.nix"
+      "/home/runner/work/pokenix/pokenix/options.nix"
     ],
     "description": "Complete Pokenix Pokédex database.\nAll source JSON data is preserved.\n",
     "loc": [
@@ -381,7 +381,7 @@
   },
   "pokenix.pokedex.abilities": {
     "declarations": [
-      "/home/pungkula/new/pokenix/options.nix"
+      "/home/runner/work/pokenix/pokenix/options.nix"
     ],
     "default": {
       "_type": "literalExpression",
@@ -398,7 +398,7 @@
   },
   "pokenix.pokedex.items": {
     "declarations": [
-      "/home/pungkula/new/pokenix/options.nix"
+      "/home/runner/work/pokenix/pokenix/options.nix"
     ],
     "default": {
       "_type": "literalExpression",
@@ -415,7 +415,7 @@
   },
   "pokenix.pokedex.marks": {
     "declarations": [
-      "/home/pungkula/new/pokenix/options.nix"
+      "/home/runner/work/pokenix/pokenix/options.nix"
     ],
     "default": {
       "_type": "literalExpression",
@@ -432,7 +432,7 @@
   },
   "pokenix.pokedex.misc": {
     "declarations": [
-      "/home/pungkula/new/pokenix/options.nix"
+      "/home/runner/work/pokenix/pokenix/options.nix"
     ],
     "default": {
       "_type": "literalExpression",
@@ -449,7 +449,7 @@
   },
   "pokenix.pokedex.moves": {
     "declarations": [
-      "/home/pungkula/new/pokenix/options.nix"
+      "/home/runner/work/pokenix/pokenix/options.nix"
     ],
     "default": {
       "_type": "literalExpression",
@@ -466,7 +466,7 @@
   },
   "pokenix.pokedex.pokemon": {
     "declarations": [
-      "/home/pungkula/new/pokenix/options.nix"
+      "/home/runner/work/pokenix/pokenix/options.nix"
     ],
     "default": {
       "_type": "literalExpression",
@@ -483,7 +483,7 @@
   },
   "pokenix.pokedex.ribbons": {
     "declarations": [
-      "/home/pungkula/new/pokenix/options.nix"
+      "/home/runner/work/pokenix/pokenix/options.nix"
     ],
     "default": {
       "_type": "literalExpression",
@@ -500,7 +500,7 @@
   },
   "pokenix.specials": {
     "declarations": [
-      "/home/pungkula/new/pokenix/options.nix"
+      "/home/runner/work/pokenix/pokenix/options.nix"
     ],
     "default": {
       "_type": "literalExpression",
@@ -520,7 +520,7 @@
   },
   "pokenix.specials.<name>.ability": {
     "declarations": [
-      "/home/pungkula/new/pokenix/options.nix"
+      "/home/runner/work/pokenix/pokenix/options.nix"
     ],
     "default": {
       "_type": "literalExpression",
@@ -542,7 +542,7 @@
   },
   "pokenix.specials.<name>.ball": {
     "declarations": [
-      "/home/pungkula/new/pokenix/options.nix"
+      "/home/runner/work/pokenix/pokenix/options.nix"
     ],
     "default": {
       "_type": "literalExpression",
@@ -564,7 +564,7 @@
   },
   "pokenix.specials.<name>.dex": {
     "declarations": [
-      "/home/pungkula/new/pokenix/options.nix"
+      "/home/runner/work/pokenix/pokenix/options.nix"
     ],
     "default": {
       "_type": "literalExpression",
@@ -586,7 +586,7 @@
   },
   "pokenix.specials.<name>.evs": {
     "declarations": [
-      "/home/pungkula/new/pokenix/options.nix"
+      "/home/runner/work/pokenix/pokenix/options.nix"
     ],
     "default": {
       "_type": "literalExpression",
@@ -608,7 +608,7 @@
   },
   "pokenix.specials.<name>.evs.atk": {
     "declarations": [
-      "/home/pungkula/new/pokenix/options.nix"
+      "/home/runner/work/pokenix/pokenix/options.nix"
     ],
     "default": {
       "_type": "literalExpression",
@@ -631,7 +631,7 @@
   },
   "pokenix.specials.<name>.evs.def": {
     "declarations": [
-      "/home/pungkula/new/pokenix/options.nix"
+      "/home/runner/work/pokenix/pokenix/options.nix"
     ],
     "default": {
       "_type": "literalExpression",
@@ -654,7 +654,7 @@
   },
   "pokenix.specials.<name>.evs.hp": {
     "declarations": [
-      "/home/pungkula/new/pokenix/options.nix"
+      "/home/runner/work/pokenix/pokenix/options.nix"
     ],
     "default": {
       "_type": "literalExpression",
@@ -677,7 +677,7 @@
   },
   "pokenix.specials.<name>.evs.spa": {
     "declarations": [
-      "/home/pungkula/new/pokenix/options.nix"
+      "/home/runner/work/pokenix/pokenix/options.nix"
     ],
     "default": {
       "_type": "literalExpression",
@@ -700,7 +700,7 @@
   },
   "pokenix.specials.<name>.evs.spd": {
     "declarations": [
-      "/home/pungkula/new/pokenix/options.nix"
+      "/home/runner/work/pokenix/pokenix/options.nix"
     ],
     "default": {
       "_type": "literalExpression",
@@ -723,7 +723,7 @@
   },
   "pokenix.specials.<name>.evs.spe": {
     "declarations": [
-      "/home/pungkula/new/pokenix/options.nix"
+      "/home/runner/work/pokenix/pokenix/options.nix"
     ],
     "default": {
       "_type": "literalExpression",
@@ -746,7 +746,7 @@
   },
   "pokenix.specials.<name>.heldItem": {
     "declarations": [
-      "/home/pungkula/new/pokenix/options.nix"
+      "/home/runner/work/pokenix/pokenix/options.nix"
     ],
     "default": {
       "_type": "literalExpression",
@@ -768,7 +768,7 @@
   },
   "pokenix.specials.<name>.id": {
     "declarations": [
-      "/home/pungkula/new/pokenix/options.nix"
+      "/home/runner/work/pokenix/pokenix/options.nix"
     ],
     "default": {
       "_type": "literalExpression",
@@ -790,7 +790,7 @@
   },
   "pokenix.specials.<name>.ivs": {
     "declarations": [
-      "/home/pungkula/new/pokenix/options.nix"
+      "/home/runner/work/pokenix/pokenix/options.nix"
     ],
     "default": {
       "_type": "literalExpression",
@@ -812,7 +812,7 @@
   },
   "pokenix.specials.<name>.ivs.atk": {
     "declarations": [
-      "/home/pungkula/new/pokenix/options.nix"
+      "/home/runner/work/pokenix/pokenix/options.nix"
     ],
     "default": {
       "_type": "literalExpression",
@@ -835,7 +835,7 @@
   },
   "pokenix.specials.<name>.ivs.def": {
     "declarations": [
-      "/home/pungkula/new/pokenix/options.nix"
+      "/home/runner/work/pokenix/pokenix/options.nix"
     ],
     "default": {
       "_type": "literalExpression",
@@ -858,7 +858,7 @@
   },
   "pokenix.specials.<name>.ivs.hp": {
     "declarations": [
-      "/home/pungkula/new/pokenix/options.nix"
+      "/home/runner/work/pokenix/pokenix/options.nix"
     ],
     "default": {
       "_type": "literalExpression",
@@ -881,7 +881,7 @@
   },
   "pokenix.specials.<name>.ivs.spa": {
     "declarations": [
-      "/home/pungkula/new/pokenix/options.nix"
+      "/home/runner/work/pokenix/pokenix/options.nix"
     ],
     "default": {
       "_type": "literalExpression",
@@ -904,7 +904,7 @@
   },
   "pokenix.specials.<name>.ivs.spd": {
     "declarations": [
-      "/home/pungkula/new/pokenix/options.nix"
+      "/home/runner/work/pokenix/pokenix/options.nix"
     ],
     "default": {
       "_type": "literalExpression",
@@ -927,7 +927,7 @@
   },
   "pokenix.specials.<name>.ivs.spe": {
     "declarations": [
-      "/home/pungkula/new/pokenix/options.nix"
+      "/home/runner/work/pokenix/pokenix/options.nix"
     ],
     "default": {
       "_type": "literalExpression",
@@ -950,7 +950,7 @@
   },
   "pokenix.specials.<name>.level": {
     "declarations": [
-      "/home/pungkula/new/pokenix/options.nix"
+      "/home/runner/work/pokenix/pokenix/options.nix"
     ],
     "default": {
       "_type": "literalExpression",
@@ -972,7 +972,7 @@
   },
   "pokenix.specials.<name>.marks": {
     "declarations": [
-      "/home/pungkula/new/pokenix/options.nix"
+      "/home/runner/work/pokenix/pokenix/options.nix"
     ],
     "default": {
       "_type": "literalExpression",
@@ -994,7 +994,7 @@
   },
   "pokenix.specials.<name>.moves": {
     "declarations": [
-      "/home/pungkula/new/pokenix/options.nix"
+      "/home/runner/work/pokenix/pokenix/options.nix"
     ],
     "default": {
       "_type": "literalExpression",
@@ -1016,7 +1016,7 @@
   },
   "pokenix.specials.<name>.name": {
     "declarations": [
-      "/home/pungkula/new/pokenix/options.nix"
+      "/home/runner/work/pokenix/pokenix/options.nix"
     ],
     "default": {
       "_type": "literalExpression",
@@ -1038,7 +1038,7 @@
   },
   "pokenix.specials.<name>.nature": {
     "declarations": [
-      "/home/pungkula/new/pokenix/options.nix"
+      "/home/runner/work/pokenix/pokenix/options.nix"
     ],
     "default": {
       "_type": "literalExpression",
@@ -1060,7 +1060,7 @@
   },
   "pokenix.specials.<name>.notes": {
     "declarations": [
-      "/home/pungkula/new/pokenix/options.nix"
+      "/home/runner/work/pokenix/pokenix/options.nix"
     ],
     "default": {
       "_type": "literalExpression",
@@ -1082,7 +1082,7 @@
   },
   "pokenix.specials.<name>.obtained": {
     "declarations": [
-      "/home/pungkula/new/pokenix/options.nix"
+      "/home/runner/work/pokenix/pokenix/options.nix"
     ],
     "default": {
       "_type": "literalExpression",
@@ -1104,7 +1104,7 @@
   },
   "pokenix.specials.<name>.ot": {
     "declarations": [
-      "/home/pungkula/new/pokenix/options.nix"
+      "/home/runner/work/pokenix/pokenix/options.nix"
     ],
     "default": {
       "_type": "literalExpression",
@@ -1126,7 +1126,7 @@
   },
   "pokenix.specials.<name>.proof": {
     "declarations": [
-      "/home/pungkula/new/pokenix/options.nix"
+      "/home/runner/work/pokenix/pokenix/options.nix"
     ],
     "default": {
       "_type": "literalExpression",
@@ -1148,7 +1148,7 @@
   },
   "pokenix.specials.<name>.region": {
     "declarations": [
-      "/home/pungkula/new/pokenix/options.nix"
+      "/home/runner/work/pokenix/pokenix/options.nix"
     ],
     "default": {
       "_type": "literalExpression",
@@ -1170,7 +1170,7 @@
   },
   "pokenix.specials.<name>.ribbons": {
     "declarations": [
-      "/home/pungkula/new/pokenix/options.nix"
+      "/home/runner/work/pokenix/pokenix/options.nix"
     ],
     "default": {
       "_type": "literalExpression",
@@ -1192,7 +1192,7 @@
   },
   "pokenix.specials.<name>.selfObtained": {
     "declarations": [
-      "/home/pungkula/new/pokenix/options.nix"
+      "/home/runner/work/pokenix/pokenix/options.nix"
     ],
     "default": {
       "_type": "literalExpression",
@@ -1214,7 +1214,7 @@
   },
   "pokenix.specials.<name>.shiny": {
     "declarations": [
-      "/home/pungkula/new/pokenix/options.nix"
+      "/home/runner/work/pokenix/pokenix/options.nix"
     ],
     "default": {
       "_type": "literalExpression",
@@ -1236,7 +1236,7 @@
   },
   "pokenix.specials.<name>.species": {
     "declarations": [
-      "/home/pungkula/new/pokenix/options.nix"
+      "/home/runner/work/pokenix/pokenix/options.nix"
     ],
     "description": "Species identifier — a breedable key (`mewtwo`) or free-form id for unique forms. Used to auto-resolve dex, sprite, and display name.",
     "example": {
@@ -1254,7 +1254,7 @@
   },
   "pokenix.specials.<name>.sprite": {
     "declarations": [
-      "/home/pungkula/new/pokenix/options.nix"
+      "/home/runner/work/pokenix/pokenix/options.nix"
     ],
     "default": {
       "_type": "literalExpression",
@@ -1276,7 +1276,7 @@
   },
   "pokenix.specials.<name>.teraType": {
     "declarations": [
-      "/home/pungkula/new/pokenix/options.nix"
+      "/home/runner/work/pokenix/pokenix/options.nix"
     ],
     "default": {
       "_type": "literalExpression",
@@ -1298,7 +1298,7 @@
   },
   "pokenix.specials.<name>.tradeHistory": {
     "declarations": [
-      "/home/pungkula/new/pokenix/options.nix"
+      "/home/runner/work/pokenix/pokenix/options.nix"
     ],
     "default": {
       "_type": "literalExpression",
@@ -1320,7 +1320,7 @@
   },
   "pokenix.stats.aprimonsOwned": {
     "declarations": [
-      "/home/pungkula/new/pokenix/options.nix"
+      "/home/runner/work/pokenix/pokenix/options.nix"
     ],
     "default": {
       "_type": "literalExpression",
@@ -1337,7 +1337,7 @@
   },
   "pokenix.stats.aprimonsTotal": {
     "declarations": [
-      "/home/pungkula/new/pokenix/options.nix"
+      "/home/runner/work/pokenix/pokenix/options.nix"
     ],
     "default": {
       "_type": "literalExpression",
@@ -1354,7 +1354,7 @@
   },
   "pokenix.stats.ballCaptures": {
     "declarations": [
-      "/home/pungkula/new/pokenix/options.nix"
+      "/home/runner/work/pokenix/pokenix/options.nix"
     ],
     "default": {
       "_type": "literalExpression",
@@ -1371,7 +1371,7 @@
   },
   "pokenix.stats.ballPossible": {
     "declarations": [
-      "/home/pungkula/new/pokenix/options.nix"
+      "/home/runner/work/pokenix/pokenix/options.nix"
     ],
     "default": {
       "_type": "literalExpression",
@@ -1388,7 +1388,7 @@
   },
   "pokenix.stats.eventCount": {
     "declarations": [
-      "/home/pungkula/new/pokenix/options.nix"
+      "/home/runner/work/pokenix/pokenix/options.nix"
     ],
     "default": {
       "_type": "literalExpression",
@@ -1405,7 +1405,7 @@
   },
   "pokenix.stats.shinyOwned": {
     "declarations": [
-      "/home/pungkula/new/pokenix/options.nix"
+      "/home/runner/work/pokenix/pokenix/options.nix"
     ],
     "default": {
       "_type": "literalExpression",
@@ -1422,7 +1422,7 @@
   },
   "pokenix.stats.shinyTotal": {
     "declarations": [
-      "/home/pungkula/new/pokenix/options.nix"
+      "/home/runner/work/pokenix/pokenix/options.nix"
     ],
     "default": {
       "_type": "literalExpression",
@@ -1439,7 +1439,7 @@
   },
   "pokenix.stats.specialsCount": {
     "declarations": [
-      "/home/pungkula/new/pokenix/options.nix"
+      "/home/runner/work/pokenix/pokenix/options.nix"
     ],
     "default": {
       "_type": "literalExpression",
@@ -1456,7 +1456,7 @@
   },
   "pokenix.stats.totalMons": {
     "declarations": [
-      "/home/pungkula/new/pokenix/options.nix"
+      "/home/runner/work/pokenix/pokenix/options.nix"
     ],
     "default": {
       "_type": "literalExpression",
@@ -1473,7 +1473,7 @@
   },
   "pokenix.trainer": {
     "declarations": [
-      "/home/pungkula/new/pokenix/options.nix"
+      "/home/runner/work/pokenix/pokenix/options.nix"
     ],
     "default": {
       "_type": "literalExpression",
@@ -1493,7 +1493,7 @@
   },
   "pokenix.trainer.about": {
     "declarations": [
-      "/home/pungkula/new/pokenix/options.nix"
+      "/home/runner/work/pokenix/pokenix/options.nix"
     ],
     "default": {
       "_type": "literalExpression",
@@ -1514,7 +1514,7 @@
   },
   "pokenix.trainer.contact": {
     "declarations": [
-      "/home/pungkula/new/pokenix/options.nix"
+      "/home/runner/work/pokenix/pokenix/options.nix"
     ],
     "default": {
       "_type": "literalExpression",
@@ -1535,7 +1535,7 @@
   },
   "pokenix.trainer.friendCode": {
     "declarations": [
-      "/home/pungkula/new/pokenix/options.nix"
+      "/home/runner/work/pokenix/pokenix/options.nix"
     ],
     "default": {
       "_type": "literalExpression",
@@ -1556,7 +1556,7 @@
   },
   "pokenix.trainer.githubRepo": {
     "declarations": [
-      "/home/pungkula/new/pokenix/options.nix"
+      "/home/runner/work/pokenix/pokenix/options.nix"
     ],
     "default": {
       "_type": "literalExpression",
@@ -1577,7 +1577,7 @@
   },
   "pokenix.trainer.githubUsername": {
     "declarations": [
-      "/home/pungkula/new/pokenix/options.nix"
+      "/home/runner/work/pokenix/pokenix/options.nix"
     ],
     "default": {
       "_type": "literalExpression",
@@ -1598,7 +1598,7 @@
   },
   "pokenix.trainer.name": {
     "declarations": [
-      "/home/pungkula/new/pokenix/options.nix"
+      "/home/runner/work/pokenix/pokenix/options.nix"
     ],
     "default": {
       "_type": "literalExpression",
@@ -1619,16 +1619,16 @@
   },
   "pokenix.trainer.picture": {
     "declarations": [
-      "/home/pungkula/new/pokenix/options.nix"
+      "/home/runner/work/pokenix/pokenix/options.nix"
     ],
     "default": {
       "_type": "literalExpression",
-      "text": "/home/pungkula/new/pokenix/profile-picture.png"
+      "text": "/home/runner/work/pokenix/pokenix/profile-picture.png"
     },
     "description": "Avatar shown at the top of the trainer card. PNG/JPG/WEBP/GIF — mime detected from extension. Base64-embedded; no external asset needed.",
     "example": {
       "_type": "literalExpression",
-      "text": "/home/pungkula/new/pokenix/images/me.png"
+      "text": "/home/runner/work/pokenix/pokenix/images/me.png"
     },
     "loc": [
       "pokenix",
@@ -1640,7 +1640,7 @@
   },
   "pokenix.trainer.region": {
     "declarations": [
-      "/home/pungkula/new/pokenix/options.nix"
+      "/home/runner/work/pokenix/pokenix/options.nix"
     ],
     "default": {
       "_type": "literalExpression",
@@ -1661,7 +1661,7 @@
   },
   "pokenix.trainer.secretId": {
     "declarations": [
-      "/home/pungkula/new/pokenix/options.nix"
+      "/home/runner/work/pokenix/pokenix/options.nix"
     ],
     "default": {
       "_type": "literalExpression",
@@ -1682,7 +1682,7 @@
   },
   "pokenix.trainer.shinyDexType": {
     "declarations": [
-      "/home/pungkula/new/pokenix/options.nix"
+      "/home/runner/work/pokenix/pokenix/options.nix"
     ],
     "default": {
       "_type": "literalExpression",
@@ -1703,7 +1703,7 @@
   },
   "pokenix.trainer.switchName": {
     "declarations": [
-      "/home/pungkula/new/pokenix/options.nix"
+      "/home/runner/work/pokenix/pokenix/options.nix"
     ],
     "default": {
       "_type": "literalExpression",
@@ -1724,7 +1724,7 @@
   },
   "pokenix.trainer.timezone": {
     "declarations": [
-      "/home/pungkula/new/pokenix/options.nix"
+      "/home/runner/work/pokenix/pokenix/options.nix"
     ],
     "default": {
       "_type": "literalExpression",
@@ -1745,7 +1745,7 @@
   },
   "pokenix.trainer.trainerId": {
     "declarations": [
-      "/home/pungkula/new/pokenix/options.nix"
+      "/home/runner/work/pokenix/pokenix/options.nix"
     ],
     "default": {
       "_type": "literalExpression",
